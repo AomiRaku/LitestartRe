@@ -37,11 +37,11 @@
 
 ## 最低适用范围
 
-- 系统：Windows7 / MacOS10.15 / Linux支持现代 GTK 3 的发行版
-- 浏览器：
+- **系统**：Windows7 / MacOS10.15 / Linux支持现代 GTK 3 的发行版
+- **浏览器**：
 <br>Chrome/edge：最低版本要求88
 <br>Firefox：109及以上
-- 语言：简体中文 / 繁體中文 / English / Русский / 日本語
+- **语言**：简体中文 / 繁體中文 / English / Русский / 日本語
 
 
 ## 免责声明
