@@ -1,0 +1,29 @@
+{
+  "manifest_version": 3,
+  "name": "LiteStart",
+  "version": "1.0.0",
+  "minimum_chrome_version": "109",
+  "description": "可定制的浏览器类原生起始页",
+  
+  "chrome_url_overrides": {
+    "newtab": "index.html"
+  },
+
+  "web_accessible_resources": [
+    {
+      "resources": ["img/*"],
+      "matches": ["<all_urls>"]
+    }
+  ],
+
+  "host_permissions": [
+    "https://suggestion.baidu.com/*",
+    "https://suggestqueries.google.com/*"
+  ],
+
+  "icons": {
+    "16": "img/icon.png",
+    "48": "img/icon.png",
+    "128": "img/icon.png"
+  }
+}
