@@ -47,8 +47,9 @@ const i18nData = {
     editBackground: '编辑背景',
     language: '页面语言',
     langAuto: '默认（跟随设备）',
-    cookieNotice: '需要使用Cookie保存你的设置',
+    cookieNotice: '隐私与Cookie',
     license: '开源协议',
+    updates: '检查更新',
     helpFeedback: '帮助&反馈',
     presentedBy: '由',
     forYou: '为您呈现',
@@ -96,8 +97,9 @@ const i18nData = {
     editBackground: '編輯背景',
     language: '頁面語言',
     langAuto: '預設（隨設備設定）',
-    cookieNotice: '需要使用 Cookie 儲存您的設定',
+    cookieNotice: '隱私與 Cookie',
     license: '開源協議',
+    updates: '檢查更新',
     helpFeedback: '說明與意見回饋',
     presentedBy: '由',
     forYou: '為您呈現',
@@ -127,52 +129,53 @@ const i18nData = {
   },
   'zh-WY': {
     pageTitle: '新標籤頁',
-    settingsTitle: '頁面設置',
+    settingsTitle: '頁面之設',
     close: '闔',
-    quicklinks: '網絡導引',
+    quicklinks: '網要',
     off: '罷',
-    on: '開',
+    on: '啟',
     rows1: '一列',
     rows2: '二列',
-    searchEngine: '搜尋引擎',
+    searchEngine: '搜尋器',
     custom: '自訂',
-    editCustomEngine: '輯自訂引擎',
-    saveHistory: '存搜尋履歷',
-    layout: '頁面佈局',
+    editCustomEngine: '輯自訂搜尋器',
+    saveHistory: '存搜尋記',
+    layout: '佈局',
     inspirational: '展望',
-    focused: '聚焦',
-    background: '背景',
-    editBackground: '修撰背景',
-    language: '頁面語言',
+    focused: '專注',
+    background: '底景',
+    editBackground: '修撰底景',
+    language: '頁語',
     langAuto: '預設（順裝置）',
-    cookieNotice: '須用 Cookie 存汝設定',
-    license: '開源公約',
+    cookieNotice: '隱私與餅儲',
+    license: '開源之約',
+    updates: '檢新',
     helpFeedback: '求助與反饋',
     presentedBy: '由',
     forYou: '呈獻',
-    disclaimer: '注意，此網頁與 Microsoft 無涉。',
-    searchPlaceholder: '搜尋或輸入網址',
-    searchInput: '搜尋框',
-    clearSearchHistory: '拭搜尋履歷',
-    customBackground: '自訂背景',
-    usingDefaultBg: '正用預設背景',
+    disclaimer: '謹告：此頁與微軟無涉。',
+    searchPlaceholder: '或搜或鍵，惟網址依',
+    searchInput: '搜尋之框',
+    clearSearchHistory: '拭搜尋記',
+    customBackground: '自定底景',
+    usingDefaultBg: '現用默認底景',
     selectImage: '擇圖或影',
     uploadFile: '上傳檔案',
     restoreDefault: '復初',
     editShortcut: '修捷徑',
     name: '名',
     inputNamePh: '書捷徑之名',
-    errorNameReq: '請書捷徑名',
-    errorUrlReq: '請書網址',
+    errorNameReq: '請填捷徑名',
+    errorUrlReq: '請填網址',
     delete: '削',
     cancel: '罷',
-    save: '存',
-    customEngineTitle: '自訂搜尋引擎',
+    save: '儲',
+    customEngineTitle: '自定搜尋器',
     engineName: '引擎之名',
     engineNamePh: '例: DuckDuckGo',
-    errorEngineNameReq: '請書引擎名',
+    errorEngineNameReq: '請填搜尋器名',
     engineUrl: '搜尋 URL (%s 換字)',
-    errorEngineUrlFormat: '請書搜尋 URL，必含 %s'
+    errorEngineUrlFormat: '請填搜尋 URL，必含 %s'
   },
   'en': {
     pageTitle: 'New Tab',
@@ -194,8 +197,9 @@ const i18nData = {
     editBackground: 'Edit background',
     language: 'Language',
     langAuto: 'Default (System)',
-    cookieNotice: 'Cookies are required to save settings',
+    cookieNotice: 'Privacy & Cookies',
     license: 'License',
+    updates: 'Check for Updates',
     helpFeedback: 'Help & Feedback',
     presentedBy: 'Presented by',
     forYou: '',
@@ -243,8 +247,9 @@ const i18nData = {
     editBackground: '背景を編集',
     language: '言語',
     langAuto: 'デフォルト（システムに従う）',
-    cookieNotice: '設定の保存には Cookie が必要です',
+    cookieNotice: 'プライバシーとクッキー',
     license: 'License',
+    updates: '更新を確認',
     helpFeedback: 'ヘルプとフィードバック',
     presentedBy: '提供:',
     forYou: '',
@@ -292,8 +297,9 @@ const i18nData = {
     editBackground: 'Изменить фон',
     language: 'Язык',
     langAuto: 'По умолчанию (системный)',
-    cookieNotice: 'Файлы Cookie необходимы для сохранения',
+    cookieNotice: 'Конфиденциальность и файлы cookie',
     license: 'Лицензия',
+    updates: 'Обновления',
     helpFeedback: 'Справка и отзывы',
     presentedBy: 'Создатель:',
     forYou: '',
@@ -508,6 +514,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const bgVideo = document.getElementById('bg-video');
   const bgImage = document.getElementById('bg-image');
+
+  if (searchInput && searchInput.value.trim() !== '') {
+  const fakebox = document.getElementById('fakebox');
+  fakebox?.classList.add('has-value');
+  }
 
   let currentEditingId = null;
   let selectedSuggestionIndex = -1;
@@ -997,225 +1008,228 @@ document.addEventListener('DOMContentLoaded', () => {
   renderQuicklinks();
 
   // --- 4. 搜索框历史记录与搜索建议词条 ---
-        clearHistoryBtn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          searchHistory = [];
-          Storage.set('ntp_search_history', []);
-          fetchAndShowSuggestions();
-        });
+  clearHistoryBtn?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    searchHistory = [];
+    Storage.set('ntp_search_history', []);
+    fetchAndShowSuggestions();
+  });
 
-        function saveSearchHistory(query) {
-          if (!historyEnabled || !query) return;
-          searchHistory = searchHistory.filter(item => item.toLowerCase() !== query.toLowerCase());
-          searchHistory.unshift(query);
-          if (searchHistory.length > 50) {
-            searchHistory.pop();
-          }
-          Storage.set('ntp_search_history', searchHistory);
+  function saveSearchHistory(query) {
+    if (!historyEnabled || !query) return;
+    searchHistory = searchHistory.filter(item => item.toLowerCase() !== query.toLowerCase());
+    searchHistory.unshift(query);
+    if (searchHistory.length > 50) {
+      searchHistory.pop();
+    }
+    Storage.set('ntp_search_history', searchHistory);
+  }
+
+  const historySvgIcon = `<svg width="18" height="18" viewBox="0 0 24 24"><path d="M13 3a9 9 0 0 0-9 9H1l3.89 3.89.07.14L9 12H6a7 7 0 1 1 7 7 7.07 7.07 0 0 1-6-3.37l-1.44 1.44A8.95 8.95 0 0 0 13 21a9 9 0 0 0 0-18zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg>`;
+  const searchSvgIcon = `<svg width="18" height="18" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>`;
+
+  function closeSuggestions() {
+    searchContainer?.classList.remove('suggestions-open');
+    selectedSuggestionIndex = -1;
+  }
+
+  function renderSuggestions(historyItems, suggestionItems) {
+    if (!suggestionList) return;
+    suggestionList.innerHTML = '';
+    selectedSuggestionIndex = -1;
+
+    const totalItems = [];
+
+    historyItems.forEach(item => {
+      totalItems.push({ text: item, isHistory: true });
+    });
+
+    suggestionItems.forEach(item => {
+      if (!totalItems.some(i => i.text.toLowerCase() === item.toLowerCase())) {
+        totalItems.push({ text: item, isHistory: false });
+      }
+    });
+
+    if (totalItems.length === 0) {
+      closeSuggestions();
+      return;
+    }
+
+    totalItems.forEach((itemObj) => {
+      const li = document.createElement('li');
+      li.className = 'suggestion-item' + (itemObj.isHistory ? ' history' : '');
+      li.innerHTML = `${itemObj.isHistory ? historySvgIcon : searchSvgIcon}<span class="suggestion-text">${itemObj.text}</span>`;
+      
+      li.addEventListener('click', () => {
+        if (searchInput) searchInput.value = itemObj.text;
+        doSearch(itemObj.text);
+      });
+
+      suggestionList.appendChild(li);
+    });
+
+    if (suggestionsFooter) {
+      suggestionsFooter.style.display = historyItems.length > 0 ? 'block' : 'none';
+    }
+
+    searchContainer?.classList.add('suggestions-open');
+  }
+
+  // 扩展专用的异步 Fetch 搜索
+  async function fetchSearchSuggestions(engine, query) {
+    try {
+      if (engine === 'baidu' || engine === 'bing') {
+        const response = await fetch(`https://suggestion.baidu.com/su?wd=${encodeURIComponent(query)}&p=3`);
+        const buffer = await response.arrayBuffer();
+        const decoder = new TextDecoder('gbk'); // 百度联想词通常返回 GBK 编码
+        const text = decoder.decode(buffer);
+        const match = text.match(/s:\[(.*?)\]/);
+        if (match && match[1]) {
+          return match[1].split(',').map(item => item.replace(/^"|"$/g, '').trim()).filter(Boolean);
         }
-
-        const historySvgIcon = `<svg width="18" height="18" viewBox="0 0 24 24"><path d="M13 3a9 9 0 0 0-9 9H1l3.89 3.89.07.14L9 12H6a7 7 0 1 1 7 7 7.07 7.07 0 0 1-6-3.37l-1.44 1.44A8.95 8.95 0 0 0 13 21a9 9 0 0 0 0-18zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg>`;
-        const searchSvgIcon = `<svg width="18" height="18" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>`;
-
-        function closeSuggestions() {
-          searchContainer.classList.remove('suggestions-open');
-          selectedSuggestionIndex = -1;
+      } else if (engine === 'google') {
+        const response = await fetch(`https://suggestqueries.google.com/complete/search?client=chrome&q=${encodeURIComponent(query)}`);
+        const data = await response.json();
+        if (Array.isArray(data) && Array.isArray(data[1])) {
+          return data[1];
         }
+      } 
+    } catch (e) {
+      console.warn('获取搜索联想建议词条失败:', e);
+    }
+    return [];
+  }
 
-        function renderSuggestions(historyItems, suggestionItems) {
-          suggestionList.innerHTML = '';
-          selectedSuggestionIndex = -1;
+  async function fetchAndShowSuggestions() {
+    if (!searchInput) return;
+    const query = searchInput.value.trim();
 
-          const totalItems = [];
+    let matchedHistory = [];
+    if (historyEnabled) {
+      if (query) {
+        matchedHistory = searchHistory.filter(h => h.toLowerCase().includes(query.toLowerCase())).slice(0, 5);
+      } else {
+        matchedHistory = searchHistory.slice(0, 5);
+      }
+    }
 
-          historyItems.forEach(item => {
-            totalItems.push({ text: item, isHistory: true });
-          });
+    if (!query) {
+      if (matchedHistory.length > 0) {
+        renderSuggestions(matchedHistory, []);
+      } else {
+        closeSuggestions();
+      }
+      return;
+    }
 
-          suggestionItems.forEach(item => {
-            if (!totalItems.some(i => i.text.toLowerCase() === item.toLowerCase())) {
-              totalItems.push({ text: item, isHistory: false });
-            }
-          });
+    const engine = selectEngine ? selectEngine.value : 'bing';
+    let fetchedSuggestions = [];
 
-          if (totalItems.length === 0) {
-            closeSuggestions();
-            return;
-          }
+    if (engine !== 'custom') {
+      fetchedSuggestions = await fetchSearchSuggestions(engine, query);
+    }
 
-          totalItems.forEach((itemObj) => {
-            const li = document.createElement('li');
-            li.className = 'suggestion-item' + (itemObj.isHistory ? ' history' : '');
-            li.innerHTML = `${itemObj.isHistory ? historySvgIcon : searchSvgIcon}<span class="suggestion-text">${itemObj.text}</span>`;
-            
-            li.addEventListener('click', () => {
-              searchInput.value = itemObj.text;
-              doSearch(itemObj.text);
-            });
+    renderSuggestions(matchedHistory, fetchedSuggestions.slice(0, 8));
+  }
 
-            suggestionList.appendChild(li);
-          });
+  function debounce(fn, delay) {
+    let timer = null;
+    return function(...args) {
+      clearTimeout(timer);
+      timer = setTimeout(() => fn.apply(this, args), delay);
+    };
+  }
 
-          if (historyItems.length > 0) {
-            suggestionsFooter.style.display = 'block';
-          } else {
-            suggestionsFooter.style.display = 'none';
-          }
+  const debouncedFetchSuggestions = debounce(fetchAndShowSuggestions, 150);
 
-          searchContainer.classList.add('suggestions-open');
+  fakebox?.addEventListener('click', () => {
+    searchInput?.focus();
+  });
+
+  searchInput?.addEventListener('focus', () => {
+    fetchAndShowSuggestions();
+  });
+
+
+searchInput?.addEventListener('input', () => {
+  const fakebox = document.getElementById('fakebox');
+  if (searchInput.value.trim() !== '') {
+    fakebox?.classList.add('has-value');
+  } else {
+    fakebox?.classList.remove('has-value');
+  }
+  debouncedFetchSuggestions();
+});
+
+  searchInput?.addEventListener('keydown', (e) => {
+    if (!suggestionList) return;
+    const items = suggestionList.querySelectorAll('.suggestion-item');
+    
+    if (e.key === 'ArrowDown') {
+      if (items.length > 0) {
+        e.preventDefault();
+        if (selectedSuggestionIndex < items.length - 1) {
+          selectedSuggestionIndex++;
+        } else {
+          selectedSuggestionIndex = 0;
         }
-
-        function fetchSuggestionsJSONP(url, callbackParam, query) {
-          return new Promise((resolve) => {
-            const callbackName = 'jp_suggest_' + Math.random().toString(36).substring(2);
-            const script = document.createElement('script');
-            
-            window[callbackName] = function(data) {
-              delete window[callbackName];
-              if (script.parentNode) script.parentNode.removeChild(script);
-              resolve(data);
-            };
-
-            script.onerror = function() {
-              delete window[callbackName];
-              if (script.parentNode) script.parentNode.removeChild(script);
-              resolve(null);
-            };
-
-            script.src = url + encodeURIComponent(query) + `&${callbackParam}=${callbackName}`;
-            document.body.appendChild(script);
-          });
+        updateSuggestionSelection(items);
+      }
+    } else if (e.key === 'ArrowUp') {
+      if (items.length > 0) {
+        e.preventDefault();
+        if (selectedSuggestionIndex > 0) {
+          selectedSuggestionIndex--;
+        } else {
+          selectedSuggestionIndex = items.length - 1;
         }
+        updateSuggestionSelection(items);
+      }
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      if (selectedSuggestionIndex >= 0 && items[selectedSuggestionIndex]) {
+        const text = items[selectedSuggestionIndex].querySelector('.suggestion-text').textContent;
+        if (searchInput) searchInput.value = text;
+        doSearch(text);
+      } else {
+        doSearch(searchInput.value.trim());
+      }
+    } else if (e.key === 'Escape') {
+      closeSuggestions();
+    }
+  });
 
-        async function fetchAndShowSuggestions() {
-          const query = searchInput.value.trim();
+  function updateSuggestionSelection(items) {
+    items.forEach((item, index) => {
+      if (index === selectedSuggestionIndex) {
+        item.classList.add('selected');
+        if (searchInput) searchInput.value = item.querySelector('.suggestion-text').textContent;
+      } else {
+        item.classList.remove('selected');
+      }
+    });
+  }
 
-          let matchedHistory = [];
-          if (historyEnabled) {
-            if (query) {
-              matchedHistory = searchHistory.filter(h => h.toLowerCase().includes(query.toLowerCase())).slice(0, 5);
-            } else {
-              matchedHistory = searchHistory.slice(0, 5);
-            }
-          }
+  // --- 5. 执行搜索逻辑 ---
+  function doSearch(queryText) {
+    const query = queryText !== undefined ? queryText : (searchInput ? searchInput.value.trim() : '');
+    if (query) {
+      saveSearchHistory(query);
+      closeSuggestions();
 
-          if (!query) {
-            if (matchedHistory.length > 0) {
-              renderSuggestions(matchedHistory, []);
-            } else {
-              closeSuggestions();
-            }
-            return;
-          }
+      const engine = selectEngine ? selectEngine.value : 'bing';
+      let targetUrl = '';
 
-          const engine = selectEngine.value;
-          let fetchedSuggestions = [];
+      if (engine === 'custom' && customEngineConfig.url) {
+        targetUrl = customEngineConfig.url.replace('%s', encodeURIComponent(query));
+      } else {
+        const baseUrl = engineSearchUrls[engine] || engineSearchUrls.bing;
+        targetUrl = baseUrl + encodeURIComponent(query);
+      }
 
-          try {
-            if (engine === 'baidu' || engine === 'bing') {
-              const res = await fetchSuggestionsJSONP('https://suggestion.baidu.com/su?wd=', 'cb', query);
-              if (res && res.s) fetchedSuggestions = res.s;
-            } else if (engine === 'google') {
-              const res = await fetchSuggestionsJSONP('https://suggestqueries.google.com/complete/search?client=chrome&q=', 'jsonp', query);
-              if (res && res[1]) fetchedSuggestions = res[1];
-            }
-          } catch (e) {
-            console.warn('获取联想建议词条失败', e);
-          }
-
-          renderSuggestions(matchedHistory, fetchedSuggestions.slice(0, 8));
-        }
-
-        function debounce(fn, delay) {
-          let timer = null;
-          return function(...args) {
-            clearTimeout(timer);
-            timer = setTimeout(() => fn.apply(this, args), delay);
-          };
-        }
-
-        const debouncedFetchSuggestions = debounce(fetchAndShowSuggestions, 150);
-
-        fakebox.addEventListener('click', () => {
-          searchInput.focus();
-        });
-
-        searchInput.addEventListener('focus', () => {
-          fetchAndShowSuggestions();
-        });
-
-        searchInput.addEventListener('input', () => {
-          debouncedFetchSuggestions();
-        });
-
-        searchInput.addEventListener('keydown', (e) => {
-          const items = suggestionList.querySelectorAll('.suggestion-item');
-          
-          if (e.key === 'ArrowDown') {
-            if (items.length > 0) {
-              e.preventDefault();
-              if (selectedSuggestionIndex < items.length - 1) {
-                selectedSuggestionIndex++;
-              } else {
-                selectedSuggestionIndex = 0;
-              }
-              updateSuggestionSelection(items);
-            }
-          } else if (e.key === 'ArrowUp') {
-            if (items.length > 0) {
-              e.preventDefault();
-              if (selectedSuggestionIndex > 0) {
-                selectedSuggestionIndex--;
-              } else {
-                selectedSuggestionIndex = items.length - 1;
-              }
-              updateSuggestionSelection(items);
-            }
-          } else if (e.key === 'Enter') {
-            e.preventDefault();
-            if (selectedSuggestionIndex >= 0 && items[selectedSuggestionIndex]) {
-              const text = items[selectedSuggestionIndex].querySelector('.suggestion-text').textContent;
-              searchInput.value = text;
-              doSearch(text);
-            } else {
-              doSearch(searchInput.value.trim());
-            }
-          } else if (e.key === 'Escape') {
-            closeSuggestions();
-          }
-        });
-
-        function updateSuggestionSelection(items) {
-          items.forEach((item, index) => {
-            if (index === selectedSuggestionIndex) {
-              item.classList.add('selected');
-              searchInput.value = item.querySelector('.suggestion-text').textContent;
-            } else {
-              item.classList.remove('selected');
-            }
-          });
-        }
-
-        // --- 5. 执行搜索逻辑 ---
-        function doSearch(queryText) {
-          const query = queryText !== undefined ? queryText : searchInput.value.trim();
-          if (query) {
-            saveSearchHistory(query);
-            closeSuggestions();
-
-            const engine = selectEngine.value;
-            let targetUrl = '';
-
-            if (engine === 'custom' && customEngineConfig.url) {
-              targetUrl = customEngineConfig.url.replace('%s', encodeURIComponent(query));
-            } else {
-              const baseUrl = engineSearchUrls[engine] || engineSearchUrls.bing;
-              targetUrl = baseUrl + encodeURIComponent(query);
-            }
-
-            window.location.href = targetUrl;
-          }
-        }
+      window.location.href = targetUrl;
+    }
+  }
 
   // --- 6. 语言选择与应用初始化 ---
   const savedLang = localStorage.getItem('liteStart_language') || 'auto';
