@@ -1,7 +1,6 @@
 name: 错误问题反馈 Bug Report
 description: 反馈遇到的问题 Feedback the encountered issues
 labels: ["Bug"]
-assignees: "Moriafly"
 
 body:
   - type: markdown
@@ -22,34 +21,24 @@ body:
         - label: 确认仅将提交**一个**问题（多个问题或者备注提及另外的问题请重新提交新的）Confirm to submit only one issue (if multiple issues or notes mention other issues, please submit a new one separately)
           required: true
 
-  - type: checkboxes
-    id: platform
-    attributes:
-      label: 平台 Platform
-      description: 请选择问题发生的平台（可多选） Please select the platform where the issue occurred
-      options:
-        - label: Android
-        - label: Windows
-        - label: HarmonyOS
-    validations:
-      required: true
 
   - type: input
     attributes:
-      label: 设备型号 Device Model
+      label: 浏览器 Browser
+      description: 你所使用的浏览器 The browser ur using
+    validations:
+      required: false
+      
+  - type: input
+    attributes:
+      label: 系统 System 
+      description: 系统以及系统版本 System and version
     validations:
       required: false
 
   - type: input
     attributes:
-      label: 系统版本 System Version
-      description: OEM 以及系统版本 OEM and system version
-    validations:
-      required: false
-
-  - type: input
-    attributes:
-      label: 软件版本 App Version
+      label: Litestart版本 Litestart Version
     validations:
       required: false
 
