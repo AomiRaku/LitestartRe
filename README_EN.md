@@ -46,6 +46,7 @@ Cut through the noise and experience native-level speed with Litestart.<br>
 
 ## Disclaimer
 
+This Website/Extension will use cookies to save your webpage settings!<br>
 For learning, testing, and personal tuning only. Do not use it from unverified sources. Use at your own risk.
 
 
