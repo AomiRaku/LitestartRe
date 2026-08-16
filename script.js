@@ -442,7 +442,8 @@ function getDomain(urlStr) {
 function getFaviconUrl(urlStr) {
   const domain = getDomain(urlStr);
   if (!domain) return '';
-  return `https://api.iowen.cn/api/favicon.php?url=${encodeURIComponent(domain)}`;
+  // DuckDuckGo 图标服务，国内可用且稳定
+  return `https://api.xinac.net/icon/?url=${domain}`;
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -828,59 +829,67 @@ document.addEventListener('DOMContentLoaded', () => {
   let quicklinksList = Storage.get('ntp_quicklinks_list', []);
 
   function renderQuicklinks() {
-    if (!quicklinksElem) return;
-    quicklinksElem.innerHTML = '';
+  if (!quicklinksElem) return;
+  quicklinksElem.innerHTML = '';
 
-    quicklinksList.forEach(item => {
-      const linkElem = document.createElement('a');
-      linkElem.href = item.url;
-      linkElem.className = 'quicklink-item';
-      linkElem.target = '_blank';
-      linkElem.setAttribute('data-id', item.id);
+  quicklinksList.forEach(item => {
+    const linkElem = document.createElement('a');
+    linkElem.href = item.url;
+    linkElem.className = 'quicklink-item';
+    linkElem.target = '_blank';
+    linkElem.setAttribute('data-id', item.id);
 
-      const faviconUrl = getFaviconUrl(item.url);
-      const initialChar = (item.title || 'W').charAt(0).toUpperCase();
+    const initialChar = (item.title || 'W').charAt(0).toUpperCase();
+    const faviconUrl = getFaviconUrl(item.url);
 
-      linkElem.innerHTML = `
-        <div class="quicklink-icon">
-          ${faviconUrl ? `<img src="${faviconUrl}" alt="${item.title}" loading="lazy" onerror="this.onerror=null; this.parentNode.innerText='${initialChar}';">` : initialChar}
-        </div>
-        <span class="quicklink-title">${item.title}</span>
-        <button type="button" class="quicklink-edit-btn" title="编辑快捷方式">
-          <svg width="14" height="14" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
-            <path d="M3 8a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0zm5 0a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0zm5 0a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0z"/>
-          </svg>
-        </button>
-      `;
+    // 构建图标内容：如果 faviconUrl 有效则用 img，否则直接显示首字母
+    let iconContent = '';
+    if (faviconUrl) {
+      iconContent = `<img src="${faviconUrl}" alt="${item.title}" loading="lazy" 
+                        onerror="this.onerror=null; this.parentNode.innerText='${initialChar}';">`;
+    } else {
+      iconContent = initialChar;
+    }
 
-      const editBtn = linkElem.querySelector('.quicklink-edit-btn');
-      editBtn?.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        openEditModal(item);
-      });
-
-      quicklinksElem.appendChild(linkElem);
-    });
-
-    const addBtnElem = document.createElement('div');
-    addBtnElem.className = 'quicklink-item quicklink-add-btn';
-    addBtnElem.title = '添加快捷方式';
-    addBtnElem.innerHTML = `
-      <div class="quicklink-icon quicklink-add-icon">
-        <svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
-          <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+    linkElem.innerHTML = `
+      <div class="quicklink-icon">${iconContent}</div>
+      <span class="quicklink-title">${item.title}</span>
+      <button type="button" class="quicklink-edit-btn" title="编辑快捷方式">
+        <svg width="14" height="14" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+          <path d="M3 8a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0zm5 0a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0zm5 0a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0z"/>
         </svg>
-      </div>
-      <span class="quicklink-title">添加</span>
+      </button>
     `;
 
-    addBtnElem.addEventListener('click', () => {
-      openAddModal();
+    const editBtn = linkElem.querySelector('.quicklink-edit-btn');
+    editBtn?.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      openEditModal(item);
     });
 
-    quicklinksElem.appendChild(addBtnElem);
-  }
+    quicklinksElem.appendChild(linkElem);
+  });
+
+  // 添加“添加”按钮（保持不变）
+  const addBtnElem = document.createElement('div');
+  addBtnElem.className = 'quicklink-item quicklink-add-btn';
+  addBtnElem.title = '添加快捷方式';
+  addBtnElem.innerHTML = `
+    <div class="quicklink-icon quicklink-add-icon">
+      <svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
+        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+      </svg>
+    </div>
+    <span class="quicklink-title">添加</span>
+  `;
+
+  addBtnElem.addEventListener('click', () => {
+    openAddModal();
+  });
+
+  quicklinksElem.appendChild(addBtnElem);
+}
 
   // --- 3. 自定义校验与 Modal 对话框逻辑 ---
   function clearErrors() {
