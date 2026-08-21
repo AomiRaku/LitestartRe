@@ -36,6 +36,7 @@ const i18nData = {
     on: '打开',
     rows1: '1 行',
     rows2: '2 行',
+    showTimeCapsule: '显示时间',
     searchEngine: '搜索引擎',
     custom: '自定义',
     editCustomEngine: '编辑自定义搜索引擎',
@@ -52,6 +53,7 @@ const i18nData = {
     updates: '检查更新',
     helpFeedback: '帮助&反馈',
     presentedBy: '由',
+    xingyuefox: '星月Fox',
     forYou: '为您呈现',
     disclaimer: '请注意，此网页与 Microsoft 无关。',
     searchPlaceholder: '搜索或输入 Web 地址',
@@ -86,6 +88,7 @@ const i18nData = {
     on: '開啟',
     rows1: '1 行',
     rows2: '2 行',
+    showTimeCapsule: '顯示時間',
     searchEngine: '搜尋引擎',
     custom: '自訂',
     editCustomEngine: '編輯自訂搜尋引擎',
@@ -102,6 +105,7 @@ const i18nData = {
     updates: '檢查更新',
     helpFeedback: '說明與意見回饋',
     presentedBy: '由',
+    xingyuefox: 'XingYue_Fox',
     forYou: '為您呈現',
     disclaimer: '請注意，此網頁與 Microsoft 無關。',
     searchPlaceholder: '搜尋或輸入 Web 地址',
@@ -136,6 +140,7 @@ const i18nData = {
     on: '啟',
     rows1: '一列',
     rows2: '二列',
+    showTimeCapsule: '顯時',
     searchEngine: '搜尋器',
     custom: '自訂',
     editCustomEngine: '輯自訂搜尋器',
@@ -152,6 +157,7 @@ const i18nData = {
     updates: '檢新',
     helpFeedback: '求助與反饋',
     presentedBy: '由',
+    xingyuefox: '星月Fox',
     forYou: '呈獻',
     disclaimer: '謹告：此頁與微軟無涉。',
     searchPlaceholder: '或搜或鍵，惟網址依',
@@ -186,6 +192,7 @@ const i18nData = {
     on: 'On',
     rows1: '1 row',
     rows2: '2 rows',
+    showTimeCapsule: 'Show Time',
     searchEngine: 'Search Engine',
     custom: 'Custom',
     editCustomEngine: 'Edit custom search engine',
@@ -202,6 +209,7 @@ const i18nData = {
     updates: 'Check for Updates',
     helpFeedback: 'Help & Feedback',
     presentedBy: 'Presented by',
+    xingyuefox: 'XingYue_Fox',
     forYou: '',
     disclaimer: 'Note: This page is not affiliated with Microsoft.',
     searchPlaceholder: 'Search the web or enter address',
@@ -236,6 +244,7 @@ const i18nData = {
     on: 'オン',
     rows1: '1 行',
     rows2: '2 行',
+    showTimeCapsule: '時間を表示',
     searchEngine: '検索エンジン',
     custom: 'カスタム',
     editCustomEngine: 'カスタム検索エンジンを編集',
@@ -252,6 +261,7 @@ const i18nData = {
     updates: '更新を確認',
     helpFeedback: 'ヘルプとフィードバック',
     presentedBy: '提供:',
+    xingyuefox: 'XingYue_Fox',
     forYou: '',
     disclaimer: '注: このページは Microsoft とは関係ありません。',
     searchPlaceholder: 'Web を検索またはアドレスを入力',
@@ -286,6 +296,7 @@ const i18nData = {
     on: 'Вкл',
     rows1: '1 строка',
     rows2: '2 строки',
+    showTimeCapsule: 'Показать время',
     searchEngine: 'Поисковая система',
     custom: 'Пользовательская',
     editCustomEngine: 'Изменить поисковую систему',
@@ -302,6 +313,7 @@ const i18nData = {
     updates: 'Обновления',
     helpFeedback: 'Справка и отзывы',
     presentedBy: 'Создатель:',
+    xingyuefox: 'XingYue_Fox',
     forYou: '',
     disclaimer: 'Примечание: Эта страница не связана с Microsoft.',
     searchPlaceholder: 'Введите поисковый запрос или URL',
@@ -347,14 +359,14 @@ function getResolvedLanguageCode(langConfig) {
   return 'zh-CN';
 }
 
-// 界面国际化渲染核心函数
+// 界面渲染函数
 function applyLanguage(langConfig) {
   const langCode = getResolvedLanguageCode(langConfig);
   const dict = i18nData[langCode] || i18nData['zh-CN'];
 
   document.documentElement.lang = langCode.startsWith('zh') ? (langCode === 'zh-TW' ? 'zh-TW' : 'zh-CN') : langCode;
 
-  // 1. 替换 innerText
+  // 1.替换 innerText
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.getAttribute('data-i18n');
     if (dict[key] !== undefined) {
@@ -362,7 +374,7 @@ function applyLanguage(langConfig) {
     }
   });
 
-  // 2. 替换 title 属性
+  // 2.替换 title 属性
   document.querySelectorAll('[data-i18n-title]').forEach(el => {
     const key = el.getAttribute('data-i18n-title');
     if (dict[key] !== undefined) {
@@ -370,7 +382,7 @@ function applyLanguage(langConfig) {
     }
   });
 
-  // 3. 替换 placeholder 属性
+  // 3.替换 placeholder 属性
   document.querySelectorAll('[data-i18n-ph]').forEach(el => {
     const key = el.getAttribute('data-i18n-ph');
     if (dict[key] !== undefined) {
@@ -378,7 +390,7 @@ function applyLanguage(langConfig) {
     }
   });
 
-  // 4. 替换 aria-label 属性
+  // 4.替换 aria-label 属性
   document.querySelectorAll('[data-i18n-aria]').forEach(el => {
     const key = el.getAttribute('data-i18n-aria');
     if (dict[key] !== undefined) {
@@ -386,7 +398,7 @@ function applyLanguage(langConfig) {
     }
   });
 
-  // 5. 刷新特殊状态开闭文本
+  // 5.刷新特殊状态开闭文本
   const statusHist = document.getElementById('status-history');
   if (statusHist) {
     const isChecked = document.getElementById('toggle-history-switch').checked;
@@ -404,9 +416,16 @@ function applyLanguage(langConfig) {
     const isChecked = document.getElementById('toggle-bg-modal-switch').checked;
     statusBgModal.innerText = isChecked ? dict.on : dict.off;
   }
+
+  // 6.刷新时间胶囊状态文本
+  const statusTimeCapsule = document.getElementById('status-time-capsule');
+  if (statusTimeCapsule) {
+    const isChecked = document.getElementById('toggle-time-capsule-switch')?.checked || false;
+    statusTimeCapsule.innerText = isChecked ? dict.on : dict.off;
+  }
 }
 
-// LocalStorage 持久化辅助对象
+// LocalStorage持久化辅助对象
 const Storage = {
   get(key, defaultValue) {
     try {
@@ -425,7 +444,7 @@ const Storage = {
   }
 };
 
-// 解析 Hostname 域名
+// 解析Hostname域名
 function getDomain(urlStr) {
   try {
     if (!urlStr.startsWith('http://') && !urlStr.startsWith('https://')) {
@@ -438,16 +457,15 @@ function getDomain(urlStr) {
   }
 }
 
-// 获取网站 Favicon Icon URL
+// 获取网站缩略图
 function getFaviconUrl(urlStr) {
   const domain = getDomain(urlStr);
   if (!domain) return '';
-  // DuckDuckGo 图标服务，国内可用且稳定
   return `https://api.xinac.net/icon/?url=${domain}`;
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  // DOM 元素引用
+  // DOM元素引用
   const btnWaffle = document.getElementById('waffle');
   const btnSettings = document.getElementById('settings');
   const btnCloseSettings = document.getElementById('btn-close-settings');
@@ -471,7 +489,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const suggestionsFooter = document.getElementById('suggestions-footer');
   const clearHistoryBtn = document.getElementById('clear-history-btn');
 
-  // Modal 相关 DOM 元素 (快捷方式)
+  // Modal相关DOM元素(快捷方式
   const modalOverlay = document.getElementById('modal');
   const modalTitle = document.getElementById('modal-title');
   const modalForm = document.getElementById('modal-form');
@@ -486,7 +504,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnDelete = document.getElementById('btn-delete');
   const btnCancel = document.getElementById('btn-cancel');
 
-  // Modal 相关 DOM 元素 (自定义搜索引擎)
+  // Modal相关DOM元素(自定义搜索引擎
   const customEngineModal = document.getElementById('custom-engine-modal');
   const customEngineForm = document.getElementById('custom-engine-form');
   const inputEngineName = document.getElementById('input-engine-name');
@@ -498,7 +516,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const textEngineUrlError = document.getElementById('text-engine-url-error');
   const btnEngineCancel = document.getElementById('btn-engine-cancel');
 
-  // 背景/壁纸控制 DOM 元素
+  // 背景/壁纸控制DOM元素
   const toggleBgSwitch = document.getElementById('toggle-bg-switch');
   const statusBgText = document.getElementById('status-bg');
   const btnOpenBgModal = document.getElementById('btn-open-bg-modal');
@@ -524,7 +542,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let currentEditingId = null;
   let selectedSuggestionIndex = -1;
 
-  // 默认与自定义搜索引擎 URL
+  // 默认与自定义搜索引擎
   let customEngineConfig = Storage.get('ntp_custom_engine_config', {
     name: '',
     url: ''
@@ -536,7 +554,7 @@ document.addEventListener('DOMContentLoaded', () => {
     google: 'https://www.google.com/search?q='
   };
 
-  // 切换弹出层显隐
+  // 切换弹出层动画
   function togglePopover(popoverToToggle, otherPopover) {
     otherPopover.classList.remove('active');
     popoverToToggle.classList.toggle('active');
@@ -570,26 +588,61 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // 切换 Logo
+  // 切换Logo
   function setLogo(engine) {
     if (logos[engine] !== undefined && logoContainer) {
       logoContainer.innerHTML = logos[engine];
     }
   }
 
-  // 动态管理自定义搜索引擎“编辑”按钮显隐
+  // 动态管理自定义搜索引擎编辑按钮显隐
   function updateEngineEditButton(engine) {
     if (btnEditEngine) {
       btnEditEngine.style.display = engine === 'custom' ? 'inline-flex' : 'none';
     }
   }
 
-  // --- 1. 读取并应用保存的页面设置 ---
+    // 时间开关相关函数
+  let timeCapsuleTimer = null;
+
+  function updateTimeCapsule() {
+    const capsule = document.getElementById('time-capsule');
+    if (!capsule) return;
+    const now = new Date();
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const timeStr = hours + ':' + minutes;
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+    const dateStr = year + '/' + month + '/' + day;
+
+    const icon = capsule.querySelector('.quicklink-icon');
+    const title = capsule.querySelector('.quicklink-title');
+    if (icon) icon.innerText = timeStr;
+    if (title) title.innerText = dateStr;
+  }
+
+  function startTimeCapsuleTimer() {
+    if (timeCapsuleTimer) clearInterval(timeCapsuleTimer);
+    updateTimeCapsule();
+    timeCapsuleTimer = setInterval(updateTimeCapsule, 60000);
+  }
+
+  function stopTimeCapsuleTimer() {
+    if (timeCapsuleTimer) {
+      clearInterval(timeCapsuleTimer);
+      timeCapsuleTimer = null;
+    }
+  }
+
+    // B1.读取并应用保存的页面设置/此为默认配置值
   const savedEngine = Storage.get('ntp_engine', 'bing');
   const savedLayout = Storage.get('ntp_layout', 'focused');
-  const savedQuicklinksRow = Storage.get('ntp_quicklinks', '1');
+  const savedQuicklinksRow = Storage.get('ntp_quicklinks', '0');
   let historyEnabled = Storage.get('ntp_history_enabled', true);
   let searchHistory = Storage.get('ntp_search_history', []);
+  let showTimeCapsule = Storage.get('ntp_show_time_capsule', false);
   
   let bgEnabled = Storage.get('ntp_bg_enabled', false);
   let customWallpaperData = Storage.get('ntp_custom_wallpaper', null);
@@ -770,6 +823,37 @@ document.addEventListener('DOMContentLoaded', () => {
     Storage.set('ntp_quicklinks', val);
   });
 
+    // 时间开关事件
+  const toggleTimeCapsuleSwitch = document.getElementById('toggle-time-capsule-switch');
+  const statusTimeCapsuleText = document.getElementById('status-time-capsule');
+
+  if (toggleTimeCapsuleSwitch) {
+    toggleTimeCapsuleSwitch.checked = showTimeCapsule;
+    // 初始状态文字
+    const savedLang = localStorage.getItem('liteStart_language') || 'auto';
+    const dict = i18nData[getResolvedLanguageCode(savedLang)] || i18nData['zh-CN'];
+    if (statusTimeCapsuleText) {
+      statusTimeCapsuleText.innerText = showTimeCapsule ? dict.on : dict.off;
+    }
+
+    toggleTimeCapsuleSwitch.addEventListener('change', (e) => {
+      showTimeCapsule = e.target.checked;
+      Storage.set('ntp_show_time_capsule', showTimeCapsule);
+      applyLanguage(localStorage.getItem('liteStart_language') || 'auto');
+      renderQuicklinks();
+      if (showTimeCapsule) {
+        startTimeCapsuleTimer();
+      } else {
+        stopTimeCapsuleTimer();
+      }
+    });
+  }
+
+  // 如果初始状态是开启，启动定时器
+  if (showTimeCapsule) {
+    startTimeCapsuleTimer();
+  }
+  
   // 自定义搜索引擎对话框逻辑
   function openCustomEngineModal() {
     if (inputEngineName) inputEngineName.value = customEngineConfig.name || '';
@@ -825,73 +909,93 @@ document.addEventListener('DOMContentLoaded', () => {
     closeCustomEngineModal();
   });
 
-  // --- 2. 快捷方式列表管理 ---
+  // B2.快捷方式列表管理
   let quicklinksList = Storage.get('ntp_quicklinks_list', []);
 
-  function renderQuicklinks() {
-  if (!quicklinksElem) return;
-  quicklinksElem.innerHTML = '';
-
-  quicklinksList.forEach(item => {
-    const linkElem = document.createElement('a');
-    linkElem.href = item.url;
-    linkElem.className = 'quicklink-item';
-    linkElem.target = '_blank';
-    linkElem.setAttribute('data-id', item.id);
-
-    const initialChar = (item.title || 'W').charAt(0).toUpperCase();
-    const faviconUrl = getFaviconUrl(item.url);
-
-    // 构建图标内容：如果 faviconUrl 有效则用 img，否则直接显示首字母
-    let iconContent = '';
-    if (faviconUrl) {
-      iconContent = `<img src="${faviconUrl}" alt="${item.title}" loading="lazy" 
-                        onerror="this.onerror=null; this.parentNode.innerText='${initialChar}';">`;
-    } else {
-      iconContent = initialChar;
+    function renderQuicklinks() {
+    if (!quicklinksElem) return;
+    const rows = quicklinksElem.getAttribute('rows');
+    if (rows === '0') {
+      quicklinksElem.innerHTML = '';
+      return;
     }
 
-    linkElem.innerHTML = `
-      <div class="quicklink-icon">${iconContent}</div>
-      <span class="quicklink-title">${item.title}</span>
-      <button type="button" class="quicklink-edit-btn" title="编辑快捷方式">
-        <svg width="14" height="14" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
-          <path d="M3 8a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0zm5 0a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0zm5 0a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0z"/>
-        </svg>
-      </button>
-    `;
+    quicklinksElem.innerHTML = '';
 
-    const editBtn = linkElem.querySelector('.quicklink-edit-btn');
-    editBtn?.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      openEditModal(item);
+    // C1.如果时间胶囊开启，则创建并添加到开头
+    if (showTimeCapsule) {
+      const capsule = document.createElement('div');
+      capsule.className = 'quicklink-item';
+      capsule.id = 'time-capsule';
+      capsule.style.cursor = 'default';
+      capsule.innerHTML = `
+        <div class="quicklink-icon" style="font-size: 16px; font-weight: 600; color: var(--neutral-foreground-rest);"></div>
+        <span class="quicklink-title" style="font-size: 12px;"></span>
+      `;
+      quicklinksElem.appendChild(capsule);
+      updateTimeCapsule(); // 立即更新时间
+    }
+
+    // C2. 渲染已有的快捷方式
+    quicklinksList.forEach(item => {
+      const linkElem = document.createElement('a');
+      linkElem.href = item.url;
+      linkElem.className = 'quicklink-item';
+      linkElem.target = '_blank';
+      linkElem.setAttribute('data-id', item.id);
+
+      const initialChar = (item.title || 'W').charAt(0).toUpperCase();
+      const faviconUrl = getFaviconUrl(item.url);
+
+      let iconContent = '';
+      if (faviconUrl) {
+        iconContent = `<img src="${faviconUrl}" alt="${item.title}" loading="lazy" 
+                          onerror="this.onerror=null; this.parentNode.innerText='${initialChar}';">`;
+      } else {
+        iconContent = initialChar;
+      }
+
+      linkElem.innerHTML = `
+        <div class="quicklink-icon">${iconContent}</div>
+        <span class="quicklink-title">${item.title}</span>
+        <button type="button" class="quicklink-edit-btn" title="编辑快捷方式">
+          <svg width="14" height="14" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 8a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0zm5 0a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0zm5 0a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0z"/>
+          </svg>
+        </button>
+      `;
+
+      const editBtn = linkElem.querySelector('.quicklink-edit-btn');
+      editBtn?.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        openEditModal(item);
+      });
+
+      quicklinksElem.appendChild(linkElem);
     });
 
-    quicklinksElem.appendChild(linkElem);
-  });
+    // C3. 添加“添加”按钮
+    const addBtnElem = document.createElement('div');
+    addBtnElem.className = 'quicklink-item quicklink-add-btn';
+    addBtnElem.title = '添加快捷方式';
+    addBtnElem.innerHTML = `
+      <div class="quicklink-icon quicklink-add-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
+          <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+        </svg>
+      </div>
+      <span class="quicklink-title">添加</span>
+    `;
 
-  // 添加“添加”按钮（保持不变）
-  const addBtnElem = document.createElement('div');
-  addBtnElem.className = 'quicklink-item quicklink-add-btn';
-  addBtnElem.title = '添加快捷方式';
-  addBtnElem.innerHTML = `
-    <div class="quicklink-icon quicklink-add-icon">
-      <svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
-        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
-      </svg>
-    </div>
-    <span class="quicklink-title">添加</span>
-  `;
+    addBtnElem.addEventListener('click', () => {
+      openAddModal();
+    });
 
-  addBtnElem.addEventListener('click', () => {
-    openAddModal();
-  });
+    quicklinksElem.appendChild(addBtnElem);
+  }
 
-  quicklinksElem.appendChild(addBtnElem);
-}
-
-  // --- 3. 自定义校验与 Modal 对话框逻辑 ---
+  // B3.自定义校验与 Modal 对话框逻辑
   function clearErrors() {
     containerName?.classList.remove('error');
     containerUrl?.classList.remove('error');
@@ -1016,7 +1120,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   renderQuicklinks();
 
-  // --- 4. 搜索框历史记录与搜索建议词条 ---
+  // B4.搜索框历史记录与搜索建议词条
   clearHistoryBtn?.addEventListener('click', (e) => {
     e.stopPropagation();
     searchHistory = [];
@@ -1219,7 +1323,7 @@ searchInput?.addEventListener('input', () => {
     });
   }
 
-  // --- 5. 执行搜索逻辑 ---
+  // 执行搜索逻辑
   function doSearch(queryText) {
     const query = queryText !== undefined ? queryText : (searchInput ? searchInput.value.trim() : '');
     if (query) {
@@ -1240,7 +1344,7 @@ searchInput?.addEventListener('input', () => {
     }
   }
 
-  // --- 6. 语言选择与应用初始化 ---
+  // 语言选择与应用初始化
   const savedLang = localStorage.getItem('liteStart_language') || 'auto';
   if (selectLanguage) {
     selectLanguage.value = savedLang;

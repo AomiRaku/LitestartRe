@@ -1,53 +1,61 @@
 # Litestart
 
-<strong>A customizable, browser-native-like start page for desktop browsers.</strong><br>
-<br>English | <a href="README.md">简体中文</a><br>The translation might not be 100% accurate!
+![main_banner](docs/pics/1.webp)
 
-<img width="800" height="500" alt="image" src="https://github.com/user-attachments/assets/0389a8aa-99e3-4bd4-a33b-05dc9b09c02b" /><br>
+<strong>A customizable, Native-like new tab page for desktop browsers</strong>
 
-Cut through the noise and experience native-level speed with Litestart.<br>
+Cutting out the clutter, Litestart aims to provide you with a seamless, fast, and lightweight experience.
+
+<a href="README.md">简体中文</a> | [<u>English</u>]
+⚠The translation might not be 100% accurate!
+
+
+***
+## How to use?
+
+1. Download the .CRX or .ZIP file from [Releases](https://github.com/XingYueFox/Litestart/releases).
+2. Open your browser's extension management page and enable Developer Mode.
+3. Drag the downloaded .CRX or .ZIP file into the extensions page to install.
+4. Find Litestart in the extension list and enable it.
+- ***If the .CRX file fails to install, try using the .ZIP archive instead.***
+***
 
 
 ## About Litestart
 
-- This is a start page that parodies the Edge browser.
-- It is built for Chromium-based desktop browsers.
-- Unlike the default new tab page, it strips away unnecessary online content, resulting in faster loading times.
-- It offers more customization options while still delivering top-notch speed.
+- This is a parody of the Edge browser's new tab page.
+- Designed for Chromium-based desktop browsers.
+- It removes unnecessary online content, significantly speeding up new tab loading.
+- Offers more customization while maintaining blazing-fast performance.
 
 
-## Special Features
+## Features
 
-- Freely switch search engines, and customize the logo, site navigation, search history, and search box placement.
-- Customizable background.
-<img width="484" height="267" alt="215014" src="https://github.com/user-attachments/assets/25f98afc-1e3f-4efd-84ab-6dec65aae4b4" />
+- Freely switch search engines, and customize the layout—logo title, site navigation, search history, and search box position are all up to you.
+- Custom background
+<img width="500" alt="215014" src="docs/pics/216.webp" />
 
-- Pin any website you'd like to have here.
-<img width="453" height="308" alt="215053" src="https://github.com/user-attachments/assets/18e483b3-7454-4108-a3b9-448f31abb190" />
+- Pin your favorite websites
+<img width="500" alt="215014" src="docs/pics/211.webp" />
 
-
-## Start
-
-1. Download the .CRX or .ZIP file from [Releases](https://github.com/XingYueFox/Litestart/releases).
-2. Open your browser's extension management page and enable Developer mode.
-3. Drag and drop the downloaded .CRX or .ZIP file into the extensions page to install it.
-4. Find LiteStart in the extension list and enable it.
-- Note: If you cannot enable it, please try importing the .ZIP file instead.
+- Time display
+<img width="500" alt="215014" src="docs/pics/219.webp" />
 
 
-## Requirements
 
-- **System**: Windows 7, macOS 10.15, or any Linux distribution that supports modern GTK 3.
+## System & Browser Compatibility
+
+- **OS**: Windows 7+ / macOS 10.15+ / Linux distributions with modern GTK 3 support.
 - **Browsers**:
-  - Chrome / Edge: version 88 or higher
-  - Firefox: version 109 or above
-- **Languages**: Simplified Chinese, Traditional Chinese, English, Русский, 日本語
+  - Chrome/Edge: 88+
+  - Firefox: 109+
+- **Supported Languages**: Simplified Chinese / Traditional Chinese / English / Русский / 日本語
 
 
-## Disclaimer
-
-This Website/Extension will use cookies to save your webpage settings!<br>
-For learning, testing, and personal tuning only. Do not use it from unverified sources. Use at your own risk.
+## Important Notice
+*Litestart is completely free. Please only download this extension from here. The developer is not responsible for any issues caused by obtaining it from untrusted sources.<br>
+*This page/extension is intended for learning, testing, and personal device optimization.<br>
+*This page/extension uses cookies to save your settings.
 
 
 ## License

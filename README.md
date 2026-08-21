@@ -1,11 +1,23 @@
-# Litestart
+# Litestart 
 
-<strong>面向桌面浏览器可定制的浏览器类原生起始页</strong><br>
-<br>简体中文 | <a href="README_EN.md">English</a>
+![main_banner](docs/pics/1.webp)
 
-<img width="800" height="500" alt="image" src="https://github.com/user-attachments/assets/0389a8aa-99e3-4bd4-a33b-05dc9b09c02b" /><br>
+<strong>面向桌面浏览器可定制的浏览器类原生起始页</strong>
 
-去除繁杂，由Litestart为你提供原生级的快速体验<br>
+去除繁杂，Litestart旨在为您提供无缝，快速，轻便的体验
+
+[<u>简体中文</u>] | <a href="README_EN.md">English</a>
+
+
+***
+## 如何使用？
+
+1. 从 [Releases](https://github.com/XingYueFox/Litestart/releases) 下载.CRX或者.ZIP文件
+2. 打开浏览器的扩展或者插件管理界面，然后启用开发人员模式
+3. 将你下载的.CRX或者.ZIP文件托入插件界面导入
+4. 在插件列表找到LiteStart启用
+- ***请注意，如果无法启用请使用.zip导入***
+***
 
 
 ## 关于Litestart
@@ -20,33 +32,27 @@
 
 - 你可以随意更改搜索引擎，并且拥有logo标题，网站导航，搜索历史亦或者是搜索框的位置将由您决定
 - 自定义背景
-<img width="484" height="267" alt="215014" src="https://github.com/user-attachments/assets/25f98afc-1e3f-4efd-84ab-6dec65aae4b4" />
+<img width="500" alt="215014" src="docs/pics/216.webp" />
 
 - 固定你所想放在此处的网站
-<img width="453" height="308" alt="215053" src="https://github.com/user-attachments/assets/18e483b3-7454-4108-a3b9-448f31abb190" />
+<img width="500" alt="215014" src="docs/pics/211.webp" />
 
+- 时间显示
+<img width="500" alt="215014" src="docs/pics/219.webp" />
 
-## 快速开始
+## 适用范围
 
-1. 从 [Releases](https://github.com/XingYueFox/Litestart/releases) 下载.CRX或者.ZIP文件
-2. 打开浏览器的扩展/插件管理界面，打开开发人员模式
-3. 然后将你下载的.CRX或者.ZIP文件托入插件界面导入
-4. 在插件列表找到LiteStart启用
-- 请注意，如果无法启用请使用.zip导入
-
-
-## 最低适用范围
-
-- **系统**：Windows7 / MacOS10.15 / Linux支持现代 GTK 3 的发行版
+- **系统**：Windows7以上 / MacOS10.15以上 / Linux至少支持现代 GTK 3 的发行版
 - **浏览器**：
-  - Chrome/edge：最低版本要求88
+  - Chrome/edge：88以上
   - Firefox：109及以上
-- **语言**：简体中文 / 繁體中文 / English / Русский / 日本語
+- **支持语言**：简体中文 / 繁體中文 / English / Русский / 日本語
 
 
-## 免责声明
-此页面/插件将会使用Cookie用于保存网页的设置！<br>
-此网页/插件，仅用于学习、测试与自有设备调优。请从来源不明的地方获取此插件，否则后果自负！
+## 重要声明
+*Litestart 完全免费，请勿从来源不明的地方获取此插件，否则造成的一切后果自负！<br>
+*此网页/插件，仅用于学习、测试与自有设备调优。<br>
+*此页面/插件将会使用Cookie用于保存网页的设置。
 
 
 ## License

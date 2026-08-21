@@ -379,7 +379,7 @@
       border-color: var(--colorNeutralStroke1Hover);
     }
 
-    /* 设置行（带开关） */
+    /* 设置行 */
     .setting-row {
       display: flex;
       align-items: center;
@@ -407,7 +407,7 @@
       align-items: center;
     }
 
-    /* Win11 / Fluent 开关样式 */
+    /* 开关样式 */
     .switch {
       position: relative;
       display: inline-block;
@@ -545,7 +545,7 @@
       background-color: var(--settings-card-hover);
     }
 
-    /* 底部链接 Footer 样式 */
+    /* 底部链接样式 */
     .settings-footer {
       padding: 8px 16px 16px 16px;
       font-size: 11px;
@@ -1191,11 +1191,33 @@
       #logo-icon { width: 48px; height: 48px; }
       #logo-text { display: none; }
     }
+
+    /* 以下为时间胶囊布局样式-前半部分用于占位，防止与其他东西撞车 */
+      #time-capsule {
+        width: 110px;
+        border-radius: 34px;
+        background-color: rgba(255, 255, 255, 0); 
+        transition: background-color 0.2s;
+    }
+
+      @media (prefers-color-scheme: dark) {
+      #time-capsule {
+        background-color: rgba(255, 255, 255, 0);
+      }
+    }
+
+      #time-capsule .quicklink-icon {
+        width: 64px;
+        height: 38px;/*默认高度38px*/
+        border-radius: 24px;
+        font-size: 20px;
+        font-weight: 700;
+    }
     </style>
 </head>
 
 <body data-layout="focused">
-    <!-- 全屏动态/静态背景容器 -->
+    <!-- 视频/图片背景容器 -->
     <div id="background-container">
       <video id="bg-video" autoplay loop muted playsinline></video>
       <img id="bg-image" alt="自定义背景" />
@@ -1240,14 +1262,25 @@
             <div class="settings-content">
               <!-- 网站导航 / 快速链接 -->
               <div class="settings-card">
-                <div class="settings-card-title" data-i18n="quicklinks">网站导航</div>
-                <select id="select-quicklinks" class="select-box">
-                  <option value="0" data-i18n="off">关闭</option>
-                  <option value="1" data-i18n="rows1">1 行</option>
-                  <option value="2" data-i18n="rows2">2 行</option>
-                </select>
+                  <div class="settings-card-title" data-i18n="quicklinks">网站导航</div>
+                    <select id="select-quicklinks" class="select-box">
+                      <option value="0" data-i18n="off">关闭</option>
+                      <option value="1" data-i18n="rows1">1 行</option>
+                      <option value="2" data-i18n="rows2">2 行</option>
+                    </select>
 
-              </div>
+                  <!-- 显示时间开关 -->
+                  <div class="setting-row" style="margin-top: 10px;">
+                    <div class="setting-label-group" data-i18n="showTimeCapsule">显示时间</div>
+                      <div class="switch-container">
+                        <span class="setting-status-text" id="status-time-capsule" data-i18n="off">关闭</span>
+                          <label class="switch">
+                            <input type="checkbox" id="toggle-time-capsule-switch">
+                            <span class="slider"></span>
+                          </label>
+                      </div>
+                    </div>
+                  </div>
               
 
 
@@ -1345,7 +1378,7 @@
                 
               </div>
               <div class="settings-footer-links">
-                <a href="https://github.com/XingYueFox/Litestart" target="_blank">LiteStart 1.0.2</a>| <span data-i18n="presentedBy">由</span> <a href="https://xingyuefox.pages.dev" target="_blank">星月Fox</a> <span data-i18n="forYou">为您呈现</span>
+                <a href="https://github.com/XingYueFox/Litestart" target="_blank">LiteStart 1.1.0</a>| <span data-i18n="presentedBy">由</span> <a href="https://xingyuefox.pages.dev" target="_blank" data-i18n="xingyuefox">星月Fox</a> <span data-i18n="forYou">为您呈现</span>
               </div>
               <div class="settings-footer-text" style="opacity: 0.8;" data-i18n="disclaimer">
                 请注意，此网页与 Microsoft 无关。
