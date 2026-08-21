@@ -17,6 +17,7 @@
   ],
 
   "host_permissions": [
+    "https://api.xinac.net/*",
     "https://suggestion.baidu.com/*",
     "https://suggestqueries.google.com/*"
   ],
