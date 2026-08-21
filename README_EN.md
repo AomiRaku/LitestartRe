@@ -47,7 +47,7 @@ Cutting out the clutter, Litestart aims to provide you with a seamless, fast, an
 
 - **OS**: Windows 7+ / macOS 10.15+ / Linux distributions with modern GTK 3 support.
 - **Browsers**:
-  - Chrome/Edge: 88+
+  - Chrome/Edge: 109+
   - Firefox: 109+
 - **Supported Languages**: Simplified Chinese / Traditional Chinese / English / Русский / 日本語
 
