@@ -2,7 +2,7 @@
 
 ![main_banner](docs/pics/1.webp)
 
-<strong>面向桌面浏览器可定制的浏览器类原生起始页</strong>
+<strong>面向桌面浏览器可定制的类原生浏览器起始页</strong>
 
 去除繁杂，Litestart旨在为您提供无缝，快速，轻便的体验
 
@@ -44,7 +44,7 @@
 
 - **系统**：Windows7以上 / MacOS10.15以上 / Linux至少支持现代 GTK 3 的发行版
 - **浏览器**：
-  - Chrome/edge：88以上
+  - Chrome/edge：109以上
   - Firefox：109及以上
 - **支持语言**：简体中文 / 繁體中文 / English / Русский / 日本語
 
