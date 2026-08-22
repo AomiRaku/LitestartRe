@@ -1213,6 +1213,25 @@
         font-size: 20px;
         font-weight: 700;
     }
+
+    /* ===== 拖拽排序样式 ===== */
+.quicklink-item.dragging {
+  opacity: 0.35;
+  transform: scale(0.92);
+  transition: opacity 0.15s, transform 0.15s;
+}
+
+.quicklink-item.drag-over {
+  background-color: var(--neutral-fill-hover);
+  border-radius: 8px;
+  transform: scale(1.02);
+  transition: all 0.12s ease;
+}
+
+.quicklink-item.drag-over .quicklink-icon {
+  box-shadow: 0 0 0 2px var(--accent-foreground-rest);
+  transition: box-shadow 0.12s ease;
+}
     </style>
 </head>
 
@@ -1288,7 +1307,7 @@
               <div class="settings-card">
                 <div class="settings-card-title" data-i18n="searchEngine">搜索引擎</div>
                 <select id="select-engine" class="select-box">
-                  <option value="bing">Bing</option>
+                  <option value="bing" data-i18n="bingCN">Bing</option>
                   <option value="baidu">Baidu</option>
                   <option value="google">Google</option>
                   <option value="custom" data-i18n="custom">自定义</option>
@@ -1371,14 +1390,14 @@
             <!-- 底部版权/链接区域 -->
             <div class="settings-footer">
               <div class="settings-footer-links">
-                <a href="https://github.com/XingYueFox/Litestart#%E5%85%8D%E8%B4%A3%E5%A3%B0%E6%98%8E" data-i18n="cookieNotice">隐私与Cookie</a> · 
+                <a href="https://github.com/XingYueFox/Litestart#%E9%87%8D%E8%A6%81%E5%A3%B0%E6%98%8E" data-i18n="cookieNotice">隐私与Cookie</a> · 
                 <a href="https://github.com/XingYueFox/Litestart/blob/main/LICENSE" data-i18n="license">开源协议</a> ·  
                 <a href="https://github.com/XingYueFox/Litestart/releases" data-i18n="updates">检查更新</a> · 
                 <a href="https://github.com/XingYueFox/Litestart/issues" data-i18n="helpFeedback">帮助&反馈</a>
                 
               </div>
               <div class="settings-footer-links">
-                <a href="https://github.com/XingYueFox/Litestart" target="_blank">LiteStart 1.1.0</a>| <span data-i18n="presentedBy">由</span> <a href="https://xingyuefox.pages.dev" target="_blank" data-i18n="xingyuefox">星月Fox</a> <span data-i18n="forYou">为您呈现</span>
+                <a href="https://github.com/XingYueFox/Litestart" target="_blank">LiteStart 1.2.0</a>| <span data-i18n="presentedBy">由</span> <a href="https://xingyuefox.pages.dev" target="_blank" data-i18n="xingyuefox">星月Fox</a> <span data-i18n="forYou">为您呈现</span>
               </div>
               <div class="settings-footer-text" style="opacity: 0.8;" data-i18n="disclaimer">
                 请注意，此网页与 Microsoft 无关。
@@ -1433,18 +1452,55 @@
             </div>
           </div>
 
-          <div class="wallpaper-preview-area">
-            <div class="wallpaper-preview-box" id="wallpaper-preview-container">
-              <!-- 预览渲染图片或视频 -->
-              <span id="preview-placeholder-text" style="font-size: 13px; color: var(--settings-text-secondary);" data-i18n="usingDefaultBg">正在使用默认背景</span>
-            </div>
-            <div class="wallpaper-actions">
-              <span class="wallpaper-actions-title" id="wallpaper-type-title" data-i18n="selectImage">选择图片</span>
-              <input type="file" id="input-wallpaper-file" class="file-input-hidden" accept="image/*,video/*">
-              <div style="display: flex; gap: 8px;">
-                <button type="button" class="btn btn-secondary" id="btn-upload-wallpaper" data-i18n="uploadFile">上传文件</button>
-                <button type="button" class="btn btn-secondary" id="btn-remove-wallpaper" data-i18n="restoreDefault">恢复默认</button>
-              </div>
+    <!-- 自定义在线壁纸URL弹窗 -->
+    <div id="modal-online-wallpaper" class="modal-overlay">
+      <div class="modal-dialog">
+      <div class="modal-header" data-i18n="customOnlineWallpaper">自定义在线壁纸</div>
+        <form id="online-wallpaper-form" novalidate>
+        <div class="form-group">
+          <label class="form-label" for="input-online-url" data-i18n="imageOrVideoUrl">图片或视频URL</label>
+          <div class="input-container" id="container-online-url">
+            <input type="text" id="input-online-url" class="input" placeholder="https://example.com/image.jpg" autocomplete="off" data-i18n-ph="enterUrl">
+          </div>
+          <div class="error-tip" id="tip-online-url">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor">
+              <path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zm0 3a.75.75 0 0 1 .75.75v3.5a.75.75 0 0 1-1.5 0v-3.5A.75.75 0 0 1 8 4zm0 8a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+            </svg>
+            <span data-i18n="errorUrlReq">请输入有效URL</span>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div class="modal-footer-right">
+            <button type="button" id="btn-online-cancel" class="btn btn-secondary" data-i18n="cancel">取消</button>
+            <button type="submit" id="btn-online-save" class="btn btn-primary" data-i18n="save">保存</button>
+          </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="wallpaper-preview-area">
+    <div class="wallpaper-preview-box" id="wallpaper-preview-container">
+      <!-- 预览渲染图片或视频 -->
+        <span id="preview-placeholder-text" style="font-size: 13px; color: var(--settings-text-secondary);" data-i18n="usingDefaultBg">正在使用默认背景</span>
+    </div>
+    <div class="wallpaper-actions">
+      <span class="wallpaper-actions-title" id="wallpaper-type-title" data-i18n="selectImage">选择图片或视频</span>
+      <input type="file" id="input-wallpaper-file" class="file-input-hidden" accept="image/*,video/*">
+      <div style="display: flex; gap: 8px;">
+        <button type="button" class="btn btn-secondary" id="btn-upload-wallpaper" data-i18n="uploadFile">上传文件</button>
+        <button type="button" class="btn btn-secondary" id="btn-remove-wallpaper" data-i18n="restoreDefault">恢复默认</button>
+      </div>
+    <!-- 使用在线内容  -->
+    <div style="margin-top: 16px; border-top: 1px solid var(--settings-card-border); padding-top: 16px;">
+      <div class="wallpaper-actions">
+        <span class="wallpaper-actions-title" data-i18n="useOnlineContent">使用在线内容</span>
+        <div style="display: flex; gap: 8px;">
+          <button type="button" class="btn btn-secondary" id="btn-bing-wallpaper" data-i18n="bingDaily">必应每日壁纸</button>
+          <button type="button" class="btn btn-secondary" id="btn-custom-url-wallpaper" data-i18n="customUrl">自定义</button>
+        </div>
+      </div>
+    </div>
             </div>
           </div>
         </div>

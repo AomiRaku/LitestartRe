@@ -77,7 +77,14 @@ const i18nData = {
     engineNamePh: '例如: DuckDuckGo',
     errorEngineNameReq: '请输入搜索引擎名称',
     engineUrl: '搜索 URL (%s 替换搜索关键词)',
-    errorEngineUrlFormat: '请输入搜索 URL，必须包含 %s'
+    errorEngineUrlFormat: '请输入搜索 URL，必须包含 %s',
+    useOnlineContent: '使用在线内容',
+    bingDaily: '必应每日壁纸',
+    customUrl: '自定义',
+    customOnlineWallpaper: '自定义在线壁纸',
+    imageOrVideoUrl: '图片或视频URL',
+    enterUrl: '输入图片或视频URL',
+    bingCN: '必应'
   },
   'zh-TW': {
     pageTitle: '新分頁',
@@ -129,7 +136,14 @@ const i18nData = {
     engineNamePh: '例如: DuckDuckGo',
     errorEngineNameReq: '請輸入搜尋引擎名稱',
     engineUrl: '搜尋 URL (%s 替換搜尋關鍵字)',
-    errorEngineUrlFormat: '請輸入搜尋 URL，必須包含 %s'
+    errorEngineUrlFormat: '請輸入搜尋 URL，必須包含 %s',
+    useOnlineContent: '使用線上內容',
+    bingDaily: 'Bing每日桌布',
+    customUrl: '自訂',
+    customOnlineWallpaper: '自訂線上桌布',
+    imageOrVideoUrl: '圖片或影片網址',
+    enterUrl: '輸入圖片或影片網址',
+    bingCN: 'Bing'
   },
   'zh-WY': {
     pageTitle: '新標籤頁',
@@ -181,7 +195,14 @@ const i18nData = {
     engineNamePh: '例: DuckDuckGo',
     errorEngineNameReq: '請填搜尋器名',
     engineUrl: '搜尋 URL (%s 換字)',
-    errorEngineUrlFormat: '請填搜尋 URL，必含 %s'
+    errorEngineUrlFormat: '請填搜尋 URL，必含 %s',
+    useOnlineContent: '用網圖',
+    bingDaily: '必應日圖',
+    customUrl: '自訂',
+    customOnlineWallpaper: '自訂網圖',
+    imageOrVideoUrl: '圖影鏈',
+    enterUrl: '輸圖影鏈',
+    bingCN: '必應'
   },
   'en': {
     pageTitle: 'New Tab',
@@ -233,7 +254,14 @@ const i18nData = {
     engineNamePh: 'e.g. DuckDuckGo',
     errorEngineNameReq: 'Please enter engine name',
     engineUrl: 'Search URL (%s replacing query)',
-    errorEngineUrlFormat: 'Search URL must contain %s'
+    errorEngineUrlFormat: 'Search URL must contain %s',
+    useOnlineContent: 'Use online content',
+    bingDaily: 'Bing daily wallpaper',
+    customUrl: 'Custom',
+    customOnlineWallpaper: 'Custom online wallpaper',
+    imageOrVideoUrl: 'Image or video URL',
+    enterUrl: 'Enter image or video URL',
+    bingCN: 'Bing'
   },
   'ja': {
     pageTitle: '新しいタブ',
@@ -285,7 +313,14 @@ const i18nData = {
     engineNamePh: '例: DuckDuckGo',
     errorEngineNameReq: '検索エンジン名を入力してください',
     engineUrl: '検索 URL (%s が検索語に置換されます)',
-    errorEngineUrlFormat: '検索 URL には %s を含める必要があります'
+    errorEngineUrlFormat: '検索 URL には %s を含める必要があります',
+    useOnlineContent: 'オンラインコンテンツを使用',
+    bingDaily: 'Bingの今日の壁紙',
+    customUrl: 'カスタム',
+    customOnlineWallpaper: 'カスタムオンライン壁紙',
+    imageOrVideoUrl: '画像または動画のURL',
+    enterUrl: '画像または動画のURLを入力',
+    bingCN: 'Bing'
   },
   'ru': {
     pageTitle: 'Новая вкладка',
@@ -337,7 +372,14 @@ const i18nData = {
     engineNamePh: 'Например: DuckDuckGo',
     errorEngineNameReq: 'Введите название',
     engineUrl: 'URL поиска (%s вместо запроса)',
-    errorEngineUrlFormat: 'URL должен содержать %s'
+    errorEngineUrlFormat: 'URL должен содержать %s',
+    useOnlineContent: 'Использовать онлайн-контент',
+    bingDaily: 'Ежедневные обои Bing',
+    customUrl: 'Пользовательский',
+    customOnlineWallpaper: 'Пользовательские онлайн-обои',
+    imageOrVideoUrl: 'URL изображения или видео',
+    enterUrl: 'Введите URL изображения или видео',
+    bingCN: 'Bing'
   }
 };
 
@@ -540,6 +582,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   let currentEditingId = null;
+  let draggedId = null;//拖拽实现
   let selectedSuggestionIndex = -1;
 
   // 默认与自定义搜索引擎
@@ -773,6 +816,117 @@ document.addEventListener('DOMContentLoaded', () => {
     applyBackgroundState();
   });
 
+
+  // ===== 在线壁纸功能 =====
+  const btnBingWallpaper = document.getElementById('btn-bing-wallpaper');
+  const btnCustomUrlWallpaper = document.getElementById('btn-custom-url-wallpaper');
+  const modalOnlineWallpaper = document.getElementById('modal-online-wallpaper');
+  const onlineWallpaperForm = document.getElementById('online-wallpaper-form');
+  const inputOnlineUrl = document.getElementById('input-online-url');
+  const containerOnlineUrl = document.getElementById('container-online-url');
+  const tipOnlineUrl = document.getElementById('tip-online-url');
+  const btnOnlineCancel = document.getElementById('btn-online-cancel');
+
+  // 必应每日壁纸
+  btnBingWallpaper?.addEventListener('click', async () => {
+    try {
+      const response = await fetch('https://bing.biturl.top/?resolution=1920x1080&format=json');
+      if (!response.ok) throw new Error('网络请求失败');
+      const data = await response.json();
+      let url = data.url;
+      if (url && url.startsWith('http')) {
+        if (!url.startsWith('http://') && !url.startsWith('https://')) {
+          url = 'https://' + url;
+        }
+        customWallpaperData = { type: 'image', url: url };
+        Storage.set('ntp_custom_wallpaper', customWallpaperData);
+        if (!bgEnabled) {
+          bgEnabled = true;
+          Storage.set('ntp_bg_enabled', true);
+        }
+        applyBackgroundState();
+        if (toggleBgSwitch) toggleBgSwitch.checked = true;
+        if (toggleBgModalSwitch) toggleBgModalSwitch.checked = true;
+        applyLanguage(localStorage.getItem('liteStart_language') || 'auto');
+      } else {
+        alert('获取必应壁纸失败，请稍后重试。');
+      }
+    } catch (e) {
+      console.error('获取必应壁纸错误:', e);
+      alert('获取必应壁纸失败，请检查网络。');
+    }
+  });
+
+
+  // 自定义URL - 打开弹窗
+  btnCustomUrlWallpaper?.addEventListener('click', () => {
+    inputOnlineUrl.value = '';
+    containerOnlineUrl?.classList.remove('error');
+    tipOnlineUrl?.classList.remove('active');
+    modalOnlineWallpaper?.classList.add('active');
+    setTimeout(() => inputOnlineUrl?.focus(), 50);
+  });
+
+  // 关闭自定义URL弹窗
+  function closeOnlineModal() {
+    modalOnlineWallpaper?.classList.remove('active');
+    containerOnlineUrl?.classList.remove('error');
+    tipOnlineUrl?.classList.remove('active');
+  }
+
+  btnOnlineCancel?.addEventListener('click', closeOnlineModal);
+
+  // 点击遮罩关闭
+  modalOnlineWallpaper?.addEventListener('click', (e) => {
+    if (e.target === modalOnlineWallpaper) closeOnlineModal();
+  });
+
+  // 表单提交
+  onlineWallpaperForm?.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const url = inputOnlineUrl.value.trim();
+  containerOnlineUrl?.classList.remove('error');
+  tipOnlineUrl?.classList.remove('active');
+
+  if (!url) {
+    containerOnlineUrl?.classList.add('error');
+    tipOnlineUrl?.classList.add('active');
+    inputOnlineUrl?.focus();
+    return;
+  }
+
+  // 简单URL格式校验
+  try {
+    new URL(url);
+  } catch (_) {
+    containerOnlineUrl?.classList.add('error');
+    tipOnlineUrl?.classList.add('active');
+    inputOnlineUrl?.focus();
+    return;
+  }
+
+  // 判断类型（根据文件扩展名）
+  const isVideo = /\.(mp4|webm|ogg|mov|avi|mkv)$/i.test(url);
+  customWallpaperData = { type: isVideo ? 'video' : 'image', url: url };
+  Storage.set('ntp_custom_wallpaper', customWallpaperData);
+  if (!bgEnabled) {
+    bgEnabled = true;
+    Storage.set('ntp_bg_enabled', true);
+  }
+  applyBackgroundState();
+  if (toggleBgSwitch) toggleBgSwitch.checked = true;
+  if (toggleBgModalSwitch) toggleBgModalSwitch.checked = true;
+  applyLanguage(localStorage.getItem('liteStart_language') || 'auto');
+  closeOnlineModal();
+});
+
+// 输入时清除错误状态
+inputOnlineUrl?.addEventListener('input', () => {
+  containerOnlineUrl?.classList.remove('error');
+  tipOnlineUrl?.classList.remove('active');
+});
+
+
   // 初始化更新布局预设卡片选中状态
   function updateLayoutPresetUI(currentLayout) {
     document.querySelectorAll('.preset-card').forEach(card => {
@@ -937,43 +1091,53 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // C2. 渲染已有的快捷方式
-    quicklinksList.forEach(item => {
-      const linkElem = document.createElement('a');
-      linkElem.href = item.url;
-      linkElem.className = 'quicklink-item';
-      linkElem.target = '_blank';
-      linkElem.setAttribute('data-id', item.id);
+quicklinksList.forEach(item => {
+  const linkElem = document.createElement('a');
+  linkElem.href = item.url;
+  linkElem.className = 'quicklink-item';
+  linkElem.target = '_blank';
+  linkElem.setAttribute('data-id', item.id);
 
-      const initialChar = (item.title || 'W').charAt(0).toUpperCase();
-      const faviconUrl = getFaviconUrl(item.url);
+  const initialChar = (item.title || 'W').charAt(0).toUpperCase();
+  const faviconUrl = getFaviconUrl(item.url);
 
-      let iconContent = '';
-      if (faviconUrl) {
-        iconContent = `<img src="${faviconUrl}" alt="${item.title}" loading="lazy" 
-                          onerror="this.onerror=null; this.parentNode.innerText='${initialChar}';">`;
-      } else {
-        iconContent = initialChar;
-      }
+  let iconContent = '';
+  if (faviconUrl) {
+    iconContent = `<img src="${faviconUrl}" alt="${item.title}" loading="lazy" 
+                      onerror="this.onerror=null; this.parentNode.innerText='${initialChar}';">`;
+  } else {
+    iconContent = initialChar;
+  }
 
-      linkElem.innerHTML = `
-        <div class="quicklink-icon">${iconContent}</div>
-        <span class="quicklink-title">${item.title}</span>
-        <button type="button" class="quicklink-edit-btn" title="编辑快捷方式">
-          <svg width="14" height="14" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
-            <path d="M3 8a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0zm5 0a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0zm5 0a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0z"/>
-          </svg>
-        </button>
-      `;
+  linkElem.innerHTML = `
+    <div class="quicklink-icon">${iconContent}</div>
+    <span class="quicklink-title">${item.title}</span>
+    <button type="button" class="quicklink-edit-btn" title="编辑快捷方式">
+      <svg width="14" height="14" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+        <path d="M3 8a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0zm5 0a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0zm5 0a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0z"/>
+      </svg>
+    </button>
+  `;
 
-      const editBtn = linkElem.querySelector('.quicklink-edit-btn');
-      editBtn?.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        openEditModal(item);
-      });
+  // ---------- 拖拽支持（测试） ----------
+  linkElem.draggable = true;
+  linkElem.addEventListener('dragstart', onDragStart);
+  linkElem.addEventListener('dragend', onDragEnd);
+  linkElem.addEventListener('dragover', onDragOver);
+  linkElem.addEventListener('dragenter', onDragEnter);
+  linkElem.addEventListener('dragleave', onDragLeave);
+  linkElem.addEventListener('drop', onDrop);
+  // --------------------
 
-      quicklinksElem.appendChild(linkElem);
-    });
+  const editBtn = linkElem.querySelector('.quicklink-edit-btn');
+  editBtn?.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    openEditModal(item);
+  });
+
+  quicklinksElem.appendChild(linkElem);
+});
 
     // C3. 添加“添加”按钮
     const addBtnElem = document.createElement('div');
@@ -994,6 +1158,80 @@ document.addEventListener('DOMContentLoaded', () => {
 
     quicklinksElem.appendChild(addBtnElem);
   }
+
+
+  // ========== 拖拽事件处理函数 ==========
+function onDragStart(e) {
+  const item = e.currentTarget;
+  const id = item.dataset.id;
+  if (!id) {
+    e.preventDefault();
+    return;
+  }
+  draggedId = id;
+  e.dataTransfer.effectAllowed = 'move';
+  // 给被拖拽元素添加样式
+  item.classList.add('dragging');
+}
+
+function onDragEnd(e) {
+  const item = e.currentTarget;
+  item.classList.remove('dragging');
+  // 清理所有高亮
+  document.querySelectorAll('.quicklink-item.drag-over').forEach(el => {
+    el.classList.remove('drag-over');
+  });
+  draggedId = null;
+}
+
+function onDragOver(e) {
+  e.preventDefault();
+  e.dataTransfer.dropEffect = 'move';
+}
+
+function onDragEnter(e) {
+  e.preventDefault();
+  const target = e.currentTarget;
+  const targetId = target.dataset.id;
+  // 只有快捷方式（有 data-id）且不是被拖拽自身时，才高亮
+  if (targetId && targetId !== draggedId) {
+    target.classList.add('drag-over');
+  }
+}
+
+function onDragLeave(e) {
+  const target = e.currentTarget;
+  target.classList.remove('drag-over');
+}
+
+function onDrop(e) {
+  e.preventDefault();
+  const target = e.currentTarget;
+  target.classList.remove('drag-over');
+
+  const targetId = target.dataset.id;
+  if (!targetId || !draggedId || targetId === draggedId) {
+    return;
+  }
+
+  // 查找两个元素在数组中的位置
+  const draggedIndex = quicklinksList.findIndex(item => item.id === draggedId);
+  const targetIndex = quicklinksList.findIndex(item => item.id === targetId);
+
+  if (draggedIndex === -1 || targetIndex === -1) {
+    return;
+  }
+
+  // 交换位置（将 draggedItem 移动到 targetIndex 位置）
+  const [draggedItem] = quicklinksList.splice(draggedIndex, 1);
+  quicklinksList.splice(targetIndex, 0, draggedItem);
+
+  // 持久化并重新渲染
+  Storage.set('ntp_quicklinks_list', quicklinksList);
+  renderQuicklinks();
+}
+// ========== 拖拽事件处理函数结束 ==========
+
 
   // B3.自定义校验与 Modal 对话框逻辑
   function clearErrors() {

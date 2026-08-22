@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
-  "name": "LiteStart",
-  "version": "1.1.0",
+  "name": "Litestart",
+  "version": "1.2.0",
   "minimum_chrome_version": "109",
   "description": "可定制的类原生浏览器起始页",
   
@@ -17,6 +17,7 @@
   ],
 
   "host_permissions": [
+    "https://bing.biturl.top/",
     "https://api.xinac.net/*",
     "https://suggestion.baidu.com/*",
     "https://suggestqueries.google.com/*"
