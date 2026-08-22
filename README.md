@@ -9,8 +9,17 @@
 [<u>简体中文</u>] | <a href="README_EN.md">English</a>
 
 
+## 快速开始
+
+从商店下载Litestart
+
+<a href="https://microsoftedge.microsoft.com/addons/detail/gpfegedemfdpmggmbmcboldmdcmmobjc">
+    <img src="docs/get/GET_MSE_ZH.png" alt="Get it from Microsoft Edge" height="48">
+</a>
+
 ***
-## 如何使用？
+
+或者使用文件导入
 
 1. 从 [Releases](https://github.com/XingYueFox/Litestart/releases) 下载.CRX或者.ZIP文件
 2. 打开浏览器的扩展或者插件管理界面，然后启用开发人员模式
