@@ -1,6 +1,7 @@
 name: 错误问题反馈 Bug Report
 description: 反馈遇到的问题 Feedback the encountered issues
 labels: ["Bug"]
+assignees: "XingYueFox"
 
 body:
   - type: markdown
@@ -44,9 +45,10 @@ body:
 
   - type: textarea
     attributes:
-      label: 描述问题 Describe issue
+      label: 问题描述 | Bug Description
       description: |
-        尽量详细地描述问题 Describe as detailed as possible
+        请尽可能地详细描述你所遇到的问题，并描述如何重新触发这个问题。
+        Please describe the bug you met in as much detail as possible. Additionally, describe the steps to reproduce this bug.
       placeholder: 在此输入遇到的问题，必填 Enter the issue encountered here, Required
     validations:
       required: false
