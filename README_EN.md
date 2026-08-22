@@ -10,9 +10,17 @@ Cutting out the clutter, Litestart aims to provide you with a seamless, fast, an
 ⚠The translation might not be 100% accurate!
 
 
-***
-## How to use?
 
+## Quick Start
+
+Get Litestart from browser store
+
+<a href="https://microsoftedge.microsoft.com/addons/detail/gpfegedemfdpmggmbmcboldmdcmmobjc">
+    <img src="docs/get/GET_MSE_EN.png" alt="Get it from Microsoft Edge" height="48">
+</a>
+
+***
+Or use file import
 1. Download the .CRX or .ZIP file from [Releases](https://github.com/XingYueFox/Litestart/releases).
 2. Open your browser's extension management page and enable Developer Mode.
 3. Drag the downloaded .CRX or .ZIP file into the extensions page to install.
