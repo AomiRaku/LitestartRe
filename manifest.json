@@ -1,10 +1,11 @@
 {
   "manifest_version": 3,
-  "name": "Litestart",
+  "name": "__MSG_extName__",
   "version": "1.2.0",
   "minimum_chrome_version": "109",
-  "description": "可定制的类原生浏览器起始页",
-  
+  "description": "__MSG_extDescription__",
+  "default_locale": "zh_CN",
+
   "chrome_url_overrides": {
     "newtab": "index.html"
   },
