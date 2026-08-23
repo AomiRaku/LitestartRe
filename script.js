@@ -88,7 +88,7 @@ const i18nData = {
     bing: 'Bing',
     baidu: '百度',
     forceBingCN: '强制使用必应中国版',
-    forceBingCNDesc: '强制使用必应中国版，避免代理设置导致的 www.bing.com 无法自动跳转到 cn.bing.com',
+    forceBingCNDesc: '<b>开启</b>：强制使用必应中国版<br><b>关闭</b>：根据网络环境自动选择。<br>此选项可以避免代理设置导致 www.bing.com 无法自动跳转到 cn.bing.com。',
     enhancedVisibility: '增强元素可见性',
     enhancedVisibilityDesc: '开启背景时给Logo和顶部按钮添加半透明背景，使其在背景图上更清晰',
     addlink: '添加'
@@ -154,7 +154,7 @@ const i18nData = {
     bingCN: 'Bing',
     baidu: '百度',
     forceBingCN: '強制使用必應中國版',
-    forceBingCNDesc: '強制使用必應中國版，避免代理設定導致的 www.bing.com 無法自動跳轉到 cn.bing.com',
+    forceBingCNDesc: '<b>開啟</b>：強制使用必應中國版<br><b>關閉</b>：根據網路環境自動選擇。<br>此選項可以避免代理設定導致 www.bing.com 無法自動跳轉到 cn.bing.com。',
     enhancedVisibility: '增強元素可見性',
     enhancedVisibilityDesc: '開啟背景時給Logo和頂部按鈕添加半透明背景，使其在背景圖上更清晰',
     addlink: '新增'
@@ -220,7 +220,7 @@ const i18nData = {
     bingCN: '必應',
     baidu: '百度',
     forceBingCN: '勒令必應專用中土之版',
-    forceBingCNDesc: '強制用中版，庶免代理令主站失其自轉之能',
+    forceBingCNDesc: '<b>啟</b>：勒令必應專用中土之版<br><b>關</b>：隨網路之勢自擇。<br>此舉可免代理令主站失其自轉之能。',
     enhancedVisibility: '彰明諸元',
     enhancedVisibilityDesc: '啟背景時，於徽標及頂鈕之下，施以輕翳，俾其映於畫圖而愈晰',
     addlink: '增'
@@ -285,7 +285,7 @@ const i18nData = {
     enterUrl: 'Enter image or video URL',
     bingCN: 'Bing',
     forceBingCN: 'Force Bing China',
-    forceBingCNDesc: 'Force www.bing.com to redirect to cn.bing.com, avoiding proxy issues that prevent automatic redirection',
+    forceBingCNDesc: '<b>On</b>: Forces cn.bing.com<br><b>Off</b>: Automatically selects based on network conditions.<br>This option prevents proxy settings from interfering with automatic redirection of www.bing.com to cn.bing.com.',
     enhancedVisibility: 'Enhance Element Visibility',
     enhancedVisibilityDesc: 'Adds semi-transparent backgrounds to Logo and header buttons when background is enabled for better clarity',
     addlink: 'Add'
@@ -350,7 +350,7 @@ const i18nData = {
     enterUrl: '画像または動画のURLを入力',
     bingCN: 'Bing',
     forceBingCN: 'Bing中国版を強制使用',
-    forceBingCNDesc: 'プロキシ設定により www.bing.com から cn.bing.com への自動リダイレクトが妨げられる場合に、中国版Bingを強制使用します',
+    forceBingCNDesc: '<b>ON</b>：cn.bing.com を強制使用<br><b>OFF</b>：ネットワーク環境に応じて自動的に選択<br>このオプションにより、プロキシ設定による www.bing.com から cn.bing.com への自動リダイレクトの妨げを防ぎます。',
     enhancedVisibility: '要素の視認性を向上',
     enhancedVisibilityDesc: '背景有効時にロゴとヘッダーボタンに半透明の背景を追加し、見やすくします',
     addlink: '追加'
@@ -415,7 +415,7 @@ const i18nData = {
     enterUrl: 'Введите URL изображения или видео',
     bingCN: 'Bing',
     forceBingCN: 'Принудительно использовать Bing China',
-    forceBingCNDesc: 'Принудительно использовать cn.bing.com, чтобы избежать проблем с прокси, из-за которых www.bing.com не может автоматически перенаправлять на cn.bing.com',
+    forceBingCNDesc: '<b>Вкл.</b>: Принудительно использует cn.bing.com<br><b>Выкл.</b>: Автоматический выбор в зависимости от сетевых условий<br>Этот параметр предотвращает проблемы с прокси, мешающие автоматическому редиректу www.bing.com на cn.bing.com.',
     enhancedVisibility: 'Повысить видимость элементов',
     enhancedVisibilityDesc: 'Добавляет полупрозрачный фон к логотипу и кнопкам заголовка при включенном фоне для лучшей читаемости',
     addlink: 'Добавить'
@@ -447,11 +447,34 @@ function applyLanguage(langConfig) {
 
   document.documentElement.lang = langCode.startsWith('zh') ? (langCode === 'zh-TW' ? 'zh-TW' : 'zh-CN') : langCode;
 
+  document.querySelectorAll('.tooltip-icon').forEach(icon => {
+    const tooltip = icon.querySelector('.tooltip-content');
+    if (!tooltip) return;
+    const position = () => {
+      const rect = icon.getBoundingClientRect();
+      const tipRect = tooltip.getBoundingClientRect();
+      let left = rect.left + rect.width / 2 - tipRect.width / 2;
+      left = Math.max(8, Math.min(left, window.innerWidth - tipRect.width - 8));
+      tooltip.style.left = left + 'px';
+      tooltip.style.top = (rect.top - tipRect.height - 10) + 'px';
+    };
+    icon.addEventListener('mouseenter', position);
+    icon.addEventListener('focus', position);
+    icon.addEventListener('click', position);
+  });
+
   // 1.替换 innerText
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.getAttribute('data-i18n');
     if (dict[key] !== undefined) {
       el.innerText = dict[key];
+    }
+  });
+
+  document.querySelectorAll('[data-i18n-html]').forEach(el => {
+    const key = el.getAttribute('data-i18n-html');
+    if (dict[key] !== undefined) {
+      el.innerHTML = dict[key];
     }
   });
 
@@ -634,6 +657,14 @@ document.addEventListener('DOMContentLoaded', () => {
   let currentEditingId = null;
   let draggedId = null;//拖拽实现
   let selectedSuggestionIndex = -1;
+
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
+    var link = document.getElementById('favicon');
+    if (link) {
+      var icon = e.matches ? 'img/icon_d.png' : 'img/icon_l.png';
+      link.href = icon + '?r=' + Math.random();
+    }
+  });
 
   // 默认与自定义搜索引擎
   let customEngineConfig = Storage.get('ntp_custom_engine_config', {
@@ -1228,8 +1259,11 @@ inputOnlineUrl?.addEventListener('input', () => {
       </div>
       <span class="quicklink-title" data-i18n="addlink">添加</span>
     `;
-    addBtnStatic.addEventListener('click', () => openAddModal());
     quicklinksElem.appendChild(addBtnStatic);
+  }
+  if (addBtnStatic.dataset.bound !== 'true') {
+    addBtnStatic.addEventListener('click', () => openAddModal());
+    addBtnStatic.dataset.bound = 'true';
   }
 
   // 清空所有动态生成的快捷链接（保留静态按钮）
