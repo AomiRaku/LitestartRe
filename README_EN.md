@@ -1,6 +1,6 @@
 # Litestart
 
-![main_banner](docs/pics/1.webp)
+![main_banner](docs/pics/1111.webp)
 
 <strong>A customizable, Native-like new tab page for desktop browsers</strong>
 
@@ -31,24 +31,21 @@ Or use file import
 
 ## About Litestart
 
-- This is a parody of the Edge browser's new tab page.
-- Designed for Chromium-based desktop browsers.
-- It removes unnecessary online content, significantly speeding up new tab loading.
-- Offers more customization while maintaining blazing-fast performance.
+<img alt="215014" src="docs/pics/2002.webp" />
+
+- A customizable, native-like browser start page designed for desktop browsers.
+- In contrast to typical pages, this one contains no extraneous online content, which improves the loading speed of new tabs.
+- While offering relatively more personalization, it also delivers an ultimate fast experience.
 
 
 ## Features
 
-- Freely switch search engines, and customize the layout—logo title, site navigation, search history, and search box position are all up to you.
-- Custom background
-<img width="500" alt="215014" src="docs/pics/216.webp" />
-
-- Pin your favorite websites
-<img width="500" alt="215014" src="docs/pics/211.webp" />
-
-- Time display
-<img width="500" alt="215014" src="docs/pics/219.webp" />
-
+- You can freely switch search engines, and the placement of the logo, site navigation, search history, or even the search box is entirely up to you.
+- Customize the background, search engine, and layout.
+- Pin any websites you want to keep on this page.
+- Or set any wallpaper you like.
+<img width="500" alt="215014" src="docs/pics/2004.webp" />
+<img width="500" alt="215014" src="docs/pics/2009.webp" />
 
 
 ## System & Browser Compatibility
@@ -62,8 +59,7 @@ Or use file import
 
 ## Important Notice
 *Litestart is completely free. Please only download this extension from here. The developer is not responsible for any issues caused by obtaining it from untrusted sources.<br>
-*This page/extension is intended for learning, testing, and personal device optimization.<br>
-*This page/extension uses cookies to save your settings.
+*This page/extension is intended for learning, testing, and personal device optimization.
 
 
 ## License
