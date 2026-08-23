@@ -51,7 +51,7 @@ const i18nData = {
     langAuto: '默认（跟随设备）',
     cookieNotice: '隐私与Cookie',
     license: '开源协议',
-    updates: '检查更新',
+    contributor: '贡献名单',
     helpFeedback: '帮助&反馈',
     presentedBy: '由',
     xingyuefox: '星月Fox',
@@ -90,7 +90,8 @@ const i18nData = {
     forceBingCN: '强制使用必应中国版',
     forceBingCNDesc: '强制使用必应中国版，避免代理设置导致的 www.bing.com 无法自动跳转到 cn.bing.com',
     enhancedVisibility: '增强元素可见性',
-    enhancedVisibilityDesc: '开启背景时给Logo和顶部按钮添加半透明背景，使其在背景图上更清晰'
+    enhancedVisibilityDesc: '开启背景时给Logo和顶部按钮添加半透明背景，使其在背景图上更清晰',
+    addlink: '添加'
   },
   'zh-TW': {
     pageTitle: '新分頁',
@@ -116,7 +117,7 @@ const i18nData = {
     langAuto: '預設（隨設備設定）',
     cookieNotice: '隱私與 Cookie',
     license: '開源協議',
-    updates: '檢查更新',
+    contributor: '貢獻名單',
     helpFeedback: '說明與意見回饋',
     presentedBy: '由',
     xingyuefox: 'XingYue_Fox',
@@ -155,7 +156,8 @@ const i18nData = {
     forceBingCN: '強制使用必應中國版',
     forceBingCNDesc: '強制使用必應中國版，避免代理設定導致的 www.bing.com 無法自動跳轉到 cn.bing.com',
     enhancedVisibility: '增強元素可見性',
-    enhancedVisibilityDesc: '開啟背景時給Logo和頂部按鈕添加半透明背景，使其在背景圖上更清晰'
+    enhancedVisibilityDesc: '開啟背景時給Logo和頂部按鈕添加半透明背景，使其在背景圖上更清晰',
+    addlink: '新增'
   },
   'zh-WY': {
     pageTitle: '新標籤頁',
@@ -181,7 +183,7 @@ const i18nData = {
     langAuto: '預設（順裝置）',
     cookieNotice: '隱私與餅儲',
     license: '開源之約',
-    updates: '檢新',
+    contributor: '題名錄',
     helpFeedback: '求助與反饋',
     presentedBy: '由',
     xingyuefox: '星月Fox',
@@ -217,10 +219,11 @@ const i18nData = {
     enterUrl: '輸圖影鏈',
     bingCN: '必應',
     baidu: '百度',
-    forceBingCN: '強制使用必應中國版',
-    forceBingCNDesc: '強制使用必應中國版，避免代理設定導致的 www.bing.com 無法自動跳轉到 cn.bing.com',
-    enhancedVisibility: '增強元素可見性',
-    enhancedVisibilityDesc: '開啟背景時給Logo和頂部按鈕添加半透明背景，使其在背景圖上更清晰'
+    forceBingCN: '勒令必應專用中土之版',
+    forceBingCNDesc: '強制用中版，庶免代理令主站失其自轉之能',
+    enhancedVisibility: '彰明諸元',
+    enhancedVisibilityDesc: '啟背景時，於徽標及頂鈕之下，施以輕翳，俾其映於畫圖而愈晰',
+    addlink: '增'
   },
   'en': {
     pageTitle: 'New Tab',
@@ -246,7 +249,7 @@ const i18nData = {
     langAuto: 'Default (System)',
     cookieNotice: 'Privacy & Cookies',
     license: 'License',
-    updates: 'Check for Updates',
+    contributor: 'Contributor',
     helpFeedback: 'Help & Feedback',
     presentedBy: 'Presented by',
     xingyuefox: 'XingYue_Fox',
@@ -284,7 +287,8 @@ const i18nData = {
     forceBingCN: 'Force Bing China',
     forceBingCNDesc: 'Force www.bing.com to redirect to cn.bing.com, avoiding proxy issues that prevent automatic redirection',
     enhancedVisibility: 'Enhance Element Visibility',
-    enhancedVisibilityDesc: 'Adds semi-transparent backgrounds to Logo and header buttons when background is enabled for better clarity'
+    enhancedVisibilityDesc: 'Adds semi-transparent backgrounds to Logo and header buttons when background is enabled for better clarity',
+    addlink: 'Add'
   },
   'ja': {
     pageTitle: '新しいタブ',
@@ -310,7 +314,7 @@ const i18nData = {
     langAuto: 'デフォルト（システムに従う）',
     cookieNotice: 'プライバシーとクッキー',
     license: 'License',
-    updates: '更新を確認',
+    contributor: '貢献者',
     helpFeedback: 'ヘルプとフィードバック',
     presentedBy: '提供:',
     xingyuefox: 'XingYue_Fox',
@@ -348,7 +352,8 @@ const i18nData = {
     forceBingCN: 'Bing中国版を強制使用',
     forceBingCNDesc: 'プロキシ設定により www.bing.com から cn.bing.com への自動リダイレクトが妨げられる場合に、中国版Bingを強制使用します',
     enhancedVisibility: '要素の視認性を向上',
-    enhancedVisibilityDesc: '背景有効時にロゴとヘッダーボタンに半透明の背景を追加し、見やすくします'
+    enhancedVisibilityDesc: '背景有効時にロゴとヘッダーボタンに半透明の背景を追加し、見やすくします',
+    addlink: '追加'
   },
   'ru': {
     pageTitle: 'Новая вкладка',
@@ -374,7 +379,7 @@ const i18nData = {
     langAuto: 'По умолчанию (системный)',
     cookieNotice: 'Конфиденциальность и файлы cookie',
     license: 'Лицензия',
-    updates: 'Обновления',
+    contributor: 'Вкладчики',
     helpFeedback: 'Справка и отзывы',
     presentedBy: 'Создатель:',
     xingyuefox: 'XingYue_Fox',
@@ -412,7 +417,8 @@ const i18nData = {
     forceBingCN: 'Принудительно использовать Bing China',
     forceBingCNDesc: 'Принудительно использовать cn.bing.com, чтобы избежать проблем с прокси, из-за которых www.bing.com не может автоматически перенаправлять на cn.bing.com',
     enhancedVisibility: 'Повысить видимость элементов',
-    enhancedVisibilityDesc: 'Добавляет полупрозрачный фон к логотипу и кнопкам заголовка при включенном фоне для лучшей читаемости'
+    enhancedVisibilityDesc: 'Добавляет полупрозрачный фон к логотипу и кнопкам заголовка при включенном фоне для лучшей читаемости',
+    addlink: 'Добавить'
   }
 };
 
@@ -1095,6 +1101,7 @@ inputOnlineUrl?.addEventListener('input', () => {
     const val = e.target.value;
     quicklinksElem?.setAttribute('rows', val);
     Storage.set('ntp_quicklinks', val);
+    renderQuicklinks();//（测试）修复无法加载
   });
 
     // 时间开关事件
@@ -1203,84 +1210,91 @@ inputOnlineUrl?.addEventListener('input', () => {
   // B2.快捷方式列表管理
   let quicklinksList = Storage.get('ntp_quicklinks_list', []);
 
-    function renderQuicklinks() {
-    if (!quicklinksElem) return;
-    const rows = quicklinksElem.getAttribute('rows');
-    if (rows === '0') {
-      quicklinksElem.innerHTML = '';
-      return;
-    }
+  function renderQuicklinks() {
+  if (!quicklinksElem) return;
+  const rows = quicklinksElem.getAttribute('rows');
 
-    quicklinksElem.innerHTML = '';
-
-    // C1. 渲染已有的快捷方式
-quicklinksList.forEach(item => {
-  const linkElem = document.createElement('a');
-  linkElem.href = item.url;
-  linkElem.className = 'quicklink-item';
-  linkElem.target = '_blank';
-  linkElem.setAttribute('data-id', item.id);
-
-  const initialChar = (item.title || 'W').charAt(0).toUpperCase();
-  const faviconUrl = getFaviconUrl(item.url);
-
-  let iconContent = '';
-  if (faviconUrl) {
-    iconContent = `<img src="${faviconUrl}" alt="${item.title}" loading="lazy" 
-                      onerror="this.onerror=null; this.parentNode.innerText='${initialChar}';">`;
-  } else {
-    iconContent = initialChar;
-  }
-
-  linkElem.innerHTML = `
-    <div class="quicklink-icon">${iconContent}</div>
-    <span class="quicklink-title">${item.title}</span>
-    <button type="button" class="quicklink-edit-btn" title="编辑快捷方式">
-      <svg width="14" height="14" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
-        <path d="M3 8a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0zm5 0a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0zm5 0a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0z"/>
-      </svg>
-    </button>
-  `;
-
-  // ---------- 拖拽支持（测试） ----------
-  linkElem.draggable = true;
-  linkElem.addEventListener('dragstart', onDragStart);
-  linkElem.addEventListener('dragend', onDragEnd);
-  linkElem.addEventListener('dragover', onDragOver);
-  linkElem.addEventListener('dragenter', onDragEnter);
-  linkElem.addEventListener('dragleave', onDragLeave);
-  linkElem.addEventListener('drop', onDrop);
-  // --------------------
-
-  const editBtn = linkElem.querySelector('.quicklink-edit-btn');
-  editBtn?.addEventListener('click', (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    openEditModal(item);
-  });
-
-  quicklinksElem.appendChild(linkElem);
-});
-
-    // C3. 添加“添加”按钮
-    const addBtnElem = document.createElement('div');
-    addBtnElem.className = 'quicklink-item quicklink-add-btn';
-    addBtnElem.title = '添加快捷方式';
-    addBtnElem.innerHTML = `
+  // 获取静态添加按钮（如果不存在则创建）
+  let addBtnStatic = quicklinksElem.querySelector('.quicklink-add-static');
+  if (!addBtnStatic) {
+    addBtnStatic = document.createElement('div');
+    addBtnStatic.className = 'quicklink-item quicklink-add-btn quicklink-add-static';
+    addBtnStatic.style.display = 'none';
+    addBtnStatic.innerHTML = `
       <div class="quicklink-icon quicklink-add-icon">
         <svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
           <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
         </svg>
       </div>
-      <span class="quicklink-title">添加</span>
+      <span class="quicklink-title" data-i18n="addlink">添加</span>
+    `;
+    addBtnStatic.addEventListener('click', () => openAddModal());
+    quicklinksElem.appendChild(addBtnStatic);
+  }
+
+  // 清空所有动态生成的快捷链接（保留静态按钮）
+  const items = quicklinksElem.querySelectorAll('.quicklink-item:not(.quicklink-add-static)');
+  items.forEach(el => el.remove());
+
+  if (rows === '0') {
+    addBtnStatic.style.display = 'none';
+    return;
+  }
+
+  // 渲染已有的快捷方式
+  quicklinksList.forEach(item => {
+    const linkElem = document.createElement('a');
+    linkElem.href = item.url;
+    linkElem.className = 'quicklink-item';
+    linkElem.target = '_blank';
+    linkElem.setAttribute('data-id', item.id);
+
+    const initialChar = (item.title || 'W').charAt(0).toUpperCase();
+    const faviconUrl = getFaviconUrl(item.url);
+
+    let iconContent = '';
+    if (faviconUrl) {
+      iconContent = `<img src="${faviconUrl}" alt="${item.title}" loading="lazy" 
+                        onerror="this.onerror=null; this.parentNode.innerText='${initialChar}';">`;
+    } else {
+      iconContent = initialChar;
+    }
+
+    linkElem.innerHTML = `
+      <div class="quicklink-icon">${iconContent}</div>
+      <span class="quicklink-title">${item.title}</span>
+      <button type="button" class="quicklink-edit-btn" title="编辑快捷方式">
+        <svg width="14" height="14" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+          <path d="M3 8a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0zm5 0a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0zm5 0a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0z"/>
+        </svg>
+      </button>
     `;
 
-    addBtnElem.addEventListener('click', () => {
-      openAddModal();
+    // 拖拽事件
+    linkElem.draggable = true;
+    linkElem.addEventListener('dragstart', onDragStart);
+    linkElem.addEventListener('dragend', onDragEnd);
+    linkElem.addEventListener('dragover', onDragOver);
+    linkElem.addEventListener('dragenter', onDragEnter);
+    linkElem.addEventListener('dragleave', onDragLeave);
+    linkElem.addEventListener('drop', onDrop);
+
+    const editBtn = linkElem.querySelector('.quicklink-edit-btn');
+    editBtn?.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      openEditModal(item);
     });
 
-    quicklinksElem.appendChild(addBtnElem);
-  }
+    quicklinksElem.insertBefore(linkElem, addBtnStatic);
+  });
+
+  addBtnStatic.style.display = 'flex';
+  quicklinksElem.appendChild(addBtnStatic);
+
+  // 重新应用语言确保“添加”按钮文本更新
+  applyLanguage(localStorage.getItem('liteStart_language') || 'auto');
+}
 
 
   // ========== 拖拽事件处理函数 ==========

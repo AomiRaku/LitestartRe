@@ -1550,14 +1550,14 @@
             <!-- 底部版权/链接区域 -->
             <div class="settings-footer">
               <div class="settings-footer-links">
-                <a href="https://github.com/XingYueFox/Litestart#%E9%87%8D%E8%A6%81%E5%A3%B0%E6%98%8E" data-i18n="cookieNotice">隐私与Cookie</a> · 
+                <a href="https://github.com/XingYueFox/Litestart/blob/main/PRIVACY_POLICY.md" data-i18n="cookieNotice">隐私与Cookie</a> · 
                 <a href="https://github.com/XingYueFox/Litestart/blob/main/LICENSE" data-i18n="license">开源协议</a> ·  
-                <a href="https://github.com/XingYueFox/Litestart/releases" data-i18n="updates">检查更新</a> · 
+                <a href="https://github.com/XingYueFox/Litestart/graphs/contributors?from=2026%2F5%2F23" data-i18n="contributor">贡献名单</a> · 
                 <a href="https://github.com/XingYueFox/Litestart/issues" data-i18n="helpFeedback">帮助&反馈</a>
                 
               </div>
               <div class="settings-footer-links">
-                <a href="https://github.com/XingYueFox/Litestart" target="_blank">LiteStart 1.2.0</a>| <span data-i18n="presentedBy">由</span> <a href="https://xingyuefox.pages.dev" target="_blank" data-i18n="xingyuefox">星月Fox</a> <span data-i18n="forYou">为您呈现</span>
+                <a href="https://github.com/XingYueFox/Litestart" target="_blank">LiteStart 1.3.0</a>| <span data-i18n="presentedBy">由</span> <a href="https://xingyuefox.pages.dev" target="_blank" data-i18n="xingyuefox">星月Fox</a> <span data-i18n="forYou">为您呈现</span>
               </div>
               <div class="settings-footer-text" style="opacity: 0.8;" data-i18n="disclaimer">
                 请注意，此网页与 Microsoft 无关。
@@ -1595,7 +1595,17 @@
         </div>
 
         <!-- 快捷链接列表（动态渲染） -->
-        <ntp-quicklinks id="quicklinks" rows="0"></ntp-quicklinks>
+        <ntp-quicklinks id="quicklinks" rows="0">
+          <!-- 添加按钮 -->
+          <div class="quicklink-item quicklink-add-btn quicklink-add-static" style="display: none;">
+            <div class="quicklink-icon quicklink-add-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
+                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+              </svg>
+            </div>
+            <span class="quicklink-title" data-i18n="addlink">添加</span>
+          </div>
+        </ntp-quicklinks>
       </div>
     </ntp-shell>
 
