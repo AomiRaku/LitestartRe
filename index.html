@@ -4,8 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="referrer" content="strict-origin">
-    <link rel="icon" href="img/icon_l.png" media="(prefers-color-scheme: light)">
-    <link rel="icon" href="img/icon_d.png" media="(prefers-color-scheme: dark)">
+    <script>
+    (function() {
+      var isDark = matchMedia('(prefers-color-scheme: dark)').matches;
+      var icon = isDark ? 'img/icon_d.png' : 'img/icon_l.png';
+      document.write('<link rel="icon" id="favicon" type="image/png" href="' + icon + '?r=' + Math.random() + '" />');
+    })();
+    </script>
     <title data-i18n="pageTitle">新标签页</title>
     <meta name="description" content="可定制的浏览器类原生起始页-简洁无需多言" />
     <style>
@@ -1313,10 +1318,7 @@
     .tooltip-icon .tooltip-content {
       visibility: hidden;
       opacity: 0;
-      position: absolute;
-      bottom: calc(100% + 8px);
-      left: 50%;
-      transform: translateX(-50%);
+      position: fixed;
       background: var(--settings-card-bg);
       color: var(--settings-text-primary);
       font-size: 12px;
@@ -1325,10 +1327,10 @@
       padding: 8px 12px;
       border-radius: 6px;
       box-shadow: 0 4px 16px rgba(0,0,0,0.25);
-      width: 260px;
+      max-width: 260px;
       white-space: normal;
       word-break: normal;
-      z-index: 1000;
+      z-index: 10000;
       transition: opacity 0.15s ease, visibility 0.15s ease;
       pointer-events: none;
     }
@@ -1430,7 +1432,7 @@
                       <svg width="18" height="18" viewBox="0 0 1024 1024" fill="currentColor" aria-hidden="true" style="margin-top: 3px; margin-left: -2px;">
                         <path d="M509.92 795.84c157.904 0 285.92-128.016 285.92-285.92C795.84 352 667.808 224 509.92 224 352 224 224 352 224 509.92c0 157.904 128 285.92 285.92 285.92z m0 48C325.504 843.84 176 694.32 176 509.92 176 325.504 325.504 176 509.92 176c184.416 0 333.92 149.504 333.92 333.92 0 184.416-149.504 333.92-333.92 333.92z m-2.448-400.704h16a16 16 0 0 1 16 16v201.728a16 16 0 0 1-16 16h-16a16 16 0 0 1-16-16V459.136a16 16 0 0 1 16-16z m0-100.176h16a16 16 0 0 1 16 16v23.648a16 16 0 0 1-16 16h-16a16 16 0 0 1-16-16v-23.648a16 16 0 0 1 16-16z"/>
                       </svg>
-                      <span class="tooltip-content" data-i18n="forceBingCNDesc">强制使用必应中国版，避免代理设置导致的 www.bing.com 无法自动跳转到 cn.bing.com</span>
+                      <span class="tooltip-content" data-i18n-html="forceBingCNDesc"><b>开启</b>：强制使用必应中国版<br><b>关闭</b>：根据网络环境自动选择。<br>此选项可以避免代理设置导致 www.bing.com 无法自动跳转到 cn.bing.com。</span>
                     </span>
                   </div>
                   <div class="switch-container">
