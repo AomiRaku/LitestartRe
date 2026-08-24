@@ -2136,6 +2136,7 @@ searchInput?.addEventListener('input', () => {
           baseUrl = bingCNSearchUrl;
         }
         targetUrl = baseUrl + encodeURIComponent(query);
+        window.location.href = targetUrl;
       }
     }
   }
