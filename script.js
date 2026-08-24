@@ -903,6 +903,285 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+
+// ===== 用户个人资料管理 =====
+const defaultProfile = {
+  name: '个人',
+  email: '本地账户',
+  avatar: 'img/profiles.png'  // 默认头像路径
+};
+
+// 加载或初始化用户资料
+let userProfile = Storage.get('ntp_user_profile', null);
+if (!userProfile) {
+  userProfile = { ...defaultProfile };
+  Storage.set('ntp_user_profile', userProfile);
+}
+
+// 更新菜单中的用户信息显示
+function updateProfileUI() {
+  const avatarImg = document.getElementById('profile-avatar');
+  const nameEl = document.getElementById('profile-name');
+  const emailEl = document.getElementById('profile-email');
+
+  if (avatarImg) avatarImg.src = userProfile.avatar || defaultProfile.avatar;
+  if (nameEl) nameEl.textContent = userProfile.name || defaultProfile.name;
+  if (emailEl) emailEl.textContent = userProfile.email || defaultProfile.email;
+  
+}
+
+updateProfileUI();
+
+// 获取编辑弹窗元素
+const modalProfile = document.getElementById('modal-profile');
+const profileForm = document.getElementById('profile-form');
+const inputProfileName = document.getElementById('input-profile-name');
+const inputProfileEmail = document.getElementById('input-profile-email');
+const profileAvatarPreview = document.getElementById('profile-avatar-preview');
+const btnUploadAvatar = document.getElementById('btn-upload-avatar');
+const inputAvatarFile = document.getElementById('input-avatar-file');
+const btnRemoveAvatar = document.getElementById('btn-remove-avatar');
+const btnProfileCancel = document.getElementById('btn-profile-cancel');
+const btnProfileSave = document.getElementById('btn-profile-save');
+const btnProfileDetails = document.getElementById('btn-profile-details');
+
+// 打开编辑个人资料弹窗
+function openProfileModal() {
+  // 填充当前数据
+  inputProfileName.value = userProfile.name || '';
+  inputProfileEmail.value = userProfile.email || '';
+  profileAvatarPreview.src = userProfile.avatar || defaultProfile.avatar;
+  // 显示删除按钮条件：头像不是默认头像
+  const isDefaultAvatar = userProfile.avatar === defaultProfile.avatar;
+  btnRemoveAvatar.style.display = isDefaultAvatar ? 'none' : 'inline-flex';
+  modalProfile.classList.add('active');
+  setTimeout(() => inputProfileName.focus(), 50);
+}
+
+function closeProfileModal() {
+  modalProfile.classList.remove('active');
+}
+
+// 点击账户详细信息按钮
+btnProfileDetails?.addEventListener('click', () => {
+  popoverWaffle?.classList.remove('active'); // 关闭菜单
+  openProfileModal();
+});
+
+// 上传头像
+btnUploadAvatar?.addEventListener('click', () => {
+  inputAvatarFile.click();
+});
+
+inputAvatarFile?.addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (event) => {
+    const dataUrl = event.target.result;
+    profileAvatarPreview.src = dataUrl;
+    // 预览时即显示删除按钮
+    btnRemoveAvatar.style.display = 'inline-flex';
+    // 暂存到表单，但尚未保存到userProfile，等提交时正式保存
+    // 我们用临时变量存储
+    window._tempAvatar = dataUrl;
+  };
+  reader.readAsDataURL(file);
+});
+
+// 删除头像（恢复到默认）
+btnRemoveAvatar?.addEventListener('click', () => {
+  profileAvatarPreview.src = defaultProfile.avatar;
+  btnRemoveAvatar.style.display = 'none';
+  window._tempAvatar = defaultProfile.avatar; // 标记为默认
+});
+
+// 取消按钮
+btnProfileCancel?.addEventListener('click', closeProfileModal);
+
+// 点击遮罩关闭
+modalProfile?.addEventListener('click', (e) => {
+  if (e.target === modalProfile) closeProfileModal();
+});
+
+// 提交表单保存
+profileForm?.addEventListener('submit', (e) => {
+  e.preventDefault();
+  // 获取各字段值
+  const name = inputProfileName.value.trim() || defaultProfile.name;
+  const email = inputProfileEmail.value.trim() || defaultProfile.email;
+
+  // 头像处理：若临时头像存在则使用，否则保留原有头像（如果用户未操作头像，则不变）
+  let avatar = userProfile.avatar; // 默认使用原有
+  if (window._tempAvatar !== undefined) {
+    // 用户操作过头像
+    if (window._tempAvatar === defaultProfile.avatar) {
+      avatar = defaultProfile.avatar;
+    } else {
+      avatar = window._tempAvatar;
+    }
+    delete window._tempAvatar; // 清除临时变量
+  }
+
+  // 更新userProfile
+  userProfile.name = name;
+  userProfile.email = email;
+  userProfile.avatar = avatar;
+
+  Storage.set('ntp_user_profile', userProfile);
+  updateProfileUI(); // 刷新菜单
+  closeProfileModal();
+});
+
+// 管理配置文件
+
+// 初始化配置 - 打开重置确认弹窗
+document.getElementById('btn-init-config')?.addEventListener('click', () => {
+  popoverWaffle?.classList.remove('active');
+  document.getElementById('modal-reset-confirm')?.classList.add('active');
+});
+
+// ===== 重置确认弹窗事件 =====
+const modalResetConfirm = document.getElementById('modal-reset-confirm');
+const btnResetCancel = document.getElementById('btn-reset-cancel');
+const btnResetConfirm = document.getElementById('btn-reset-confirm');
+
+// 取消按钮
+btnResetCancel?.addEventListener('click', () => {
+  modalResetConfirm?.classList.remove('active');
+});
+
+// 确定按钮 - 执行重置
+btnResetConfirm?.addEventListener('click', () => {
+  // 删除所有以 ntp_ 开头的 localStorage 项
+  const keys = Object.keys(localStorage);
+  keys.forEach(key => {
+    if (key.startsWith('ntp_')) {
+      localStorage.removeItem(key);
+    }
+  });
+  modalResetConfirm?.classList.remove('active');
+  // 显示完成弹窗
+  document.getElementById('modal-reset-done')?.classList.add('active');
+});
+
+// 完成弹窗 - 刷新页面
+document.getElementById('btn-reset-done-confirm')?.addEventListener('click', () => {
+  window.location.reload();
+});
+
+// 点击遮罩也可刷新
+document.getElementById('modal-reset-done')?.addEventListener('click', (e) => {
+  if (e.target === document.getElementById('modal-reset-done')) {
+    window.location.reload();
+  }
+});
+
+// ===== 管理配置文件 - 导出/恢复 =====
+const modalManageProfiles = document.getElementById('modal-manage-profiles');
+const btnManageProfiles = document.getElementById('btn-manage-profiles');
+const btnExportConfig = document.getElementById('btn-export-config');
+const btnImportConfig = document.getElementById('btn-import-config');
+const btnManageProfilesCancel = document.getElementById('btn-manage-profiles-cancel');
+const fileInputRestore = document.getElementById('file-input-restore');
+
+// 打开管理配置文件弹窗
+btnManageProfiles?.addEventListener('click', () => {
+  popoverWaffle?.classList.remove('active');
+  modalManageProfiles?.classList.add('active');
+});
+
+// 取消按钮
+btnManageProfilesCancel?.addEventListener('click', () => {
+  modalManageProfiles?.classList.remove('active');
+});
+
+// 点击遮罩关闭
+modalManageProfiles?.addEventListener('click', (e) => {
+  if (e.target === modalManageProfiles) modalManageProfiles.classList.remove('active');
+});
+
+// 导出配置
+btnExportConfig?.addEventListener('click', () => {
+  const keys = [
+    'ntp_engine',
+    'ntp_layout',
+    'ntp_quicklinks',
+    'ntp_history_enabled',
+    'ntp_show_time_capsule',
+    'ntp_show_menu_button',
+    'ntp_force_bing_cn',
+    'ntp_bg_enabled',
+    'ntp_enhanced_visibility',
+    'ntp_quicklinks_list',
+    'ntp_search_history',
+    'ntp_custom_engine_config',
+    'ntp_user_profile',
+    'ntp_custom_wallpaper'
+  ];
+
+  const data = {};
+  keys.forEach(key => {
+    const val = localStorage.getItem(key);
+    if (val !== null) {
+      try {
+        data[key] = JSON.parse(val);
+      } catch (e) {
+        data[key] = val;
+      }
+    }
+  });
+
+  const jsonStr = JSON.stringify(data, null, 2);
+  const blob = new Blob([jsonStr], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  const dateStr = new Date().toISOString().slice(0, 10);
+  a.download = `Litestart_Backup_${dateStr}.json`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+});
+
+// 点击恢复配置 -> 触发文件选择
+btnImportConfig?.addEventListener('click', () => {
+  fileInputRestore?.click();
+});
+
+// 文件选择后的处理
+fileInputRestore?.addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = (event) => {
+    try {
+      const data = JSON.parse(event.target.result);
+      // 检查是否是有效的配置文件（至少包含一些关键字段）
+      if (!data || typeof data !== 'object') {
+        throw new Error('无效的配置文件格式');
+      }
+
+      // 写入 localStorage
+      Object.keys(data).forEach(key => {
+        localStorage.setItem(key, JSON.stringify(data[key]));
+      });
+
+      alert('配置恢复成功！页面将刷新以应用所有设置。');
+      window.location.reload();
+    } catch (err) {
+      alert('配置文件格式错误，请确保选择的是正确的 JSON 备份文件。');
+      console.error('导入配置失败:', err);
+    }
+  };
+  reader.readAsText(file);
+
+  // 重置文件输入，允许重复选择同一文件
+  fileInputRestore.value = '';
+});
+  
   applyBackgroundState();
 
   // 背景开关同步响应
@@ -1751,8 +2030,6 @@ searchInput?.addEventListener('input', () => {
         }
         targetUrl = baseUrl + encodeURIComponent(query);
       }
-
-      window.location.href = targetUrl;
     }
   }
 

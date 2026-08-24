@@ -56,7 +56,7 @@
       --input-border-bottom: #8a8a8a;
 
       /* 7. 设置面板专用颜色 */
-      --settings-panel-bg: #f3f3f3;
+      --settings-panel-bg: #E3E3E3;
       --settings-card-bg: #ffffff;
       --settings-card-border: #e5e5e5;
       --settings-card-hover: #f9f9f9;
@@ -1350,6 +1350,42 @@
       visibility: visible;
       opacity: 1;
     }
+
+
+    /* 个人资料菜单配置 */
+    #popover-waffle {
+    left: 22px;
+    width: 340px;
+    padding: 0;
+    background-color: var(--settings-panel-bg);
+    border: 1px solid var(--settings-card-border);
+    border-radius: 12px;
+    }
+
+    .waffle-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 8px;
+    border-radius: 8px;
+    color: var(--settings-text-primary);
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.15s;
+    user-select: none;
+    background-color: transparent;
+    }
+
+    .waffle-menu-item:hover {
+    background-color: var(--neutral-fill-hover);
+    }
+
+    .waffle-menu-item svg {
+    flex-shrink: 0;
+    color: var(--settings-text-secondary);
+    width: 20px;
+    height: 20px;
+    }
     </style>
 </head>
 
@@ -1379,8 +1415,37 @@
             <span class="time-date"></span>
           </div>
           <!-- 左侧菜单 -->
-          <div id="popover-waffle" class="popover-panel">
-            <div style="padding: 10px; text-align: center;"></div>
+          <div id="popover-waffle" class="popover-panel" style="background-color: var(--settings-panel-bg); padding: 0; overflow: hidden;">
+            <div style="padding: 12px;">
+
+            <!-- 个人资料卡片 -->
+            <div class="settings-card" style="margin-bottom: 12px;">
+              <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 10px;">
+              <img id="profile-avatar" src="img/profiles.png" alt="头像" style="width: 48px; height: 48px; border-radius: 50%; object-fit: cover; background-color: var(--settings-thumb-bg); flex-shrink: 0; border: 2px solid var(--settings-card-border);">
+              <div style="flex:1; min-width:0;">
+              <div id="profile-name" style="font-weight: 600; font-size: 15px; color: var(--settings-text-primary);">个人</div>
+              <div id="profile-email" style="font-size: 13px; color: var(--settings-text-secondary);">本地账户</div>
+              </div>
+            </div>
+
+            <!-- 账户详细信息按钮 -->
+            <button id="btn-profile-details" class="icon-btn-text" type="button" style="margin-top: 2px;">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M11.013 1.427a1.75 1.75 0 0 1 2.474 0l1.086 1.086a1.75 1.75 0 0 1 0 2.474l-8.61 8.61c-.21.21-.47.364-.756.445l-3.251.93a.75.75 0 0 1-.927-.928l.93-3.25a1.75 1.75 0 0 1 .445-.758l8.61-8.609z"/>
+            </svg>
+            <span data-i18n="accountDetails">账户详细信息</span>
+            </button>
+            </div>
+            <!-- 下方菜单项 -->
+            <div class="waffle-menu-item" id="btn-manage-profiles" style="margin-bottom: 4px;">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="300" height="300"><path  d="M7.22 4.22a.75.75 0 0 1 1.06 0l3.5 3.5a.75.75 0 0 1 0 1.06l-3.5 3.5a.75.75 0 0 1-1.06-1.06L9.44 9H1.75a.75.75 0 0 1 0-1.5h7.69L7.22 5.28a.75.75 0 0 1 0-1.06m7.28-.47a.75.75 0 0 0-1.5 0v8.5a.75.75 0 0 0 1.5 0z"/></svg>
+              <span data-i18n="manageProfiles">管理配置文件</span>
+            </div>
+            <div class="waffle-menu-item" id="btn-init-config">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width="128" height="128"><path fill="#ffffff" d="M6.03 2.47a.75.75 0 0 1 0 1.06L4.81 4.75H11A6.25 6.25 0 1 1 4.75 11a.75.75 0 0 1 1.5 0A4.75 4.75 0 1 0 11 6.25H4.81l1.22 1.22a.75.75 0 0 1-1.06 1.06l-2.5-2.5a.75.75 0 0 1 0-1.06l2.5-2.5a.75.75 0 0 1 1.06 0"/></svg>
+              <span data-i18n="initConfig">初始化配置</span>
+            </div>
+            </div>
           </div>
         </div>
 
@@ -1559,7 +1624,7 @@
                 
               </div>
               <div class="settings-footer-links">
-                <a href="https://github.com/XingYueFox/Litestart" target="_blank">LiteStart 1.3.1</a>| <span data-i18n="presentedBy">由</span> <a href="https://xingyuefox.pages.dev" target="_blank" data-i18n="xingyuefox">星月Fox</a> <span data-i18n="forYou">为您呈现</span>
+                <a href="https://github.com/XingYueFox/Litestart" target="_blank">LiteStart 1.4.0</a>| <span data-i18n="presentedBy">由</span> <a href="https://xingyuefox.pages.dev" target="_blank" data-i18n="xingyuefox">星月Fox</a> <span data-i18n="forYou">为您呈现</span>
               </div>
               <div class="settings-footer-text" style="opacity: 0.8;" data-i18n="disclaimer">
                 请注意，此网页与 Microsoft 无关。
@@ -1774,6 +1839,116 @@
       </div>
     </div>
 
-    <script src="script.js"></script>
+
+    <!-- 编辑个人资料模态框 -->
+<div id="modal-profile" class="modal-overlay">
+  <div class="modal-dialog">
+    <div class="modal-header" data-i18n="editProfile">编辑个人资料</div>
+    <form id="profile-form" novalidate>
+      <!-- 头像区域 -->
+      <div class="form-group" style="margin-bottom: 20px;">
+        <label class="form-label" data-i18n="profileAvatar">头像</label>
+        <div style="display: flex; align-items: center; gap: 16px; flex-wrap: wrap;">
+          <img id="profile-avatar-preview" src="img/profiles.png" alt="头像预览" style="width: 72px; height: 72px; border-radius: 50%; object-fit: cover; background-color: var(--settings-thumb-bg); border: 1px solid var(--settings-card-border);">
+          <div style="display: flex; gap: 8px;">
+            <button type="button" class="btn btn-secondary" id="btn-upload-avatar" data-i18n="uploadAvatar">上传头像</button>
+            <button type="button" class="btn btn-secondary" id="btn-remove-avatar" data-i18n="removeAvatar" style="display: none;">删除头像</button>
+          </div>
+          <input type="file" id="input-avatar-file" class="file-input-hidden" accept="image/*">
+        </div>
+      </div>
+
+      <!-- 姓名 -->
+      <div class="form-group">
+        <label class="form-label" for="input-profile-name" data-i18n="name">姓名</label>
+        <div class="input-container" id="container-profile-name">
+          <input type="text" id="input-profile-name" class="input" placeholder="个人" autocomplete="off">
+        </div>
+      </div>
+
+      <!-- 邮箱 -->
+      <div class="form-group">
+        <label class="form-label" for="input-profile-email" data-i18n="email">邮箱</label>
+        <div class="input-container" id="container-profile-email">
+          <input type="email" id="input-profile-email" class="input" placeholder="本地账户" autocomplete="off">
+        </div>
+      </div> 
+
+      <div class="modal-footer">
+        <div class="modal-footer-right">
+          <button type="button" id="btn-profile-cancel" class="btn btn-secondary" data-i18n="cancel">取消</button>
+          <button type="submit" id="btn-profile-save" class="btn btn-primary" data-i18n="save">保存</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- 管理配置文件模态框 -->
+<div id="modal-manage-profiles" class="modal-overlay">
+  <div class="modal-dialog">
+    <div class="modal-header" data-i18n="manageProfilesTitle">管理配置文件</div>
+    <div style="display: flex; flex-direction: column; gap: 12px; padding: 8px 0 16px 0;">
+      <!-- 导出配置按钮 -->
+      <button id="btn-export-config" class="btn btn-secondary" style="width: 100%; justify-content: center; padding: 10px 0; gap: 8px;">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+          <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+          <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z"/>
+        </svg>
+        <span data-i18n="exportConfig">导出配置</span>
+      </button>
+      <!-- 恢复配置按钮 -->
+      <button id="btn-import-config" class="btn btn-secondary" style="width: 100%; justify-content: center; padding: 10px 0; gap: 8px;">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+          <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+          <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+        </svg>
+        <span data-i18n="importConfig">恢复配置</span>
+      </button>
+    </div>
+    <div class="modal-footer">
+      <div class="modal-footer-right">
+        <button type="button" id="btn-manage-profiles-cancel" class="btn btn-secondary" data-i18n="cancel">取消</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 隐藏的文件输入框，用于导入配置 -->
+<input type="file" id="file-input-restore" accept=".json,application/json" style="display: none;">
+
+
+<!-- 重置确认弹窗 -->
+<div id="modal-reset-confirm" class="modal-overlay">
+  <div class="modal-dialog">
+    <div class="modal-header" data-i18n="resetTitle">重置Litestart</div>
+    <div style="padding: 8px 0 16px 0; color: var(--neutral-foreground-rest); font-size: 14px; line-height: 1.6;">
+      <p style="margin: 0;" data-i18n="resetDesc">如果你遇到了一些问题，或是对于目前的设定不满意，重置可以清除所有数据并还原Litestart为初始状态，请注意，此操作不可撤回！</p>
+    </div>
+    <div class="modal-footer">
+      <div class="modal-footer-right">
+        <button type="button" id="btn-reset-cancel" class="btn btn-secondary" data-i18n="cancel">取消</button>
+        <button type="button" id="btn-reset-confirm" class="btn btn-danger" data-i18n="confirmReset">确定</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 重置完成提示弹窗 -->
+<div id="modal-reset-done" class="modal-overlay">
+  <div class="modal-dialog">
+    <div class="modal-header" data-i18n="resetDoneTitle">重置完成</div>
+    <div style="padding: 8px 0 16px 0; color: var(--neutral-foreground-rest); font-size: 14px; line-height: 1.6;">
+      <p style="margin: 0;" data-i18n="resetDoneDesc">所有设置已重置为初始状态，页面即将刷新。</p>
+    </div>
+    <div class="modal-footer">
+      <div class="modal-footer-right">
+        <button type="button" id="btn-reset-done-confirm" class="btn btn-primary" data-i18n="refreshNow">立即刷新</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>
