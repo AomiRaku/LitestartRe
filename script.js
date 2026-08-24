@@ -93,7 +93,7 @@ const i18nData = {
     addlink: '添加',
 
     // 个人资料菜单
-    accountDetails: '账户详细信息',
+    accountDetails: '编辑账户信息',
     manageProfiles: '管理配置文件',
     initConfig: '初始化配置',
 
@@ -182,7 +182,7 @@ const i18nData = {
     enhancedVisibility: '增強元素可見性',
     enhancedVisibilityDesc: '開啟背景時給Logo和頂部按鈕添加半透明背景，使其在背景圖上更清晰',
     addlink: '新增',
-    accountDetails: '帳戶詳細資訊',
+    accountDetails: '編輯帳戶資訊',
     manageProfiles: '管理設定檔',
     initConfig: '初始化設定',
     editProfile: '編輯個人資料',
@@ -203,9 +203,9 @@ const i18nData = {
   'zh-WY': {
     pageTitle: '新籤頁',
     settingsTitle: '頁面之設',
-    close: '闔',
+    close: '關',
     quicklinks: '網要',
-    off: '罷',
+    off: '止',
     on: '啟',
     rows1: '一列',
     rows2: '二列',
@@ -213,8 +213,8 @@ const i18nData = {
     showMenuButton: '顯目錄',
     searchEngine: '搜尋器',
     custom: '自訂',
-    editCustomEngine: '輯自訂搜尋器',
-    saveHistory: '存搜尋記',
+    editCustomEngine: '訂搜器',
+    saveHistory: '搜錄',
     layout: '佈局',
     inspirational: '展望',
     focused: '專注',
@@ -243,9 +243,9 @@ const i18nData = {
     inputNamePh: '書捷徑之名',
     errorNameReq: '請填捷徑名',
     errorUrlReq: '請填網址',
-    delete: '削',
-    cancel: '罷',
-    save: '存',
+    delete: '刪',
+    cancel: '止',
+    save: '儲',
     customEngineTitle: '自定搜尋器',
     engineName: '引擎之名',
     engineNamePh: '例: DuckDuckGo',
@@ -263,7 +263,7 @@ const i18nData = {
     enhancedVisibility: '彰明諸元',
     enhancedVisibilityDesc: '啟背景時，徽標頂鈕之下施輕翳，映於畫圖而愈晰',
     addlink: '增',
-    accountDetails: '帳戶之詳',
+    accountDetails: '改易簡策，存真去偽',
     manageProfiles: '掌檔',
     initConfig: '初設',
     editProfile: '修飾名帖',
@@ -274,7 +274,7 @@ const i18nData = {
     manageProfilesTitle: '掌檔',
     exportConfig: '出設',
     importConfig: '入設',
-    resetTitle: '返本歸元',
+    resetTitle: '復初',
     resetDesc: '倘遭困顿，或厌时制，可复初以涤万设，返Litestart于鸿蒙。然此举不可追，慎之慎之！',
     confirmReset: '定',
     resetDoneTitle: '妙哉！返本归元',
@@ -345,7 +345,7 @@ const i18nData = {
     enhancedVisibility: 'Enhance Element Visibility',
     enhancedVisibilityDesc: 'Adds semi-transparent backgrounds to Logo and header buttons when background is enabled for better clarity',
     addlink: 'Add',
-    accountDetails: 'Account Details',
+    accountDetails: 'Edit Account',
     manageProfiles: 'Manage Profiles',
     initConfig: 'Init Config',
     editProfile: 'Edit Profile',
@@ -427,7 +427,7 @@ const i18nData = {
     enhancedVisibility: '要素の視認性を向上',
     enhancedVisibilityDesc: '背景有効時にロゴとヘッダーボタンに半透明の背景を追加し、見やすくします',
     addlink: '追加',
-    accountDetails: 'アカウント詳細',
+    accountDetails: 'アカウント編集',
     manageProfiles: 'プロファイル管理',
     initConfig: '初期設定',
     editProfile: 'プロファイル編集',
@@ -509,7 +509,7 @@ const i18nData = {
     enhancedVisibility: 'Повысить видимость элементов',
     enhancedVisibilityDesc: 'Добавляет полупрозрачный фон к логотипу и кнопкам заголовка при включенном фоне для лучшей читаемости',
     addlink: 'Добавить',
-    accountDetails: 'Детали аккаунта',
+    accountDetails: 'Редактировать аккаунт',
     manageProfiles: 'Управление профилями',
     initConfig: 'Инициализация',
     editProfile: 'Редактировать профиль',
@@ -640,6 +640,20 @@ function applyLanguage(langConfig) {
   if (statusMenuBtn) {
     const isChecked = document.getElementById('toggle-menu-button-switch')?.checked ?? true;
     statusMenuBtn.innerText = isChecked ? dict.on : dict.off;
+  }
+
+  // 8.强制使用必应中国版开关状态文本
+  const statusForceBingCN = document.getElementById('status-force-bing-cn');
+  if (statusForceBingCN) {
+    const isChecked = document.getElementById('toggle-force-bing-cn')?.checked || false;
+    statusForceBingCN.innerText = isChecked ? dict.on : dict.off;
+  }
+
+  // 9.刷新增强元素可见性状态文本
+  const statusEnhancedVisibility = document.getElementById('status-enhanced-visibility');
+  if (statusEnhancedVisibility) {
+    const isChecked = document.getElementById('toggle-enhanced-visibility')?.checked || false;
+    statusEnhancedVisibility.innerText = isChecked ? dict.on : dict.off;
   }
 }
 
@@ -1310,6 +1324,7 @@ fileInputRestore?.addEventListener('change', (e) => {
     enhancedVisibility = e.target.checked;
     Storage.set('ntp_enhanced_visibility', enhancedVisibility);
     applyEnhancedVisibility();
+    applyLanguage(localStorage.getItem('liteStart_language') || 'auto');
   });
 
   // 壁纸弹窗逻辑
@@ -1501,6 +1516,7 @@ inputOnlineUrl?.addEventListener('input', () => {
   toggleForceBingCN?.addEventListener('change', (e) => {
     forceBingCN = e.target.checked;
     Storage.set('ntp_force_bing_cn', forceBingCN);
+    applyLanguage(localStorage.getItem('liteStart_language') || 'auto'); 
   });
 
   btnEditEngine?.addEventListener('click', () => {
