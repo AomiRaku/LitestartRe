@@ -347,7 +347,31 @@
       border-radius: 12px;
       max-height: 85vh;
       overflow-y: auto;
+
+      /* 隐藏浏览器提供的滚动条 */
       scrollbar-width: thin;
+      scrollbar-color: var(--settings-thumb-border) transparent;
+    }
+
+    /* WebKit内核浏览器自定义滚动条 */
+    #popover-settings::-webkit-scrollbar {
+      width: 6px;                      /* 滚动条宽度 */
+      background: transparent;         /* 轨道透明 */
+    }
+
+    #popover-settings::-webkit-scrollbar-track {
+      background: transparent;         /* 轨道透明 */
+      border-radius: 10px;
+    }
+
+    #popover-settings::-webkit-scrollbar-thumb {
+      background: var(--settings-thumb-border);  /* 滑块颜色 */
+      border-radius: 10px;
+      transition: background 0.2s;
+    }
+
+    #popover-settings::-webkit-scrollbar-thumb:hover {
+      background: var(--settings-text-secondary);  /* 悬停时变色 */
     }
 
     .settings-header {
@@ -1628,7 +1652,7 @@
                 
               </div>
               <div class="settings-footer-links">
-                <a href="https://github.com/XingYueFox/Litestart" target="_blank">LiteStart 1.4.1</a>| <span data-i18n="presentedBy">由</span> <a href="https://xingyuefox.pages.dev" target="_blank" data-i18n="xingyuefox">星月Fox</a> <span data-i18n="forYou">为您呈现</span>
+                <a href="https://github.com/XingYueFox/Litestart" target="_blank">LiteStart 1.4.2</a>| <span data-i18n="presentedBy">由</span> <a href="https://xingyuefox.pages.dev" target="_blank" data-i18n="xingyuefox">星月Fox</a> <span data-i18n="forYou">为您呈现</span>
               </div>
               <div class="settings-footer-text" style="opacity: 0.8;" data-i18n="disclaimer">
                 请注意，此网页与 Microsoft 无关。
@@ -1845,113 +1869,113 @@
 
 
     <!-- 编辑个人资料模态框 -->
-<div id="modal-profile" class="modal-overlay">
-  <div class="modal-dialog">
-    <div class="modal-header" data-i18n="editProfile">编辑个人资料</div>
-    <form id="profile-form" novalidate>
-      <!-- 头像区域 -->
-      <div class="form-group" style="margin-bottom: 20px;">
-        <label class="form-label" data-i18n="profileAvatar">头像</label>
-        <div style="display: flex; align-items: center; gap: 16px; flex-wrap: wrap;">
-          <img id="profile-avatar-preview" src="img/profiles.png" alt="头像预览" style="width: 72px; height: 72px; border-radius: 50%; object-fit: cover; background-color: var(--settings-thumb-bg); border: 1px solid var(--settings-card-border);">
-          <div style="display: flex; gap: 8px;">
-            <button type="button" class="btn btn-secondary" id="btn-upload-avatar" data-i18n="uploadAvatar">上传头像</button>
-            <button type="button" class="btn btn-secondary" id="btn-remove-avatar" data-i18n="removeAvatar" style="display: none;">删除头像</button>
+    <div id="modal-profile" class="modal-overlay">
+      <div class="modal-dialog">
+        <div class="modal-header" data-i18n="editProfile">编辑个人资料</div>
+        <form id="profile-form" novalidate>
+          <!-- 头像区域 -->
+          <div class="form-group" style="margin-bottom: 20px;">
+            <label class="form-label" data-i18n="profileAvatar">头像</label>
+            <div style="display: flex; align-items: center; gap: 16px; flex-wrap: wrap;">
+              <img id="profile-avatar-preview" src="img/profiles.png" alt="头像预览" style="width: 72px; height: 72px; border-radius: 50%; object-fit: cover; background-color: var(--settings-thumb-bg); border: 1px solid var(--settings-card-border);">
+              <div style="display: flex; gap: 8px;">
+                <button type="button" class="btn btn-secondary" id="btn-upload-avatar" data-i18n="uploadAvatar">上传头像</button>
+                <button type="button" class="btn btn-secondary" id="btn-remove-avatar" data-i18n="removeAvatar" style="display: none;">删除头像</button>
+              </div>
+              <input type="file" id="input-avatar-file" class="file-input-hidden" accept="image/*">
+            </div>
           </div>
-          <input type="file" id="input-avatar-file" class="file-input-hidden" accept="image/*">
+
+          <!-- 姓名 -->
+          <div class="form-group">
+            <label class="form-label" for="input-profile-name" data-i18n="name">姓名</label>
+            <div class="input-container" id="container-profile-name">
+              <input type="text" id="input-profile-name" class="input" placeholder="个人" autocomplete="off">
+            </div>
+          </div>
+
+          <!-- 描述 -->
+          <div class="form-group">
+            <label class="form-label" for="input-profile-description" data-i18n="description">描述</label>
+            <div class="input-container" id="container-profile-description">
+              <input type="text" id="input-profile-description" class="input" placeholder="本地账户" autocomplete="off">
+            </div>
+          </div> 
+
+          <div class="modal-footer">
+            <div class="modal-footer-right">
+              <button type="button" id="btn-profile-cancel" class="btn btn-secondary" data-i18n="cancel">取消</button>
+              <button type="submit" id="btn-profile-save" class="btn btn-primary" data-i18n="save">保存</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- 管理配置文件模态框 -->
+    <div id="modal-manage-profiles" class="modal-overlay">
+      <div class="modal-dialog">
+        <div class="modal-header" data-i18n="manageProfilesTitle">管理配置文件</div>
+        <div style="display: flex; flex-direction: column; gap: 12px; padding: 8px 0 16px 0;">
+          <!-- 导出配置按钮 -->
+          <button id="btn-export-config" class="btn btn-secondary" style="width: 100%; justify-content: center; padding: 10px 0; gap: 8px;">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+              <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+              <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z"/>
+            </svg>
+            <span data-i18n="exportConfig">导出配置</span>
+          </button>
+          <!-- 恢复配置按钮 -->
+          <button id="btn-import-config" class="btn btn-secondary" style="width: 100%; justify-content: center; padding: 10px 0; gap: 8px;">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+              <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+              <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+            </svg>
+            <span data-i18n="importConfig">恢复配置</span>
+          </button>
+        </div>
+        <div class="modal-footer">
+          <div class="modal-footer-right">
+            <button type="button" id="btn-manage-profiles-cancel" class="btn btn-secondary" data-i18n="cancel">取消</button>
+          </div>
         </div>
       </div>
+    </div>
 
-      <!-- 姓名 -->
-      <div class="form-group">
-        <label class="form-label" for="input-profile-name" data-i18n="name">姓名</label>
-        <div class="input-container" id="container-profile-name">
-          <input type="text" id="input-profile-name" class="input" placeholder="个人" autocomplete="off">
+    <!-- 隐藏的文件输入框，用于导入配置 -->
+    <input type="file" id="file-input-restore" accept=".json,application/json" style="display: none;">
+
+
+    <!-- 重置确认弹窗 -->
+    <div id="modal-reset-confirm" class="modal-overlay">
+      <div class="modal-dialog">
+        <div class="modal-header" data-i18n="resetTitle">重置 Litestart</div>
+        <div style="padding: 8px 0 16px 0; color: var(--neutral-foreground-rest); font-size: 14px; line-height: 1.6;">
+          <p style="margin: 0;" data-i18n="resetDesc">如果你遇到了一些问题，或是对于目前的设定不满意，重置可以清除所有数据并还原 Litestart 为初始状态，请注意，此操作不可撤回！</p>
+        </div>
+        <div class="modal-footer">
+          <div class="modal-footer-right">
+            <button type="button" id="btn-reset-cancel" class="btn btn-secondary" data-i18n="cancel">取消</button>
+            <button type="button" id="btn-reset-confirm" class="btn btn-danger" data-i18n="confirmReset">确定</button>
+          </div>
         </div>
       </div>
+    </div>
 
-      <!-- 描述 -->
-      <div class="form-group">
-        <label class="form-label" for="input-profile-description" data-i18n="description">描述</label>
-        <div class="input-container" id="container-profile-description">
-          <input type="text" id="input-profile-description" class="input" placeholder="本地账户" autocomplete="off">
+    <!-- 重置完成提示弹窗 -->
+    <div id="modal-reset-done" class="modal-overlay">
+      <div class="modal-dialog">
+        <div class="modal-header" data-i18n="resetDoneTitle">重置完成</div>
+        <div style="padding: 8px 0 16px 0; color: var(--neutral-foreground-rest); font-size: 14px; line-height: 1.6;">
+          <p style="margin: 0;" data-i18n="resetDoneDesc">所有设置已重置为初始状态，页面即将刷新。</p>
         </div>
-      </div> 
-
-      <div class="modal-footer">
-        <div class="modal-footer-right">
-          <button type="button" id="btn-profile-cancel" class="btn btn-secondary" data-i18n="cancel">取消</button>
-          <button type="submit" id="btn-profile-save" class="btn btn-primary" data-i18n="save">保存</button>
+        <div class="modal-footer">
+          <div class="modal-footer-right">
+            <button type="button" id="btn-reset-done-confirm" class="btn btn-primary" data-i18n="refreshNow">立即刷新</button>
+          </div>
         </div>
       </div>
-    </form>
-  </div>
-</div>
-
-<!-- 管理配置文件模态框 -->
-<div id="modal-manage-profiles" class="modal-overlay">
-  <div class="modal-dialog">
-    <div class="modal-header" data-i18n="manageProfilesTitle">管理配置文件</div>
-    <div style="display: flex; flex-direction: column; gap: 12px; padding: 8px 0 16px 0;">
-      <!-- 导出配置按钮 -->
-      <button id="btn-export-config" class="btn btn-secondary" style="width: 100%; justify-content: center; padding: 10px 0; gap: 8px;">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-          <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
-          <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z"/>
-        </svg>
-        <span data-i18n="exportConfig">导出配置</span>
-      </button>
-      <!-- 恢复配置按钮 -->
-      <button id="btn-import-config" class="btn btn-secondary" style="width: 100%; justify-content: center; padding: 10px 0; gap: 8px;">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-          <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
-          <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
-        </svg>
-        <span data-i18n="importConfig">恢复配置</span>
-      </button>
     </div>
-    <div class="modal-footer">
-      <div class="modal-footer-right">
-        <button type="button" id="btn-manage-profiles-cancel" class="btn btn-secondary" data-i18n="cancel">取消</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- 隐藏的文件输入框，用于导入配置 -->
-<input type="file" id="file-input-restore" accept=".json,application/json" style="display: none;">
-
-
-<!-- 重置确认弹窗 -->
-<div id="modal-reset-confirm" class="modal-overlay">
-  <div class="modal-dialog">
-    <div class="modal-header" data-i18n="resetTitle">重置 Litestart</div>
-    <div style="padding: 8px 0 16px 0; color: var(--neutral-foreground-rest); font-size: 14px; line-height: 1.6;">
-      <p style="margin: 0;" data-i18n="resetDesc">如果你遇到了一些问题，或是对于目前的设定不满意，重置可以清除所有数据并还原 Litestart 为初始状态，请注意，此操作不可撤回！</p>
-    </div>
-    <div class="modal-footer">
-      <div class="modal-footer-right">
-        <button type="button" id="btn-reset-cancel" class="btn btn-secondary" data-i18n="cancel">取消</button>
-        <button type="button" id="btn-reset-confirm" class="btn btn-danger" data-i18n="confirmReset">确定</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- 重置完成提示弹窗 -->
-<div id="modal-reset-done" class="modal-overlay">
-  <div class="modal-dialog">
-    <div class="modal-header" data-i18n="resetDoneTitle">重置完成</div>
-    <div style="padding: 8px 0 16px 0; color: var(--neutral-foreground-rest); font-size: 14px; line-height: 1.6;">
-      <p style="margin: 0;" data-i18n="resetDoneDesc">所有设置已重置为初始状态，页面即将刷新。</p>
-    </div>
-    <div class="modal-footer">
-      <div class="modal-footer-right">
-        <button type="button" id="btn-reset-done-confirm" class="btn btn-primary" data-i18n="refreshNow">立即刷新</button>
-      </div>
-    </div>
-  </div>
-</div>
 
 <script src="script.js"></script>
 </body>
