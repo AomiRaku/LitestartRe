@@ -696,6 +696,14 @@ function getFaviconUrl(urlStr) {
   return `https://api.xinac.net/icon/?url=${domain}`;
 }
 
+function sanitizeInput(str) {
+  return str.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+function decodeInput(str) {
+  return str.replace(/&lt;/g, '<').replace(/&gt;/g, '>');
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   // DOM元素引用
   const btnWaffle = document.getElementById('waffle');
@@ -1431,7 +1439,7 @@ fileInputRestore?.addEventListener('change', (e) => {
   // 表单提交
   onlineWallpaperForm?.addEventListener('submit', (e) => {
   e.preventDefault();
-  const url = inputOnlineUrl.value.trim();
+  const url = sanitizeInput(inputOnlineUrl.value.trim());
   containerOnlineUrl?.classList.remove('error');
   tipOnlineUrl?.classList.remove('active');
 
@@ -1600,8 +1608,8 @@ inputOnlineUrl?.addEventListener('input', () => {
 
   customEngineForm?.addEventListener('submit', (e) => {
     e.preventDefault();
-    let name = inputEngineName.value.trim();
-    let url = inputEngineUrl.value.trim();
+    let name = sanitizeInput(inputEngineName.value.trim());
+    let url = sanitizeInput(inputEngineUrl.value.trim());
     let hasError = false;
 
     containerEngineName?.classList.remove('error');
@@ -1680,12 +1688,13 @@ inputOnlineUrl?.addEventListener('input', () => {
     linkElem.target = '_blank';
     linkElem.setAttribute('data-id', item.id);
 
-    const initialChar = (item.title || 'W').charAt(0).toUpperCase();
+    const safeTitle = sanitizeInput(item.title);
+    const initialChar = (safeTitle || 'W').charAt(0).toUpperCase();
     const faviconUrl = getFaviconUrl(item.url);
 
     let iconContent = '';
     if (faviconUrl) {
-      iconContent = `<img src="${faviconUrl}" alt="${item.title}" loading="lazy" 
+      iconContent = `<img src="${faviconUrl}" alt="${safeTitle}" loading="lazy" 
                         onerror="this.onerror=null; this.parentNode.innerText='${initialChar}';">`;
     } else {
       iconContent = initialChar;
@@ -1693,7 +1702,7 @@ inputOnlineUrl?.addEventListener('input', () => {
 
     linkElem.innerHTML = `
       <div class="quicklink-icon">${iconContent}</div>
-      <span class="quicklink-title">${item.title}</span>
+      <span class="quicklink-title">${safeTitle}</span>
       <button type="button" class="quicklink-edit-btn" title="编辑快捷方式">
         <svg width="14" height="14" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
           <path d="M3 8a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0zm5 0a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0zm5 0a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0z"/>
@@ -1870,8 +1879,8 @@ function onDrop(e) {
     e.preventDefault();
     clearErrors();
 
-    const title = inputName.value.trim();
-    let url = inputUrl.value.trim();
+    const title = sanitizeInput(inputName.value.trim());
+    let url = sanitizeInput(inputUrl.value.trim());
     let hasError = false;
 
     if (!title) {
@@ -1930,8 +1939,9 @@ function onDrop(e) {
 
   function saveSearchHistory(query) {
     if (!historyEnabled || !query) return;
-    searchHistory = searchHistory.filter(item => item.toLowerCase() !== query.toLowerCase());
-    searchHistory.unshift(query);
+    const safeQuery = sanitizeInput(query);
+    searchHistory = searchHistory.filter(item => item.toLowerCase() !== safeQuery.toLowerCase());
+    searchHistory.unshift(safeQuery);
     if (searchHistory.length > 50) {
       searchHistory.pop();
     }
@@ -1971,10 +1981,10 @@ function onDrop(e) {
     totalItems.forEach((itemObj) => {
       const li = document.createElement('li');
       li.className = 'suggestion-item' + (itemObj.isHistory ? ' history' : '');
-      li.innerHTML = `${itemObj.isHistory ? historySvgIcon : searchSvgIcon}<span class="suggestion-text">${itemObj.text}</span>`;
+      li.innerHTML = `${itemObj.isHistory ? historySvgIcon : searchSvgIcon}<span class="suggestion-text">${sanitizeInput(itemObj.text)}</span>`;
       
       li.addEventListener('click', () => {
-        if (searchInput) searchInput.value = itemObj.text;
+        if (searchInput) searchInput.value = decodeInput(itemObj.text);
         doSearch(itemObj.text);
       });
 
