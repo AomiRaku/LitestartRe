@@ -49,7 +49,7 @@ const i18nData = {
     editBackground: '编辑背景',
     language: '页面语言',
     langAuto: '默认（跟随设备）',
-    cookieNotice: '隐私与Cookie',
+    cookieNotice: '隐私与 Cookie',
     license: '开源协议',
     contributor: '贡献名单',
     helpFeedback: '帮助&反馈',
@@ -110,8 +110,8 @@ const i18nData = {
     importConfig: '恢复配置',
 
     // 重置确认弹窗
-    resetTitle: '重置Litestart',
-    resetDesc: '如果你遇到了一些问题，或是对于目前的设定不满意，重置可以清除所有数据并还原Litestart为初始状态，请注意，此操作不可撤回！',
+    resetTitle: '重置 Litestart',
+    resetDesc: '如果你遇到了一些问题，或是对于目前的设定不满意，重置可以清除所有数据并还原 Litestart 为初始状态，请注意，此操作不可撤回！',
     confirmReset: '确定',
 
     // 重置完成弹窗
@@ -193,8 +193,8 @@ const i18nData = {
     manageProfilesTitle: '管理設定檔',
     exportConfig: '匯出設定',
     importConfig: '還原設定',
-    resetTitle: '重設Litestart',
-    resetDesc: '如果你遇到了一些問題，或是對於目前的設定不滿意，重設可以清除所有數據並還原Litestart為初始狀態，請注意，此操作不可撤回！',
+    resetTitle: '重設 Litestart',
+    resetDesc: '如果你遇到了一些問題，或是對於目前的設定不滿意，重設可以清除所有數據並還原 Litestart 為初始狀態，請注意，此操作不可撤回！',
     confirmReset: '確定',
     resetDoneTitle: '重設完成',
     resetDoneDesc: '所有設定已重設為初始狀態，頁面即將重新整理。',
@@ -275,7 +275,7 @@ const i18nData = {
     exportConfig: '出設',
     importConfig: '入設',
     resetTitle: '復初',
-    resetDesc: '倘遭困顿，或厌时制，可复初以涤万设，返Litestart于鸿蒙。然此举不可追，慎之慎之！',
+    resetDesc: '倘遭困顿，或厌时制，可复初以涤万设，返 Litestart 于鸿蒙。然此举不可追，慎之慎之！',
     confirmReset: '定',
     resetDoneTitle: '妙哉！返本归元',
     resetDoneDesc: '万设归初，新页将启，天光焕然。',
