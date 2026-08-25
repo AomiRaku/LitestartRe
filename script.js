@@ -102,7 +102,7 @@ const i18nData = {
     profileAvatar: '头像',
     uploadAvatar: '上传头像',
     removeAvatar: '删除头像',
-    email: '邮箱',
+    description: '描述',
 
     // 管理配置文件弹窗
     manageProfilesTitle: '管理配置文件',
@@ -189,7 +189,7 @@ const i18nData = {
     profileAvatar: '頭像',
     uploadAvatar: '上傳頭像',
     removeAvatar: '刪除頭像',
-    email: '電子郵件',
+    description: '描述',
     manageProfilesTitle: '管理設定檔',
     exportConfig: '匯出設定',
     importConfig: '還原設定',
@@ -270,7 +270,7 @@ const i18nData = {
     profileAvatar: '首像',
     uploadAvatar: '傳首像',
     removeAvatar: '去首像',
-    email: '郵箱',
+    description: '描述',
     manageProfilesTitle: '掌檔',
     exportConfig: '出設',
     importConfig: '入設',
@@ -352,7 +352,7 @@ const i18nData = {
     profileAvatar: 'Avatar',
     uploadAvatar: 'Upload Avatar',
     removeAvatar: 'Remove Avatar',
-    email: 'Email',
+    description: 'Description',
     manageProfilesTitle: 'Manage Profiles',
     exportConfig: 'Export Config',
     importConfig: 'Import Config',
@@ -434,7 +434,7 @@ const i18nData = {
     profileAvatar: 'アバター',
     uploadAvatar: 'アップロード',
     removeAvatar: '削除',
-    email: 'メール',
+    description: '説明',
     manageProfilesTitle: 'プロファイル管理',
     exportConfig: '設定をエクスポート',
     importConfig: '設定をインポート',
@@ -516,7 +516,7 @@ const i18nData = {
     profileAvatar: 'Аватар',
     uploadAvatar: 'Загрузить',
     removeAvatar: 'Удалить',
-    email: 'Почта',
+    description: 'Описание',
     manageProfilesTitle: 'Управление профилями',
     exportConfig: 'Экспорт настроек',
     importConfig: 'Импорт настроек',
@@ -1028,8 +1028,8 @@ document.addEventListener('DOMContentLoaded', () => {
 // ===== 用户个人资料管理 =====
 const defaultProfile = {
   name: '个人',
-  email: '本地账户',
-  avatar: 'img/profiles.png'  // 默认头像路径
+  description: '本地账户',
+  avatar: 'img/profiles.png'
 };
 
 // 加载或初始化用户资料
@@ -1043,11 +1043,11 @@ if (!userProfile) {
 function updateProfileUI() {
   const avatarImg = document.getElementById('profile-avatar');
   const nameEl = document.getElementById('profile-name');
-  const emailEl = document.getElementById('profile-email');
+  const descriptionEl = document.getElementById('profile-description');
 
   if (avatarImg) avatarImg.src = userProfile.avatar || defaultProfile.avatar;
   if (nameEl) nameEl.textContent = userProfile.name || defaultProfile.name;
-  if (emailEl) emailEl.textContent = userProfile.email || defaultProfile.email;
+  if (descriptionEl) descriptionEl.textContent = userProfile.description || defaultProfile.description;
   
 }
 
@@ -1057,7 +1057,7 @@ updateProfileUI();
 const modalProfile = document.getElementById('modal-profile');
 const profileForm = document.getElementById('profile-form');
 const inputProfileName = document.getElementById('input-profile-name');
-const inputProfileEmail = document.getElementById('input-profile-email');
+const inputProfileDescription = document.getElementById('input-profile-description');
 const profileAvatarPreview = document.getElementById('profile-avatar-preview');
 const btnUploadAvatar = document.getElementById('btn-upload-avatar');
 const inputAvatarFile = document.getElementById('input-avatar-file');
@@ -1070,7 +1070,7 @@ const btnProfileDetails = document.getElementById('btn-profile-details');
 function openProfileModal() {
   // 填充当前数据
   inputProfileName.value = userProfile.name || '';
-  inputProfileEmail.value = userProfile.email || '';
+  inputProfileDescription.value = userProfile.description || '';
   profileAvatarPreview.src = userProfile.avatar || defaultProfile.avatar;
   // 显示删除按钮条件：头像不是默认头像
   const isDefaultAvatar = userProfile.avatar === defaultProfile.avatar;
@@ -1120,17 +1120,12 @@ btnRemoveAvatar?.addEventListener('click', () => {
 // 取消按钮
 btnProfileCancel?.addEventListener('click', closeProfileModal);
 
-// 点击遮罩关闭
-modalProfile?.addEventListener('click', (e) => {
-  if (e.target === modalProfile) closeProfileModal();
-});
-
 // 提交表单保存
 profileForm?.addEventListener('submit', (e) => {
   e.preventDefault();
   // 获取各字段值
   const name = inputProfileName.value.trim() || defaultProfile.name;
-  const email = inputProfileEmail.value.trim() || defaultProfile.email;
+  const description = inputProfileDescription.value.trim() || defaultProfile.description;
 
   // 头像处理：若临时头像存在则使用，否则保留原有头像（如果用户未操作头像，则不变）
   let avatar = userProfile.avatar; // 默认使用原有
@@ -1146,7 +1141,7 @@ profileForm?.addEventListener('submit', (e) => {
 
   // 更新userProfile
   userProfile.name = name;
-  userProfile.email = email;
+  userProfile.description = description;
   userProfile.avatar = avatar;
 
   Storage.set('ntp_user_profile', userProfile);
@@ -1861,12 +1856,6 @@ function onDrop(e) {
   }
 
   btnCancel?.addEventListener('click', closeModal);
-
-  modalOverlay?.addEventListener('click', (e) => {
-    if (e.target === modalOverlay) {
-      closeModal();
-    }
-  });
 
   btnDelete?.addEventListener('click', () => {
     if (currentEditingId) {

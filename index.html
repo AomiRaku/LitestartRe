@@ -56,7 +56,7 @@
       --input-border-bottom: #8a8a8a;
 
       /* 7. 设置面板专用颜色 */
-      --settings-panel-bg: #E3E3E3;
+      --settings-panel-bg: #EEEEEE;
       --settings-card-bg: #ffffff;
       --settings-card-border: #e5e5e5;
       --settings-card-hover: #f9f9f9;
@@ -1426,7 +1426,7 @@
               <img id="profile-avatar" src="img/profiles.png" alt="头像" style="width: 48px; height: 48px; border-radius: 50%; object-fit: cover; background-color: var(--settings-thumb-bg); flex-shrink: 0; border: 2px solid var(--settings-card-border);">
               <div style="flex:1; min-width:0;">
               <div id="profile-name" style="font-weight: 600; font-size: 15px; color: var(--settings-text-primary);">个人</div>
-              <div id="profile-email" style="font-size: 13px; color: var(--settings-text-secondary);">本地账户</div>
+              <div id="profile-description" style="font-size: 13px; color: var(--settings-text-secondary);">本地账户</div>
               </div>
             </div>
 
@@ -1870,11 +1870,11 @@
         </div>
       </div>
 
-      <!-- 邮箱 -->
+      <!-- 描述 -->
       <div class="form-group">
-        <label class="form-label" for="input-profile-email" data-i18n="email">邮箱</label>
-        <div class="input-container" id="container-profile-email">
-          <input type="email" id="input-profile-email" class="input" placeholder="本地账户" autocomplete="off">
+        <label class="form-label" for="input-profile-description" data-i18n="description">描述</label>
+        <div class="input-container" id="container-profile-description">
+          <input type="text" id="input-profile-description" class="input" placeholder="本地账户" autocomplete="off">
         </div>
       </div> 
 
