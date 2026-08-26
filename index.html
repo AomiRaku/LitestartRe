@@ -75,6 +75,8 @@
       --suggestion-hover: #f0f0f0;
       --suggestion-history-color: #5c2d91;
       --suggestion-footer-color: #0078d4;
+
+      --search-box-hover-shadow: 0 0 2px rgba(0, 0, 0, 0.16), 0 2px 7px rgba(0, 0, 0, 0.22);
     }
 
     /* 暗色主题颜色库 */
@@ -127,6 +129,8 @@
         --suggestion-hover: #3d3d3d;
         --suggestion-history-color: #b182e6;
         --suggestion-footer-color: #4f8cf6;
+
+        --search-box-hover-shadow: 0 0 2px rgba(0, 0, 0, 0.28), 0 3px 9px rgba(0, 0, 0, 0.38);
       }
     }
 
@@ -240,6 +244,10 @@
       background-color: var(--enhanced-visibility-bg-hover);
     }
 
+    body.bg-enabled[data-enhanced-visibility="true"] #fakebox:hover {
+      box-shadow: 0 0 0 3px var(--enhanced-visibility-bg-hover);
+    }
+
     /* 开启背景时将外层容器背景设为透明，避免遮挡背景壁纸 */
     body.bg-enabled ntp-shell {
       background-color: transparent;
@@ -317,6 +325,7 @@
       width: 40px;
       height: 40px;
       color: var(--neutral-foreground-rest);
+      transition: background-color 0.15s ease;
     }
 
     /* 弹出菜单面板通用样式 */
@@ -455,8 +464,8 @@
       background-position: right 10px center;
     }
 
-    .select-box:hover {
-      border-color: var(--colorNeutralStroke1Hover);
+    .select-box:not(:open):hover {
+      background-color: var(--neutral-fill-rest);
     }
 
     /* 设置行 */
@@ -713,7 +722,7 @@
       cursor: text;
       position: relative;
       padding: 0 14px 0 11px;
-      transition: border-radius 0.15s ease, box-shadow 0.15s ease;
+      transition: border-radius 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, outline 0.15s ease;
     }
 
     #fakebox #searchbutton {
@@ -762,7 +771,7 @@
     }
 
     #fakebox:hover {
-      border-color: var(--accent-foreground-rest);
+      box-shadow: var(--search-box-hover-shadow);
     }
 
     /* 搜索框展开联想下拉词条面板 */
@@ -964,10 +973,6 @@
       background-color: var(--neutral-layer-floating);
       border: none;
       box-shadow: var(--shadow2);
-    }
-
-    .quicklink-add-btn:hover .quicklink-add-icon {
-      background-color: var(--neutral-fill-hover);
     }
 
     /* 展望模式布局排布 */
