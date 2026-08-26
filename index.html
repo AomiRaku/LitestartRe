@@ -38,7 +38,8 @@
       --colorNeutralStroke1Hover: #c7c7c7;     /* 边框 Hover 颜色 */
 
       /* 4. 强调色 */
-      --accent-foreground-rest: #235CCF;       /* 强调色 */
+      --accent-foreground-rest: #0067C0;       /* 强调色 */
+      --accent-foreground-hover: #3683CB;      /* 第二强调色 */
       --btn-secondary-bg: #ffffff;             /* 次级按钮背景 */
       --btn-danger-color: #d13438;             /* 危险/删除操作文字色 */
       --btn-danger-hover: #fde8e8;             /* 危险按钮 Hover 背景 */
@@ -104,6 +105,10 @@
         --btn-secondary-bg: #2b2b2b;
         --btn-danger-color: #ff6b6b;
         --btn-danger-hover: #3d1a1a;
+
+        --accent-foreground-rest: #0067C0;       /* 强调色 */
+        --accent-foreground-hover: #0058a5;      /* 第二强调色 */
+        --btn-secondary-bg: #2D2D2D;             /* 次级按钮背景 */
 
         --settings-panel-bg: #242424;
         --settings-card-bg: #2b2b2b;
@@ -1162,10 +1167,12 @@
       background-color: var(--accent-foreground-rest);
       color: #ffffff;
       border: 1px solid transparent;
+      border-bottom: 2px solid #004684; 
     }
 
     .btn-primary:hover {
-      background-color: #1a4a9e;
+      background-color: var(--accent-foreground-hover);
+      border-bottom: 2px solid var(--accent-foreground-hover);
       filter: none;
     }
 
@@ -1173,10 +1180,12 @@
       background-color: var(--btn-secondary-bg);
       color: var(--neutral-foreground-rest);
       border: 1px solid var(--modal-border);
+      border-bottom: 2px solid var(--neutral-fill-hover); 
     }
 
     .btn-secondary:hover {
       background-color: var(--neutral-fill-hover);
+      border-bottom-color: transparent;
     }
 
     .btn-danger {
@@ -1305,23 +1314,23 @@
     }
 
     /* ===== 拖拽排序样式 ===== */
-.quicklink-item.dragging {
-  opacity: 0.35;
-  transform: scale(0.92);
-  transition: opacity 0.15s, transform 0.15s;
-}
+    .quicklink-item.dragging {
+      opacity: 0.35;
+      transform: scale(0.92);
+      transition: opacity 0.15s, transform 0.15s;
+    }
 
-.quicklink-item.drag-over {
-  background-color: var(--neutral-fill-hover);
-  border-radius: 8px;
-  transform: scale(1.02);
-  transition: all 0.12s ease;
-}
+    .quicklink-item.drag-over {
+      background-color: var(--neutral-fill-hover);
+      border-radius: 8px;
+      transform: scale(1.02);
+      transition: all 0.12s ease;
+    }
 
-.quicklink-item.drag-over .quicklink-icon {
-  box-shadow: 0 0 0 2px var(--accent-foreground-rest);
-  transition: box-shadow 0.12s ease;
-}
+    .quicklink-item.drag-over .quicklink-icon {
+      box-shadow: 0 0 0 2px var(--accent-foreground-rest);
+      transition: box-shadow 0.12s ease;
+    }
 
     .tooltip-icon {
       position: relative;
@@ -1456,19 +1465,19 @@
 
             <!-- 账户编辑按钮 -->
             <button id="btn-profile-details" class="icon-btn-text" type="button" style="margin-top: 2px;">
-            <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
-            <path d="M11.013 1.427a1.75 1.75 0 0 1 2.474 0l1.086 1.086a1.75 1.75 0 0 1 0 2.474l-8.61 8.61c-.21.21-.47.364-.756.445l-3.251.93a.75.75 0 0 1-.927-.928l.93-3.25a1.75 1.75 0 0 1 .445-.758l8.61-8.609z"/>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+              <path d="M10.529 1.764a2.621 2.621 0 1 1 3.707 3.707l-.779.779L9.75 2.543zM9.043 3.25L2.657 9.636a2.96 2.96 0 0 0-.772 1.354l-.87 3.386a.5.5 0 0 0 .61.608l3.385-.869a2.95 2.95 0 0 0 1.354-.772l6.386-6.386z"/>
             </svg>
             <span data-i18n="accountDetails">编辑账户信息</span>
             </button>
             </div>
             <!-- 下方菜单项 -->
             <div class="waffle-menu-item" id="btn-manage-profiles" style="margin-bottom: 4px;">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="300" height="300"><path d="M7.22 4.22a.75.75 0 0 1 1.06 0l3.5 3.5a.75.75 0 0 1 0 1.06l-3.5 3.5a.75.75 0 0 1-1.06-1.06L9.44 9H1.75a.75.75 0 0 1 0-1.5h7.69L7.22 5.28a.75.75 0 0 1 0-1.06m7.28-.47a.75.75 0 0 0-1.5 0v8.5a.75.75 0 0 0 1.5 0z"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="128" height="128"><path d="M1 3.25C1 2.56 1.56 2 2.249 2h.5c.69 0 1.248.56 1.248 1.25v9.495c0 .69-.559 1.25-1.248 1.25h-.5A1.25 1.25 0 0 1 1 12.744zM2.249 3a.25.25 0 0 0-.25.25v9.495c0 .138.112.25.25.25h.5a.25.25 0 0 0 .25-.25V3.249a.25.25 0 0 0-.25-.25zm2.748.25c0-.69.559-1.25 1.249-1.25h.5c.689 0 1.248.56 1.248 1.25v9.495c0 .69-.56 1.25-1.249 1.25h-.5a1.25 1.25 0 0 1-1.248-1.25zM6.246 3a.25.25 0 0 0-.25.25v9.495c0 .138.112.25.25.25h.5a.25.25 0 0 0 .249-.25V3.249a.25.25 0 0 0-.25-.25zm5.726 1.777a1.25 1.25 0 0 0-1.57-.713l-.583.204a1.25 1.25 0 0 0-.746 1.645l2.937 7.304c.249.62.94.933 1.571.713l.582-.204a1.25 1.25 0 0 0 .746-1.646zm-1.24.23a.25.25 0 0 1 .313.143l2.937 7.303a.25.25 0 0 1-.149.33l-.582.203a.25.25 0 0 1-.314-.142L10 5.54a.25.25 0 0 1 .149-.329z"/></svg>
               <span data-i18n="manageProfiles">管理配置文件</span>
             </div>
             <div class="waffle-menu-item" id="btn-init-config">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="128" height="128"><path d="M19 12A7 7 0 0 0 8.392 6H9a1 1 0 0 1 0 2H6a1 1 0 0 1-1-1V4a1 1 0 0 1 2 0v.516a9 9 0 1 1-3.93 6.36a1 1 0 1 1 1.984.248Q5 11.554 5 12a7 7 0 1 0 14 0"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="128" height="128"><path d="M13 8a5 5 0 0 0-9.001-3h2a.5.5 0 1 1 0 1H3a.5.5 0 0 1-.5-.5v-3a.5.5 0 0 1 1 0v1.531a6 6 0 1 1-1.476 4.513a.5.5 0 0 1 .997-.089A5 5 0 0 0 13 8"/></svg>
               <span data-i18n="initConfig">初始化配置</span>
             </div>
             </div>
@@ -1920,16 +1929,14 @@
           <!-- 导出配置按钮 -->
           <button id="btn-export-config" class="btn btn-secondary" style="width: 100%; justify-content: center; padding: 10px 0; gap: 8px;">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-              <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
-              <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z"/>
+              <path d="M1.5 3a.5.5 0 0 1 .5.5V12a.5.5 0 0 1-1 0V3.5a.5.5 0 0 1 .5-.5m9.146.646a.5.5 0 0 1 .708 0l3.5 3.5a.5.5 0 0 1 0 .708l-3.5 3.5a.5.5 0 0 1-.708-.708L13.293 8H4.5a.5.5 0 0 1 0-1h8.793l-2.647-2.646a.5.5 0 0 1 0-.708"/>
             </svg>
             <span data-i18n="exportConfig">导出配置</span>
           </button>
           <!-- 恢复配置按钮 -->
           <button id="btn-import-config" class="btn btn-secondary" style="width: 100%; justify-content: center; padding: 10px 0; gap: 8px;">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-              <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
-              <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+              <path d="M13 12.5v-9a.5.5 0 0 1 .992-.09L14 3.5v9a.5.5 0 0 1-.992.09zM1.008 8.09L1 8a.5.5 0 0 1 .41-.492L1.5 7.5h8.792L7.611 4.818a.5.5 0 0 1-.058-.638l.058-.069a.5.5 0 0 1 .638-.058l.069.058l3.536 3.535a.5.5 0 0 1 .057.638l-.057.07l-3.536 3.535a.5.5 0 0 1-.765-.638l.058-.069L10.292 8.5H1.5a.5.5 0 0 1-.492-.41L1 8z"/>
             </svg>
             <span data-i18n="importConfig">恢复配置</span>
           </button>
