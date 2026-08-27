@@ -31,7 +31,7 @@ const i18nData = {
     pageTitle: '新标签页',
     settingsTitle: '页面设置',
     close: '关闭',
-    quicklinks: '网站导航',
+    quicklinks: '快速链接',
     off: '关闭',
     on: '打开',
     rows1: '1 行',
@@ -65,10 +65,10 @@ const i18nData = {
     selectImage: '选择图片或视频',
     uploadFile: '上传文件',
     restoreDefault: '恢复默认',
-    editShortcut: '编辑快捷方式',
+    editShortcut: '编辑快速链接',
     name: '名称',
-    inputNamePh: '输入快捷方式名称',
-    errorNameReq: '请输入快捷方式名称',
+    inputNamePh: '输入快速链接名称',
+    errorNameReq: '请输入快速链接名称',
     errorUrlReq: '请输入网址',
     delete: '删除',
     cancel: '取消',
@@ -123,7 +123,7 @@ const i18nData = {
     pageTitle: '新分頁',
     settingsTitle: '頁面設定',
     close: '關閉',
-    quicklinks: '網站導覽',
+    quicklinks: '快速連結',
     off: '關閉',
     on: '開啟',
     rows1: '1 行',
@@ -157,10 +157,10 @@ const i18nData = {
     selectImage: '選擇圖片或影片',
     uploadFile: '上傳檔案',
     restoreDefault: '恢復預設',
-    editShortcut: '編輯捷徑',
+    editShortcut: '編輯快速連結',
     name: '名稱',
-    inputNamePh: '輸入捷徑名稱',
-    errorNameReq: '請輸入捷徑名稱',
+    inputNamePh: '輸入快速連結名稱',
+    errorNameReq: '請輸入快速連結名稱',
     errorUrlReq: '請輸入網址',
     delete: '刪除',
     cancel: '取消',
@@ -204,7 +204,7 @@ const i18nData = {
     pageTitle: '新籤頁',
     settingsTitle: '頁面之設',
     close: '關',
-    quicklinks: '網要',
+    quicklinks: '快速連結',
     off: '止',
     on: '啟',
     rows1: '一列',
@@ -238,10 +238,10 @@ const i18nData = {
     selectImage: '擇圖或影',
     uploadFile: '上傳檔案',
     restoreDefault: '復初',
-    editShortcut: '修捷徑',
+    editShortcut: '修快速連結',
     name: '名',
-    inputNamePh: '書捷徑之名',
-    errorNameReq: '請填捷徑名',
+    inputNamePh: '書快速連結之名',
+    errorNameReq: '請填快速連結名',
     errorUrlReq: '請填網址',
     delete: '刪',
     cancel: '止',
@@ -319,10 +319,10 @@ const i18nData = {
     selectImage: 'Select image or video',
     uploadFile: 'Upload file',
     restoreDefault: 'Restore default',
-    editShortcut: 'Edit shortcut',
+    editShortcut: 'Edit quick link',
     name: 'Name',
-    inputNamePh: 'Enter shortcut name',
-    errorNameReq: 'Please enter shortcut name',
+    inputNamePh: 'Enter quick link name',
+    errorNameReq: 'Please enter quick link name',
     errorUrlReq: 'Please enter URL',
     delete: 'Delete',
     cancel: 'Cancel',
@@ -401,10 +401,10 @@ const i18nData = {
     selectImage: '画像または動画を選択',
     uploadFile: 'ファイルをアップロード',
     restoreDefault: 'デフォルトに戻す',
-    editShortcut: 'ショートカットを編集',
+    editShortcut: 'クイックリンクを編集',
     name: '名前',
-    inputNamePh: 'ショートカット名を入力',
-    errorNameReq: 'ショートカット名を入力してください',
+    inputNamePh: 'クイックリンク名を入力',
+    errorNameReq: 'クイックリンク名を入力してください',
     errorUrlReq: 'URLを入力してください',
     delete: '削除',
     cancel: 'キャンセル',
@@ -483,10 +483,10 @@ const i18nData = {
     selectImage: 'Выберите фото или видео',
     uploadFile: 'Загрузить файл',
     restoreDefault: 'Сбросить',
-    editShortcut: 'Изменить ярлык',
+    editShortcut: 'Изменить быструю ссылку',
     name: 'Название',
-    inputNamePh: 'Введите название ярлыка',
-    errorNameReq: 'Введите название',
+    inputNamePh: 'Введите название быстрой ссылки',
+    errorNameReq: 'Введите название быстрой ссылки',
     errorUrlReq: 'Введите URL',
     delete: 'Удалить',
     cancel: 'Отмена',
@@ -655,6 +655,9 @@ function applyLanguage(langConfig) {
     const isChecked = document.getElementById('toggle-enhanced-visibility')?.checked || false;
     statusEnhancedVisibility.innerText = isChecked ? dict.on : dict.off;
   }
+
+  // 10.刷新自定义下拉选项文本
+  refreshCustomSelects();
 }
 
 // LocalStorage持久化辅助对象
@@ -704,6 +707,130 @@ function decodeInput(str) {
   return str.replace(/&lt;/g, '<').replace(/&gt;/g, '>');
 }
 
+function initCustomSelects() {
+  const displays = document.querySelectorAll('.custom-select-display');
+  displays.forEach(display => {
+    const selectId = display.getAttribute('data-for');
+    const nativeSelect = document.getElementById(selectId);
+    if (!nativeSelect) return;
+
+    const textEl = display.querySelector('.custom-select-text');
+    let dropdown = null;
+
+    function closeAll(exceptDisplay) {
+      document.querySelectorAll('.custom-select-dropdown.active').forEach(dd => {
+        if (dd._display !== exceptDisplay) {
+          dd.classList.remove('active');
+          dd._display.classList.remove('active');
+        }
+      });
+    }
+
+    function updateDisplayText() {
+      const selectedOption = nativeSelect.options[nativeSelect.selectedIndex];
+      if (selectedOption) {
+        textEl.textContent = selectedOption.textContent.trim();
+      }
+    }
+
+    function buildDropdown() {
+      if (dropdown) dropdown.remove();
+      dropdown = document.createElement('div');
+      dropdown.className = 'custom-select-dropdown';
+      dropdown._display = display;
+
+      Array.from(nativeSelect.options).forEach((opt, index) => {
+        const optionEl = document.createElement('div');
+        optionEl.className = 'custom-select-option';
+        optionEl.textContent = opt.textContent.trim();
+        optionEl.setAttribute('data-value', opt.value);
+        if (index === nativeSelect.selectedIndex) {
+          optionEl.classList.add('selected');
+        }
+        optionEl.addEventListener('click', (e) => {
+          e.stopPropagation();
+          nativeSelect.value = opt.value;
+          nativeSelect.dispatchEvent(new Event('change', { bubbles: true }));
+          closeAll(null);
+          updateDisplayText();
+        });
+        dropdown.appendChild(optionEl);
+      });
+
+      display.parentElement.appendChild(dropdown);
+    }
+
+    display.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (display.classList.contains('active')) {
+        closeAll(null);
+      } else {
+        closeAll(display);
+        if (!dropdown || !dropdown.isConnected) {
+          buildDropdown();
+        } else {
+          dropdown.querySelectorAll('.custom-select-option').forEach((optEl, i) => {
+            optEl.classList.toggle('selected', i === nativeSelect.selectedIndex);
+          });
+        }
+        display.classList.add('active');
+        dropdown.classList.add('active');
+      }
+    });
+
+    nativeSelect.addEventListener('change', () => {
+      updateDisplayText();
+      if (dropdown) {
+        dropdown.querySelectorAll('.custom-select-option').forEach((optEl, i) => {
+          optEl.classList.toggle('selected', i === nativeSelect.selectedIndex);
+        });
+      }
+    });
+
+    updateDisplayText();
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.custom-select-wrapper')) {
+      document.querySelectorAll('.custom-select-dropdown.active').forEach(dd => {
+        dd.classList.remove('active');
+        dd._display.classList.remove('active');
+      });
+    }
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      document.querySelectorAll('.custom-select-dropdown.active').forEach(dd => {
+        dd.classList.remove('active');
+        dd._display.classList.remove('active');
+      });
+    }
+  });
+}
+
+function refreshCustomSelects() {
+  document.querySelectorAll('.custom-select-display').forEach(display => {
+    const selectId = display.getAttribute('data-for');
+    const nativeSelect = document.getElementById(selectId);
+    if (!nativeSelect) return;
+    const textEl = display.querySelector('.custom-select-text');
+    const selectedOption = nativeSelect.options[nativeSelect.selectedIndex];
+    if (selectedOption) {
+      textEl.textContent = selectedOption.textContent.trim();
+    }
+    const wrapper = display.parentElement;
+    const dropdown = wrapper.querySelector('.custom-select-dropdown');
+    if (dropdown) {
+      const options = dropdown.querySelectorAll('.custom-select-option');
+      options.forEach((optEl, i) => {
+        optEl.textContent = nativeSelect.options[i].textContent.trim();
+        optEl.classList.toggle('selected', i === nativeSelect.selectedIndex);
+      });
+    }
+  });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   // DOM元素引用
   const btnWaffle = document.getElementById('waffle');
@@ -731,7 +858,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const suggestionsFooter = document.getElementById('suggestions-footer');
   const clearHistoryBtn = document.getElementById('clear-history-btn');
 
-  // Modal相关DOM元素(快捷方式
+  // Modal相关DOM元素(快速链接
   const modalOverlay = document.getElementById('modal');
   const modalTitle = document.getElementById('modal-title');
   const modalForm = document.getElementById('modal-form');
@@ -1643,7 +1770,7 @@ inputOnlineUrl?.addEventListener('input', () => {
     closeCustomEngineModal();
   });
 
-  // B2.快捷方式列表管理
+  // B2.快速链接列表管理
   let quicklinksList = Storage.get('ntp_quicklinks_list', []);
 
   function renderQuicklinks() {
@@ -1671,7 +1798,7 @@ inputOnlineUrl?.addEventListener('input', () => {
     addBtnStatic.dataset.bound = 'true';
   }
 
-  // 清空所有动态生成的快捷链接（保留静态按钮）
+  // 清空所有动态生成的快速链接（保留静态按钮）
   const items = quicklinksElem.querySelectorAll('.quicklink-item:not(.quicklink-add-static)');
   items.forEach(el => el.remove());
 
@@ -1680,7 +1807,7 @@ inputOnlineUrl?.addEventListener('input', () => {
     return;
   }
 
-  // 渲染已有的快捷方式
+  // 渲染已有的快速链接
   quicklinksList.forEach(item => {
     const linkElem = document.createElement('a');
     linkElem.href = item.url;
@@ -1703,7 +1830,7 @@ inputOnlineUrl?.addEventListener('input', () => {
     linkElem.innerHTML = `
       <div class="quicklink-icon">${iconContent}</div>
       <span class="quicklink-title">${safeTitle}</span>
-      <button type="button" class="quicklink-edit-btn" title="编辑快捷方式">
+      <button type="button" class="quicklink-edit-btn" title="编辑快速链接">
         <svg width="14" height="14" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
           <path d="M3 8a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0zm5 0a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0zm5 0a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0z"/>
         </svg>
@@ -1770,7 +1897,7 @@ function onDragEnter(e) {
   e.preventDefault();
   const target = e.currentTarget;
   const targetId = target.dataset.id;
-  // 只有快捷方式（有 data-id）且不是被拖拽自身时，才高亮
+  // 只有快速链接（有 data-id）且不是被拖拽自身时，才高亮
   if (targetId && targetId !== draggedId) {
     target.classList.add('drag-over');
   }
@@ -2169,4 +2296,7 @@ searchInput?.addEventListener('input', () => {
 
   // 初始化应用全页翻译
   applyLanguage(savedLang);
+
+  // 初始化自定义下拉组件
+  initCustomSelects();
 });
