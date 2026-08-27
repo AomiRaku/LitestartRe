@@ -533,15 +533,12 @@
     }
 
     .custom-select-dropdown {
-      position: absolute;
-      top: calc(100% + 4px);
-      left: 0;
-      right: 0;
+      position: fixed;
       background-color: var(--fill-popup-color);
       border: 1px solid var(--settings-card-border);
       border-radius: 6px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
-      z-index: 200;
+      z-index: 2000;
       max-height: 240px;
       overflow-y: auto;
       opacity: 0;
@@ -556,7 +553,7 @@
       visibility: visible;
       pointer-events: auto;
       transform: translateY(0);
-      transition: opacity 0.08s ease-out, transform 0.08s ease-out, visibility 0s linear 0s;
+      transition: opacity 0.08s ease-out, transform 0.08s ease-out;
     }
 
     .custom-select-option {
