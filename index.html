@@ -206,6 +206,12 @@
       }
     }
 
+    /* ===== 按钮、窗口、搜索框等元素的过渡动画 =====
+   统一使用 0.06s-0.1s 的短时长，配合 ease-out/ease 缓动函数，
+   提供快速而不突兀的交互反馈。
+   transition 涵盖：background-color、border-color、box-shadow、
+   border-radius、opacity、transform 等属性。 */
+
     body.bg-enabled[data-enhanced-visibility="true"] .header-button {
       background-color: var(--enhanced-visibility-bg);
       border-radius: 8px;
@@ -329,7 +335,12 @@
       transition: background-color 0.08s ease;
     }
 
-    /* 弹出菜单面板通用样式 */
+    /* 弹出菜单面板通用样式 —— 展开/收起动画
+       - 初始状态：opacity:0, visibility:hidden, transform 上移 4px
+       - .active 状态：opacity:1, visibility:visible, transform 归零
+       - visibility 延迟 0.06s 切换（通过 transition-delay），
+         确保 opacity 过渡完成后再隐藏，避免闪烁
+    */
     .popover-panel {
       position: absolute;
       top: var(--header-height);
@@ -479,6 +490,9 @@
       background-color: var(--neutral-fill-rest);
     }
 
+    /* ===== 重写下拉菜单样式 ===== */
+
+    /* 自定义 select 外壳 —— 原生 select 透明覆盖用于接收键盘等原生事件 */
     .custom-select-wrapper {
       position: relative;
       width: 100%;
@@ -494,6 +508,7 @@
       background: transparent;
     }
 
+    /* 下拉触发器按钮 —— 显示当前选中项文本和箭头 */
     .custom-select-display {
       width: 100%;
       height: 32px;
@@ -520,6 +535,7 @@
       border-color: var(--accent-foreground-rest);
     }
 
+    /* 下拉箭头旋转动画 */
     .custom-select-arrow {
       width: 12px;
       height: 12px;
@@ -532,6 +548,10 @@
       transform: rotate(180deg);
     }
 
+    /* 下拉面板 —— position:fixed 用于脱离父容器 overflow 裁剪
+       - 初始状态：opacity:0, visibility:hidden, transform 上移 4px
+       - .active 状态：opacity:1, visibility:visible, transform 归零
+       - 展开方向由 JS 根据空间动态决定（上/下），通过 translateY 初始方向实现动画 */
     .custom-select-dropdown {
       position: fixed;
       background-color: var(--fill-popup-color);
@@ -556,6 +576,7 @@
       transition: opacity 0.08s ease-out, transform 0.08s ease-out;
     }
 
+    /* 选项样式 —— hover 和 selected 有不同过渡 */
     .custom-select-option {
       padding: 8px 12px;
       cursor: pointer;
@@ -601,7 +622,9 @@
       align-items: center;
     }
 
-    /* 开关样式 */
+    /* 开关样式 —— 滑块左右移动带动画过渡
+       - left: 0.2s ease 让滑块移动更慢，提供明显的滑动反馈
+       - background/border-color: 0.08s 快速过渡颜色变化 */
     .switch {
       position: relative;
       display: inline-block;
@@ -822,6 +845,8 @@
       z-index: 15;
     }
 
+    /* 搜索框 —— 搜索框展开时底部圆角变平，与下拉面板无缝衔接
+       transition 包含圆角、阴影、背景色、边框颜色等属性，0.08s 快速响应 */
     #fakebox {
       display: flex;
       align-items: center;
@@ -897,6 +922,10 @@
       box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
     }
 
+    /* 搜索框展开联想下拉词条面板动画
+       - 初始状态：opacity:0, visibility:hidden, transform 上移 4px
+       - .suggestions-open 状态：opacity:1, visibility:visible, transform 归零
+       - visibility 延迟 0.08s 切换，确保过渡完成后再隐藏 */
     #suggestions-box {
       display: block;
       position: absolute;
@@ -1472,6 +1501,9 @@
       transition: box-shadow 0.08s ease;
     }
 
+    /* ===== 工具提示(Tooltip)样式 ===== */
+
+    /* 图标按钮 —— 鼠标悬停显示提示 */
     .tooltip-icon {
       position: relative;
       display: inline-flex;
@@ -1490,7 +1522,11 @@
       color: var(--settings-text-primary);
     }
 
-    .tooltip-icon .tooltip-content {
+    /* 提示内容面板 —— position:fixed 用于脱离父容器
+       - 由 JS 动态定位到 document.body，避免被 overflow:hidden 裁剪
+       - 支持上下两种方向显示（通过 JS 添加/移除 .tooltip-below 类）
+       - 淡入淡出过渡 */
+    .tooltip-content {
       visibility: hidden;
       opacity: 0;
       position: fixed;
@@ -1508,22 +1544,6 @@
       z-index: 10000;
       transition: opacity 0.08s ease, visibility 0.08s ease;
       pointer-events: none;
-    }
-
-    .tooltip-icon .tooltip-content::after {
-      content: '';
-      position: absolute;
-      top: 100%;
-      left: 50%;
-      transform: translateX(-50%);
-      border: 5px solid transparent;
-      border-top-color: var(--settings-card-bg);
-    }
-
-    .tooltip-icon:hover .tooltip-content,
-    .tooltip-icon:focus .tooltip-content {
-      visibility: visible;
-      opacity: 1;
     }
 
 
@@ -1688,7 +1708,7 @@
                       <svg width="18" height="18" viewBox="0 0 1024 1024" fill="currentColor" aria-hidden="true" style="margin-top: 3px; margin-left: -2px;">
                         <path d="M509.92 795.84c157.904 0 285.92-128.016 285.92-285.92C795.84 352 667.808 224 509.92 224 352 224 224 352 224 509.92c0 157.904 128 285.92 285.92 285.92z m0 48C325.504 843.84 176 694.32 176 509.92 176 325.504 325.504 176 509.92 176c184.416 0 333.92 149.504 333.92 333.92 0 184.416-149.504 333.92-333.92 333.92z m-2.448-400.704h16a16 16 0 0 1 16 16v201.728a16 16 0 0 1-16 16h-16a16 16 0 0 1-16-16V459.136a16 16 0 0 1 16-16z m0-100.176h16a16 16 0 0 1 16 16v23.648a16 16 0 0 1-16 16h-16a16 16 0 0 1-16-16v-23.648a16 16 0 0 1 16-16z"/>
                       </svg>
-                      <span class="tooltip-content" data-i18n-html="forceBingCNDesc"><b>开启</b>：强制使用必应中国版<br><b>关闭</b>：根据网络环境自动选择。<br>此选项可以避免代理设置导致 www.bing.com 无法自动跳转到 cn.bing.com。</span>
+                      <span class="tooltip-content" data-i18n-html="forceBingCNDesc"><span class="tooltip-arrow"></span><b>开启</b>：强制使用必应中国版<br><b>关闭</b>：根据网络环境自动选择。<br>此选项可以避免代理设置导致 www.bing.com 无法自动跳转到 cn.bing.com。</span>
                     </span>
                   </div>
                   <div class="switch-container">
