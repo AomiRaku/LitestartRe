@@ -31,7 +31,7 @@ const i18nData = {
     pageTitle: '新标签页',
     settingsTitle: '页面设置',
     close: '关闭',
-    quicklinks: '网站导航',
+    quicklinks: '快速链接',
     off: '关闭',
     on: '打开',
     rows1: '1 行',
@@ -65,10 +65,10 @@ const i18nData = {
     selectImage: '选择图片或视频',
     uploadFile: '上传文件',
     restoreDefault: '恢复默认',
-    editShortcut: '编辑快捷方式',
+    editShortcut: '编辑快速链接',
     name: '名称',
-    inputNamePh: '输入快捷方式名称',
-    errorNameReq: '请输入快捷方式名称',
+    inputNamePh: '输入快速链接名称',
+    errorNameReq: '请输入快速链接名称',
     errorUrlReq: '请输入网址',
     delete: '删除',
     cancel: '取消',
@@ -123,7 +123,7 @@ const i18nData = {
     pageTitle: '新分頁',
     settingsTitle: '頁面設定',
     close: '關閉',
-    quicklinks: '網站導覽',
+    quicklinks: '快速連結',
     off: '關閉',
     on: '開啟',
     rows1: '1 行',
@@ -157,10 +157,10 @@ const i18nData = {
     selectImage: '選擇圖片或影片',
     uploadFile: '上傳檔案',
     restoreDefault: '恢復預設',
-    editShortcut: '編輯捷徑',
+    editShortcut: '編輯快速連結',
     name: '名稱',
-    inputNamePh: '輸入捷徑名稱',
-    errorNameReq: '請輸入捷徑名稱',
+    inputNamePh: '輸入快速連結名稱',
+    errorNameReq: '請輸入快速連結名稱',
     errorUrlReq: '請輸入網址',
     delete: '刪除',
     cancel: '取消',
@@ -204,7 +204,7 @@ const i18nData = {
     pageTitle: '新籤頁',
     settingsTitle: '頁面之設',
     close: '關',
-    quicklinks: '網要',
+    quicklinks: '快速連結',
     off: '止',
     on: '啟',
     rows1: '一列',
@@ -238,10 +238,10 @@ const i18nData = {
     selectImage: '擇圖或影',
     uploadFile: '上傳檔案',
     restoreDefault: '復初',
-    editShortcut: '修捷徑',
+    editShortcut: '修快速連結',
     name: '名',
-    inputNamePh: '書捷徑之名',
-    errorNameReq: '請填捷徑名',
+    inputNamePh: '書快速連結之名',
+    errorNameReq: '請填快速連結名',
     errorUrlReq: '請填網址',
     delete: '刪',
     cancel: '止',
@@ -319,10 +319,10 @@ const i18nData = {
     selectImage: 'Select image or video',
     uploadFile: 'Upload file',
     restoreDefault: 'Restore default',
-    editShortcut: 'Edit shortcut',
+    editShortcut: 'Edit quick link',
     name: 'Name',
-    inputNamePh: 'Enter shortcut name',
-    errorNameReq: 'Please enter shortcut name',
+    inputNamePh: 'Enter quick link name',
+    errorNameReq: 'Please enter quick link name',
     errorUrlReq: 'Please enter URL',
     delete: 'Delete',
     cancel: 'Cancel',
@@ -401,10 +401,10 @@ const i18nData = {
     selectImage: '画像または動画を選択',
     uploadFile: 'ファイルをアップロード',
     restoreDefault: 'デフォルトに戻す',
-    editShortcut: 'ショートカットを編集',
+    editShortcut: 'クイックリンクを編集',
     name: '名前',
-    inputNamePh: 'ショートカット名を入力',
-    errorNameReq: 'ショートカット名を入力してください',
+    inputNamePh: 'クイックリンク名を入力',
+    errorNameReq: 'クイックリンク名を入力してください',
     errorUrlReq: 'URLを入力してください',
     delete: '削除',
     cancel: 'キャンセル',
@@ -483,10 +483,10 @@ const i18nData = {
     selectImage: 'Выберите фото или видео',
     uploadFile: 'Загрузить файл',
     restoreDefault: 'Сбросить',
-    editShortcut: 'Изменить ярлык',
+    editShortcut: 'Изменить быструю ссылку',
     name: 'Название',
-    inputNamePh: 'Введите название ярлыка',
-    errorNameReq: 'Введите название',
+    inputNamePh: 'Введите название быстрой ссылки',
+    errorNameReq: 'Введите название быстрой ссылки',
     errorUrlReq: 'Введите URL',
     delete: 'Удалить',
     cancel: 'Отмена',
@@ -529,7 +529,7 @@ const i18nData = {
   }
 };
 
-// 检测与解析当前实际的语言代号
+// 根据用户语言设置和系统语言，解析并返回实际使用的语言代码
 function getResolvedLanguageCode(langConfig) {
   if (langConfig && langConfig !== 'auto') {
     return langConfig;
@@ -554,22 +554,6 @@ function applyLanguage(langConfig) {
 
   document.documentElement.lang = langCode.startsWith('zh') ? (langCode === 'zh-TW' ? 'zh-TW' : 'zh-CN') : langCode;
 
-  document.querySelectorAll('.tooltip-icon').forEach(icon => {
-    const tooltip = icon.querySelector('.tooltip-content');
-    if (!tooltip) return;
-    const position = () => {
-      const rect = icon.getBoundingClientRect();
-      const tipRect = tooltip.getBoundingClientRect();
-      let left = rect.left + rect.width / 2 - tipRect.width / 2;
-      left = Math.max(8, Math.min(left, window.innerWidth - tipRect.width - 8));
-      tooltip.style.left = left + 'px';
-      tooltip.style.top = (rect.top - tipRect.height - 10) + 'px';
-    };
-    icon.addEventListener('mouseenter', position);
-    icon.addEventListener('focus', position);
-    icon.addEventListener('click', position);
-  });
-
   // 1.替换 innerText
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.getAttribute('data-i18n');
@@ -581,7 +565,11 @@ function applyLanguage(langConfig) {
   document.querySelectorAll('[data-i18n-html]').forEach(el => {
     const key = el.getAttribute('data-i18n-html');
     if (dict[key] !== undefined) {
+      const arrow = el.querySelector('.tooltip-arrow');
       el.innerHTML = dict[key];
+      if (arrow) {
+        el.insertBefore(arrow, el.firstChild);
+      }
     }
   });
 
@@ -628,7 +616,7 @@ function applyLanguage(langConfig) {
     statusBgModal.innerText = isChecked ? dict.on : dict.off;
   }
 
-  // 6.刷新时间胶囊状态文本
+  // 6.刷新时间状态文本
   const statusTimeCapsule = document.getElementById('status-time-capsule');
   if (statusTimeCapsule) {
     const isChecked = document.getElementById('toggle-time-capsule-switch')?.checked || false;
@@ -655,9 +643,97 @@ function applyLanguage(langConfig) {
     const isChecked = document.getElementById('toggle-enhanced-visibility')?.checked || false;
     statusEnhancedVisibility.innerText = isChecked ? dict.on : dict.off;
   }
+
+  // 10.刷新自定义下拉选项文本
+  refreshCustomSelects();
+
+  // ===== 工具提示(Tooltip) 初始化 =====
+
+  if (!window._tooltipInitialized) {
+    window._tooltipInitialized = true;
+
+    // 存储当前显示中的 tooltip 位置更新函数，用于滚动/缩放时重新定位
+    const activeTooltipIcons = new Set();
+
+    const tooltipReposition = () => {
+      activeTooltipIcons.forEach(fn => fn());
+    };
+    window.addEventListener('scroll', tooltipReposition, true);
+    window.addEventListener('resize', tooltipReposition);
+
+    document.querySelectorAll('.tooltip-icon').forEach(icon => {
+      const tooltip = icon.querySelector('.tooltip-content');
+      if (!tooltip) return;
+
+      // 关键：初始化时就将 tooltip 移到 body，而不是在 show 时
+      document.body.appendChild(tooltip);
+
+      let tipWidth = 0;
+      let tipHeight = 0;
+
+      // 测量 tooltip 尺寸（首次显示前调用，确保内容已渲染）
+      const measureTooltip = () => {
+        const tipRect = tooltip.getBoundingClientRect();
+        tipWidth = tipRect.width;
+        tipHeight = tipRect.height;
+      };
+
+      // 根据图标位置计算 tooltip 显示坐标
+      const position = () => {
+        if (tipWidth === 0 || tipHeight === 0) {
+          measureTooltip();
+        }
+        const rect = icon.getBoundingClientRect();
+
+        // 默认在图标上方显示
+        let left = rect.left + rect.width / 2 - tipWidth / 2;
+        let top = rect.top - tipHeight - 10;
+        let below = false;
+
+        // 如果上方空间不足（<8px），且下方空间充足，则改为下方显示
+        if (top < 8 && rect.bottom + tipHeight + 10 < window.innerHeight) {
+          top = rect.bottom + 10;
+          below = true;
+        }
+
+        // 水平方向边界约束，防止超出视口
+        left = Math.max(8, Math.min(left, window.innerWidth - tipWidth - 8));
+
+        tooltip.style.left = left + 'px';
+        tooltip.style.top = top + 'px';
+
+        // 根据显示方向切换箭头朝向
+        if (below) {
+          tooltip.classList.add('tooltip-below');
+        } else {
+          tooltip.classList.remove('tooltip-below');
+        }
+      };
+
+      const show = () => {
+        measureTooltip();
+        position();
+        tooltip.style.visibility = 'visible';
+        tooltip.style.opacity = '1';
+        activeTooltipIcons.add(position);
+      };
+
+      const hide = () => {
+        tooltip.style.visibility = 'hidden';
+        tooltip.style.opacity = '0';
+        activeTooltipIcons.delete(position);
+      };
+
+      icon.addEventListener('mouseenter', show);
+      icon.addEventListener('focus', show);
+      icon.addEventListener('click', show);
+      icon.addEventListener('mouseleave', hide);
+      icon.addEventListener('blur', hide);
+    });
+  }
 }
 
-// LocalStorage持久化辅助对象
+// LocalStorage 读写封装（带 JSON 序列化与异常保护）
 const Storage = {
   get(key, defaultValue) {
     try {
@@ -696,12 +772,276 @@ function getFaviconUrl(urlStr) {
   return `https://api.xinac.net/icon/?url=${domain}`;
 }
 
+// 对用户输入进行 HTML 转义，防止 XSS
 function sanitizeInput(str) {
   return str.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
+// 反转 HTML 转义（仅还原 <>），用于显示原始文本
 function decodeInput(str) {
   return str.replace(/&lt;/g, '<').replace(/&gt;/g, '>');
+}
+
+// ===== 重写下拉菜单(Custom Select) =====
+
+
+  // 清除下拉面板的内联样式（transform/visibility），
+  // 这些样式由 activateDropdown() 临时设置用于动画起始状态
+  function clearDropdownInlineStyles(dd) {
+    dd.style.transform = '';
+    dd.style.visibility = '';
+  }
+
+  function initCustomSelects() {
+    const displays = document.querySelectorAll('.custom-select-display');
+    displays.forEach(display => {
+      const selectId = display.getAttribute('data-for');
+      const nativeSelect = document.getElementById(selectId);
+      if (!nativeSelect) return;
+
+      const textEl = display.querySelector('.custom-select-text');
+      let dropdown = null;
+
+      // 关闭所有其他已打开的下拉（除了 exceptDisplay 对应的那个）
+      function closeAll(exceptDisplay) {
+        document.querySelectorAll('.custom-select-dropdown.active').forEach(dd => {
+          if (dd._display !== exceptDisplay) {
+            dd.classList.remove('active');
+            clearDropdownInlineStyles(dd);
+            dd._display.classList.remove('active');
+          }
+        });
+      }
+
+      // 将原生 select 的选中项文本同步到自定义显示组件
+      function updateDisplayText() {
+        const selectedOption = nativeSelect.options[nativeSelect.selectedIndex];
+        if (selectedOption) {
+          textEl.textContent = selectedOption.textContent.trim();
+        }
+      }
+
+      // 根据可用空间计算下拉面板的位置和展开方向
+      // 返回值：dropdown._openingUp = true 表示向上展开
+      function positionDropdown() {
+        if (!dropdown) return;
+        const rect = display.getBoundingClientRect();
+        dropdown.style.width = rect.width + 'px';
+
+        const dropdownHeight = dropdown.offsetHeight;
+        const spaceBelow = window.innerHeight - rect.bottom - 4;
+        const spaceAbove = rect.top - 4;
+
+        let openingUp = false;
+
+        // 优先在下方展开（空间充足时）
+        if (spaceBelow >= dropdownHeight) {
+          dropdown.style.top = rect.bottom + 4 + 'px';
+          dropdown.style.left = rect.left + 'px';
+        } else if (spaceAbove > spaceBelow && spaceAbove > 0) {
+          // 上方空间比下方大，且上方有空间，则向上展开
+          dropdown.style.top = Math.max(4, rect.top - dropdownHeight - 4) + 'px';
+          dropdown.style.left = rect.left + 'px';
+          openingUp = true;
+        } else {
+          // 空间都不足时，选择可见区域更大的方向，并夹紧到视口内
+          const belowTop = rect.bottom + 4;
+          const belowClamped = Math.min(belowTop, window.innerHeight - dropdownHeight - 4);
+          const aboveTop = rect.top - dropdownHeight - 4;
+          const aboveClamped = Math.max(4, aboveTop);
+
+          const belowVisible = window.innerHeight - belowClamped - 4;
+          const aboveVisible = aboveClamped + dropdownHeight;
+
+          if (belowVisible >= aboveVisible) {
+            dropdown.style.top = belowClamped + 'px';
+          } else {
+            dropdown.style.top = aboveClamped + 'px';
+            openingUp = true;
+          }
+          dropdown.style.left = rect.left + 'px';
+        }
+
+        dropdown._openingUp = openingUp;
+      }
+
+      // 激活下拉面板
+      function activateDropdown() {
+        const openingUp = dropdown._openingUp;
+        dropdown.style.transform = openingUp ? 'translateY(4px)' : 'translateY(-4px)';
+        dropdown.style.visibility = 'visible';
+
+        // 强制重排，让上述 transform 生效，确保 transition 起点正确
+        void dropdown.offsetHeight;
+
+        display.classList.add('active');
+        dropdown.classList.add('active');
+        dropdown.style.transform = '';
+      }
+
+      // 构建下拉面板 DOM —— 从原生 select 的 options 生成自定义选项
+      function buildDropdown() {
+        if (dropdown) dropdown.remove();
+        dropdown = document.createElement('div');
+        dropdown.className = 'custom-select-dropdown';
+        dropdown._display = display;
+        dropdown.setAttribute('data-for-select', selectId);
+
+        Array.from(nativeSelect.options).forEach((opt, index) => {
+          const optionEl = document.createElement('div');
+          optionEl.className = 'custom-select-option';
+          optionEl.textContent = opt.textContent.trim();
+          optionEl.setAttribute('data-value', opt.value);
+          if (index === nativeSelect.selectedIndex) {
+            optionEl.classList.add('selected');
+          }
+          optionEl.addEventListener('click', (e) => {
+            e.stopPropagation();
+            nativeSelect.value = opt.value;
+            nativeSelect.dispatchEvent(new Event('change', { bubbles: true }));
+            closeAll(null);
+            updateDisplayText();
+          });
+          dropdown.appendChild(optionEl);
+        });
+
+        // 挂到 body 上，脱离父容器 overflow 裁剪
+        document.body.appendChild(dropdown);
+        positionDropdown();
+      }
+
+      // 点击触发器：切换下拉的展开/收起
+      display.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (display.classList.contains('active')) {
+          closeAll(null);
+        } else {
+          closeAll(display);
+          if (!dropdown || !dropdown.isConnected) {
+            buildDropdown();
+          } else {
+            positionDropdown();
+            dropdown.querySelectorAll('.custom-select-option').forEach((optEl, i) => {
+              optEl.classList.toggle('selected', i === nativeSelect.selectedIndex);
+            });
+          }
+          activateDropdown();
+        }
+      });
+
+      // 原生 select 变化时同步 UI
+      nativeSelect.addEventListener('change', () => {
+        updateDisplayText();
+        if (dropdown) {
+          dropdown.querySelectorAll('.custom-select-option').forEach((optEl, i) => {
+            optEl.classList.toggle('selected', i === nativeSelect.selectedIndex);
+          });
+        }
+      });
+
+      updateDisplayText();
+    });
+
+    // 点击页面其他位置时关闭所有下拉
+    document.addEventListener('click', (e) => {
+      const isClickOnDropdown = e.target.closest('.custom-select-dropdown');
+      const isClickOnDisplay = e.target.closest('.custom-select-display');
+      if (!isClickOnDropdown && !isClickOnDisplay) {
+        document.querySelectorAll('.custom-select-dropdown.active').forEach(dd => {
+          dd.classList.remove('active');
+          clearDropdownInlineStyles(dd);
+          dd._display.classList.remove('active');
+        });
+      }
+    });
+
+    // ESC 键关闭所有下拉
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        document.querySelectorAll('.custom-select-dropdown.active').forEach(dd => {
+          dd.classList.remove('active');
+          clearDropdownInlineStyles(dd);
+          dd._display.classList.remove('active');
+        });
+      }
+    });
+
+    // 滚动/窗口大小变化时重新定位下拉面板
+    // 如果触发器已不可见则直接关闭
+    function repositionOrClose() {
+      const activeDropdowns = document.querySelectorAll('.custom-select-dropdown.active');
+      if (!activeDropdowns.length) return;
+      activeDropdowns.forEach(dd => {
+        const display = dd._display;
+        if (!display || !document.body.contains(display)) {
+          dd.classList.remove('active');
+          clearDropdownInlineStyles(dd);
+          if (display) display.classList.remove('active');
+          return;
+        }
+        const rect = display.getBoundingClientRect();
+        if (rect.bottom < 0 || rect.top > window.innerHeight || rect.right < 0 || rect.left > window.innerWidth) {
+          dd.classList.remove('active');
+          clearDropdownInlineStyles(dd);
+          display.classList.remove('active');
+          return;
+        }
+        dd.style.width = rect.width + 'px';
+        const dropdownHeight = dd.offsetHeight;
+        const spaceBelow = window.innerHeight - rect.bottom - 4;
+        const spaceAbove = rect.top - 4;
+
+        if (spaceBelow >= dropdownHeight) {
+          dd.style.top = rect.bottom + 4 + 'px';
+          dd.style.left = rect.left + 'px';
+        } else if (spaceAbove > spaceBelow && spaceAbove > 0) {
+          dd.style.top = Math.max(4, rect.top - dropdownHeight - 4) + 'px';
+          dd.style.left = rect.left + 'px';
+        } else {
+          const belowTop = rect.bottom + 4;
+          const belowClamped = Math.min(belowTop, window.innerHeight - dropdownHeight - 4);
+          const aboveTop = rect.top - dropdownHeight - 4;
+          const aboveClamped = Math.max(4, aboveTop);
+          const belowVisible = window.innerHeight - belowClamped - 4;
+          const aboveVisible = aboveClamped + dropdownHeight;
+          if (belowVisible >= aboveVisible) {
+            dd.style.top = belowClamped + 'px';
+          } else {
+            dd.style.top = aboveClamped + 'px';
+          }
+          dd.style.left = rect.left + 'px';
+        }
+    });
+  }
+
+  const settingsPanel = document.getElementById('popover-settings');
+  if (settingsPanel) {
+    settingsPanel.addEventListener('scroll', repositionOrClose);
+  }
+  window.addEventListener('resize', repositionOrClose);
+  window.addEventListener('scroll', repositionOrClose, true);
+}
+
+// 重新同步自定义下拉菜单的显示文本与选项（语言切换后调用）
+function refreshCustomSelects() {
+  document.querySelectorAll('.custom-select-display').forEach(display => {
+    const selectId = display.getAttribute('data-for');
+    const nativeSelect = document.getElementById(selectId);
+    if (!nativeSelect) return;
+    const textEl = display.querySelector('.custom-select-text');
+    const selectedOption = nativeSelect.options[nativeSelect.selectedIndex];
+    if (selectedOption) {
+      textEl.textContent = selectedOption.textContent.trim();
+    }
+    const dropdown = document.querySelector('.custom-select-dropdown.active[data-for-select="' + selectId + '"]') || null;
+    if (dropdown) {
+      const options = dropdown.querySelectorAll('.custom-select-option');
+      options.forEach((optEl, i) => {
+        optEl.textContent = nativeSelect.options[i].textContent.trim();
+        optEl.classList.toggle('selected', i === nativeSelect.selectedIndex);
+      });
+    }
+  });
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -731,7 +1071,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const suggestionsFooter = document.getElementById('suggestions-footer');
   const clearHistoryBtn = document.getElementById('clear-history-btn');
 
-  // Modal相关DOM元素(快捷方式
+  // Modal相关DOM元素(快速链接
   const modalOverlay = document.getElementById('modal');
   const modalTitle = document.getElementById('modal-title');
   const modalForm = document.getElementById('modal-form');
@@ -828,6 +1168,11 @@ document.addEventListener('DOMContentLoaded', () => {
   if (btnCloseSettings) {
     btnCloseSettings.addEventListener('click', () => {
       popoverSettings.classList.remove('active');
+      document.querySelectorAll('.custom-select-dropdown.active').forEach(dd => {
+        dd.classList.remove('active');
+        clearDropdownInlineStyles(dd);
+        if (dd._display) dd._display.classList.remove('active');
+      });
     });
   }
 
@@ -857,6 +1202,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // 根据当前引擎决定是否显示"强制必应中国版"选项行
   function updateForceBingCNRow(engine) {
     if (forceBingCNRow) {
       forceBingCNRow.style.display = engine === 'bing' ? 'flex' : 'none';
@@ -866,6 +1212,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // 时间开关相关函数
   let timeCapsuleTimer = null;
 
+  // 更新时间显示的当前时间与日期文本
   function updateTimeCapsule() {
     const display = document.getElementById('time-display');
     if (!display) return;
@@ -885,6 +1232,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (timeDate) timeDate.innerText = dateStr;
   }
 
+  // 根据设置控制时间的显示/隐藏与定时器启停
   function applyTimeCapsuleVisibility() {
     const display = document.getElementById('time-display');
     if (!display) return;
@@ -898,6 +1246,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // 根据设置控制菜单按钮（饼图标）的显示/隐藏
   function applyMenuButtonVisibility() {
     const btn = document.getElementById('waffle');
     const popover = document.getElementById('popover-waffle');
@@ -911,12 +1260,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // 启动时间定时器（每分钟更新一次）
   function startTimeCapsuleTimer() {
     if (timeCapsuleTimer) clearInterval(timeCapsuleTimer);
     updateTimeCapsule();
     timeCapsuleTimer = setInterval(updateTimeCapsule, 60000);
   }
 
+  // 停止时间定时器
   function stopTimeCapsuleTimer() {
     if (timeCapsuleTimer) {
       clearInterval(timeCapsuleTimer);
@@ -980,6 +1331,7 @@ document.addEventListener('DOMContentLoaded', () => {
     applyEnhancedVisibility();
   }
 
+  // 根据"增强可见性"设置与背景开关，切换 body 的 data 属性
   function applyEnhancedVisibility() {
     if (enhancedVisibility && bgEnabled) {
       document.body.setAttribute('data-enhanced-visibility', 'true');
@@ -988,6 +1340,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // 根据自定义壁纸数据，渲染视频/图片背景到页面和预览容器
   function renderWallpaper() {
     if (!customWallpaperData) {
       if (bgVideo) bgVideo.style.display = 'none';
@@ -1087,6 +1440,7 @@ function openProfileModal() {
   setTimeout(() => inputProfileName.focus(), 50);
 }
 
+// 关闭个人资料编辑弹窗
 function closeProfileModal() {
   modalProfile.classList.remove('active');
 }
@@ -1589,6 +1943,7 @@ inputOnlineUrl?.addEventListener('input', () => {
   applyMenuButtonVisibility();
   
   // 自定义搜索引擎对话框逻辑
+  // 打开/重置自定义搜索引擎编辑弹窗
   function openCustomEngineModal() {
     if (inputEngineName) inputEngineName.value = customEngineConfig.name || '';
     if (inputEngineUrl) inputEngineUrl.value = customEngineConfig.url || '';
@@ -1600,6 +1955,7 @@ inputOnlineUrl?.addEventListener('input', () => {
     setTimeout(() => inputEngineName?.focus(), 50);
   }
 
+  // 关闭自定义搜索引擎编辑弹窗
   function closeCustomEngineModal() {
     customEngineModal?.classList.remove('active');
   }
@@ -1643,7 +1999,7 @@ inputOnlineUrl?.addEventListener('input', () => {
     closeCustomEngineModal();
   });
 
-  // B2.快捷方式列表管理
+  // B2.快速链接列表管理
   let quicklinksList = Storage.get('ntp_quicklinks_list', []);
 
   function renderQuicklinks() {
@@ -1671,7 +2027,7 @@ inputOnlineUrl?.addEventListener('input', () => {
     addBtnStatic.dataset.bound = 'true';
   }
 
-  // 清空所有动态生成的快捷链接（保留静态按钮）
+  // 清空所有动态生成的快速链接（保留静态按钮）
   const items = quicklinksElem.querySelectorAll('.quicklink-item:not(.quicklink-add-static)');
   items.forEach(el => el.remove());
 
@@ -1680,7 +2036,7 @@ inputOnlineUrl?.addEventListener('input', () => {
     return;
   }
 
-  // 渲染已有的快捷方式
+  // 渲染已有的快速链接
   quicklinksList.forEach(item => {
     const linkElem = document.createElement('a');
     linkElem.href = item.url;
@@ -1703,7 +2059,7 @@ inputOnlineUrl?.addEventListener('input', () => {
     linkElem.innerHTML = `
       <div class="quicklink-icon">${iconContent}</div>
       <span class="quicklink-title">${safeTitle}</span>
-      <button type="button" class="quicklink-edit-btn" title="编辑快捷方式">
+      <button type="button" class="quicklink-edit-btn" title="编辑快速链接">
         <svg width="14" height="14" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
           <path d="M3 8a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0zm5 0a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0zm5 0a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0z"/>
         </svg>
@@ -1770,7 +2126,7 @@ function onDragEnter(e) {
   e.preventDefault();
   const target = e.currentTarget;
   const targetId = target.dataset.id;
-  // 只有快捷方式（有 data-id）且不是被拖拽自身时，才高亮
+  // 只有快速链接（有 data-id）且不是被拖拽自身时，才高亮
   if (targetId && targetId !== draggedId) {
     target.classList.add('drag-over');
   }
@@ -1811,6 +2167,7 @@ function onDrop(e) {
 
 
   // B3.自定义校验与 Modal 对话框逻辑
+  // 清除表单中所有的错误高亮状态
   function clearErrors() {
     containerName?.classList.remove('error');
     containerUrl?.classList.remove('error');
@@ -1818,11 +2175,13 @@ function onDrop(e) {
     tipUrl?.classList.remove('active');
   }
 
+  // 显示名称字段的错误提示
   function showNameError() {
     containerName?.classList.add('error');
     tipName?.classList.add('active');
   }
 
+  // 显示URL字段的错误提示
   function showUrlError() {
     containerUrl?.classList.add('error');
     tipUrl?.classList.add('active');
@@ -1838,6 +2197,7 @@ function onDrop(e) {
     tipUrl?.classList.remove('active');
   });
 
+  // 打开"添加快速链接"弹窗，清空表单并隐藏删除按钮
   function openAddModal() {
     currentEditingId = null;
     if (inputName) inputName.value = '';
@@ -1848,6 +2208,7 @@ function onDrop(e) {
     setTimeout(() => inputName?.focus(), 50);
   }
 
+  // 打开"编辑快速链接"弹窗，填充当前数据并显示删除按钮
   function openEditModal(item) {
     currentEditingId = item.id;
     if (inputName) inputName.value = item.title;
@@ -1858,6 +2219,7 @@ function onDrop(e) {
     setTimeout(() => inputName?.focus(), 50);
   }
 
+  // 关闭快速链接编辑弹窗，清空编辑状态
   function closeModal() {
     modalOverlay?.classList.remove('active');
     currentEditingId = null;
@@ -1937,6 +2299,7 @@ function onDrop(e) {
     fetchAndShowSuggestions();
   });
 
+  // 将搜索关键词存入历史记录（去重、限长50条）
   function saveSearchHistory(query) {
     if (!historyEnabled || !query) return;
     const safeQuery = sanitizeInput(query);
@@ -1951,11 +2314,13 @@ function onDrop(e) {
   const historySvgIcon = `<svg width="18" height="18" viewBox="0 0 24 24"><path d="M13 3a9 9 0 0 0-9 9H1l3.89 3.89.07.14L9 12H6a7 7 0 1 1 7 7 7.07 7.07 0 0 1-6-3.37l-1.44 1.44A8.95 8.95 0 0 0 13 21a9 9 0 0 0 0-18zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg>`;
   const searchSvgIcon = `<svg width="18" height="18" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>`;
 
+  // 关闭搜索联想下拉面板，重置选中索引
   function closeSuggestions() {
     searchContainer?.classList.remove('suggestions-open');
     selectedSuggestionIndex = -1;
   }
 
+  // 渲染搜索联想下拉列表，合并历史记录与在线建议词条
   function renderSuggestions(historyItems, suggestionItems) {
     if (!suggestionList) return;
     suggestionList.innerHTML = '';
@@ -2023,6 +2388,7 @@ function onDrop(e) {
     return [];
   }
 
+  // 获取搜索联想建议：匹配历史记录 + 异步请求搜索引擎建议
   async function fetchAndShowSuggestions() {
     if (!searchInput) return;
     const query = searchInput.value.trim();
@@ -2055,6 +2421,7 @@ function onDrop(e) {
     renderSuggestions(matchedHistory, fetchedSuggestions.slice(0, 8));
   }
 
+  // 通用防抖工具函数：延迟执行高频触发的函数调用
   function debounce(fn, delay) {
     let timer = null;
     return function(...args) {
@@ -2122,6 +2489,7 @@ searchInput?.addEventListener('input', () => {
     }
   });
 
+  // 更新联想列表中键盘选中项的高亮状态
   function updateSuggestionSelection(items) {
     items.forEach((item, index) => {
       if (index === selectedSuggestionIndex) {
@@ -2169,4 +2537,7 @@ searchInput?.addEventListener('input', () => {
 
   // 初始化应用全页翻译
   applyLanguage(savedLang);
+
+  // 初始化自定义下拉组件
+  initCustomSelects();
 });

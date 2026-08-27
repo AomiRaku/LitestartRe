@@ -206,10 +206,16 @@
       }
     }
 
+    /* ===== 按钮、窗口、搜索框等元素的过渡动画 =====
+   统一使用 0.06s-0.1s 的短时长，配合 ease-out/ease 缓动函数，
+   提供快速而不突兀的交互反馈。
+   transition 涵盖：background-color、border-color、box-shadow、
+   border-radius、opacity、transform 等属性。 */
+
     body.bg-enabled[data-enhanced-visibility="true"] .header-button {
       background-color: var(--enhanced-visibility-bg);
       border-radius: 8px;
-      transition: background-color 0.15s ease;
+      transition: background-color 0.08s ease;
     }
 
     body.bg-enabled[data-enhanced-visibility="true"] .header-button:hover {
@@ -226,7 +232,7 @@
       background-color: var(--enhanced-visibility-bg);
       border-radius: 8px;
       padding: 4px 10px;
-      transition: background-color 0.15s ease;
+      transition: background-color 0.08s ease;
     }
 
     body.bg-enabled[data-enhanced-visibility="true"] #time-display:hover {
@@ -237,7 +243,7 @@
       background-color: var(--enhanced-visibility-bg);
       border-radius: 4px;
       padding: 1px 4px;
-      transition: background-color 0.15s ease;
+      transition: background-color 0.08s ease;
     }
 
     body.bg-enabled[data-enhanced-visibility="true"] .quicklink-title:hover {
@@ -287,6 +293,7 @@
       padding: 0;
       margin: 0;
       border: 1px solid transparent;
+      transition: background-color 0.08s ease;
     }
 
     button:hover {
@@ -325,12 +332,16 @@
       width: 40px;
       height: 40px;
       color: var(--neutral-foreground-rest);
-      transition: background-color 0.15s ease;
+      transition: background-color 0.08s ease;
     }
 
-    /* 弹出菜单面板通用样式 */
+    /* 弹出菜单面板通用样式 —— 展开/收起动画
+       - 初始状态：opacity:0, visibility:hidden, transform 上移 4px
+       - .active 状态：opacity:1, visibility:visible, transform 归零
+       - visibility 延迟 0.06s 切换（通过 transition-delay），
+         确保 opacity 过渡完成后再隐藏，避免闪烁
+    */
     .popover-panel {
-      display: none;
       position: absolute;
       top: var(--header-height);
       z-index: 100;
@@ -339,10 +350,19 @@
       background-color: var(--fill-popup-color);
       border-radius: 8px;
       box-sizing: border-box;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transform: translateY(-4px);
+      transition: opacity 0.06s ease-out, transform 0.06s ease-out, visibility 0s linear 0.06s;
     }
 
     .popover-panel.active {
-      display: block;
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transform: translateY(0);
+      transition: opacity 0.06s ease-out, transform 0.06s ease-out, visibility 0s linear 0s;
     }
 
     #popover-waffle {
@@ -381,7 +401,7 @@
     #popover-settings::-webkit-scrollbar-thumb {
       background: var(--settings-thumb-border);  /* 滑块颜色 */
       border-radius: 10px;
-      transition: background 0.2s;
+      transition: background 0.1s;
     }
 
     #popover-settings::-webkit-scrollbar-thumb:hover {
@@ -408,6 +428,7 @@
       border-radius: 4px;
       color: var(--settings-text-secondary);
       cursor: pointer;
+      transition: background-color 0.08s ease;
     }
 
     .settings-close-btn:hover {
@@ -459,6 +480,7 @@
       outline: none;
       cursor: pointer;
       appearance: none;
+      transition: background-color 0.08s ease;
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23888' d='M2.22 4.47a.75.75 0 0 1 1.06 0L6 7.19l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L2.22 5.53a.75.75 0 0 1 0-1.06z'/%3E%3C/svg%3E");
       background-repeat: no-repeat;
       background-position: right 10px center;
@@ -466,6 +488,110 @@
 
     .select-box:not(:open):hover {
       background-color: var(--neutral-fill-rest);
+    }
+
+    /* ===== 重写下拉菜单样式 ===== */
+
+    /* 自定义 select 外壳 —— 原生 select 透明覆盖用于接收键盘等原生事件 */
+    .custom-select-wrapper {
+      position: relative;
+      width: 100%;
+    }
+
+    .custom-select-wrapper .select-box {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+      width: 100%;
+      height: 100%;
+      border: none;
+      background: transparent;
+    }
+
+    /* 下拉触发器按钮 —— 显示当前选中项文本和箭头 */
+    .custom-select-display {
+      width: 100%;
+      height: 32px;
+      border-radius: 6px;
+      border: 1px solid var(--settings-card-border);
+      background-color: var(--settings-card-bg);
+      color: var(--settings-text-primary);
+      padding: 0 12px 0 10px;
+      font-size: 13px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: background-color 0.08s ease, border-color 0.08s ease;
+      user-select: none;
+      box-sizing: border-box;
+    }
+
+    .custom-select-display:hover {
+      background-color: var(--neutral-fill-rest);
+    }
+
+    .custom-select-display.active {
+      border-color: var(--accent-foreground-rest);
+    }
+
+    /* 下拉箭头旋转动画 */
+    .custom-select-arrow {
+      width: 12px;
+      height: 12px;
+      flex-shrink: 0;
+      color: var(--neutral-foreground-secondary);
+      transition: transform 0.08s ease;
+    }
+
+    .custom-select-display.active .custom-select-arrow {
+      transform: rotate(180deg);
+    }
+
+    /* 下拉面板 —— position:fixed 用于脱离父容器 overflow 裁剪
+       - 初始状态：opacity:0, visibility:hidden, transform 上移 4px
+       - .active 状态：opacity:1, visibility:visible, transform 归零
+       - 展开方向由 JS 根据空间动态决定（上/下），通过 translateY 初始方向实现动画 */
+    .custom-select-dropdown {
+      position: fixed;
+      background-color: var(--fill-popup-color);
+      border: 1px solid var(--settings-card-border);
+      border-radius: 6px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+      z-index: 2000;
+      max-height: 240px;
+      overflow-y: auto;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transform: translateY(-4px);
+      transition: opacity 0.08s ease-out, transform 0.08s ease-out, visibility 0s linear 0.08s;
+    }
+
+    .custom-select-dropdown.active {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transform: translateY(0);
+      transition: opacity 0.08s ease-out, transform 0.08s ease-out;
+    }
+
+    /* 选项样式 —— hover 和 selected 有不同过渡 */
+    .custom-select-option {
+      padding: 8px 12px;
+      cursor: pointer;
+      font-size: 13px;
+      color: var(--settings-text-primary);
+      transition: background-color 0.08s ease, color 0.08s ease;
+    }
+
+    .custom-select-option:hover {
+      background-color: var(--neutral-fill-hover);
+    }
+
+    .custom-select-option.selected {
+      color: var(--accent-foreground-rest);
+      font-weight: 600;
     }
 
     /* 设置行 */
@@ -496,7 +622,9 @@
       align-items: center;
     }
 
-    /* 开关样式 */
+    /* 开关样式 —— 滑块左右移动带动画过渡
+       - left: 0.2s ease 让滑块移动更慢，提供明显的滑动反馈
+       - background/border-color: 0.08s 快速过渡颜色变化 */
     .switch {
       position: relative;
       display: inline-block;
@@ -518,7 +646,8 @@
       right: 0;
       bottom: 0;
       border: 1px solid var(--settings-text-secondary);
-      transition: .2s ease;
+      background-color: var(--settings-card-bg);
+      transition: background-color 0.08s ease, border-color 0.08s ease, left 0.2s ease;
       border-radius: 20px;
     }
 
@@ -530,8 +659,12 @@
       left: 2px;
       bottom: 2px;
       background-color: var(--settings-text-secondary);
-      transition: .2s ease;
+      transition: background-color 0.08s ease, transform 0.08s ease, filter 0.08s ease;
       border-radius: 50%;
+    }
+
+    .slider:hover:before {
+      filter: brightness(0.75);
     }
 
     input:checked + .slider {
@@ -542,6 +675,11 @@
     input:checked + .slider:before {
       transform: translateX(18px);
       background-color: #ffffff;
+    }
+
+    input:checked + .slider:hover:before {
+      transform: translateX(18px);
+      filter: brightness(0.75);
     }
 
     /* 卡片视图选择器 */
@@ -562,7 +700,7 @@
       align-items: center;
       gap: 6px;
       cursor: pointer;
-      transition: border-color 0.15s, background-color 0.15s;
+      transition: border-color 0.08s, background-color 0.08s;
     }
 
     .preset-card:hover {
@@ -628,6 +766,7 @@
       font-size: 13px;
       cursor: pointer;
       margin-top: 8px;
+      transition: background-color 0.08s ease;
     }
 
     .icon-btn-text:hover {
@@ -706,6 +845,8 @@
       z-index: 15;
     }
 
+    /* 搜索框 —— 搜索框展开时底部圆角变平，与下拉面板无缝衔接
+       transition 包含圆角、阴影、背景色、边框颜色等属性，0.08s 快速响应 */
     #fakebox {
       display: flex;
       align-items: center;
@@ -722,7 +863,7 @@
       cursor: text;
       position: relative;
       padding: 0 14px 0 11px;
-      transition: border-radius 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, outline 0.15s ease;
+      transition: border-radius 0.08s ease, box-shadow 0.08s ease, background-color 0.08s ease, border-color 0.08s ease, outline 0.08s ease;
     }
 
     #fakebox #searchbutton {
@@ -781,8 +922,12 @@
       box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
     }
 
+    /* 搜索框展开联想下拉词条面板动画
+       - 初始状态：opacity:0, visibility:hidden, transform 上移 4px
+       - .suggestions-open 状态：opacity:1, visibility:visible, transform 归零
+       - visibility 延迟 0.08s 切换，确保过渡完成后再隐藏 */
     #suggestions-box {
-      display: none;
+      display: block;
       position: absolute;
       top: 46px;
       left: 0;
@@ -794,10 +939,19 @@
       border-top: 1px solid var(--modal-border);
       overflow: hidden;
       z-index: 100;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transform: translateY(-4px);
+      transition: opacity 0.08s ease-out, transform 0.08s ease-out, visibility 0s linear 0.08s;
     }
 
     #search-container.suggestions-open #suggestions-box {
-      display: block;
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transform: translateY(0);
+      transition: opacity 0.08s ease-out, transform 0.08s ease-out, visibility 0s linear 0s;
     }
 
     .suggestion-list {
@@ -814,7 +968,7 @@
       font-size: 15px;
       color: var(--neutral-foreground-rest);
       gap: 12px;
-      transition: background-color 0.1s;
+      transition: background-color 0.08s;
     }
 
     .suggestion-item:hover, .suggestion-item.selected {
@@ -861,7 +1015,7 @@
       text-decoration: underline;
     }
 
-    /* 快捷链接列表 */
+    /* 快速链接列表 */
     ntp-quicklinks {
       grid-row: 7;
       width: 844px;
@@ -898,7 +1052,7 @@
       color: var(--neutral-foreground-rest);
       font-size: 12px;
       gap: 6px;
-      transition: background-color 0.2s;
+      transition: background-color 0.1s;
     }
 
     .quicklink-item:hover {
@@ -945,7 +1099,7 @@
       align-items: center;
       justify-content: center;
       opacity: 0;
-      transition: opacity 0.15s ease-in-out, background-color 0.15s;
+      transition: opacity 0.08s ease-in-out, background-color 0.08s;
       background-color: rgba(0, 0, 0, 0.05);
       fill: var(--neutral-foreground-rest);
       z-index: 2;
@@ -994,7 +1148,7 @@
 
     /* 通用 Modal 模态对话框 */
     .modal-overlay {
-      display: none;
+      display: flex;
       position: fixed;
       top: 0;
       left: 0;
@@ -1004,16 +1158,17 @@
       z-index: 1000;
       align-items: center;
       justify-content: center;
-      animation: fadeIn 0.15s ease-out;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity 0.08s ease-out, visibility 0s linear 0.08s;
     }
 
     .modal-overlay.active {
-      display: flex;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transition: opacity 0.08s ease-out, visibility 0s linear 0s;
     }
 
     .modal-dialog {
@@ -1056,6 +1211,7 @@
       border-radius: 4px;
       padding: 4px;
       display: flex;
+      transition: background-color 0.08s ease;
     }
 
     .modal-close-icon:hover {
@@ -1093,23 +1249,31 @@
       font-size: 14px;
       outline: none;
       box-sizing: border-box;
-      transition: background-color 0.15s, border-color 0.15s;
+      transition: background-color 0.08s, border-color 0.08s, box-shadow 0.08s;
+    }
+
+    /* 悬停变色(选中时不生效) */
+    .input:hover:not(:focus) {
+      background-color: rgba(0, 0, 0, 0.015) !important;
+    }
+
+    .input:focus {
+      border-color: var(--settings-card-border);
     }
 
     .input-container::after {
       content: '';
       position: absolute;
       bottom: 0;
-      left: 50%;
-      width: 0;
+      left: 0;
+      width: 100%;
       height: 2px;
       background-color: var(--accent-foreground-rest);
-      transition: width 0s ease, left 0s ease, background-color 0s ease; /* 输入框动画速度*/
+      opacity: 0;
     }
 
     .input-container:focus-within::after {
-      width: 100%;
-      left: 0;
+      opacity: 1;
     }
 
     .input-container.error .input {
@@ -1117,9 +1281,8 @@
     }
 
     .input-container.error::after {
-      background-color: var(--btn-danger-color) !important;
-      width: 100% !important;
-      left: 0 !important;
+      background-color: var(--btn-danger-color);
+      opacity: 1;
     }
 
     .error-tip {
@@ -1165,7 +1328,7 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      transition: background-color 0s, filter 0s; /* 按钮动画速度 */
+      transition: background-color 0.08s ease, filter 0.08s ease;
     }
 
     .btn-primary {
@@ -1329,14 +1492,17 @@
       background-color: var(--neutral-fill-hover);
       border-radius: 8px;
       transform: scale(1.02);
-      transition: all 0.12s ease;
+      transition: all 0.08s ease;
     }
 
     .quicklink-item.drag-over .quicklink-icon {
       box-shadow: 0 0 0 2px var(--accent-foreground-rest);
-      transition: box-shadow 0.12s ease;
+      transition: box-shadow 0.08s ease;
     }
 
+    /* ===== 工具提示(Tooltip)样式 ===== */
+
+    /* 图标按钮 —— 鼠标悬停显示提示 */
     .tooltip-icon {
       position: relative;
       display: inline-flex;
@@ -1355,7 +1521,11 @@
       color: var(--settings-text-primary);
     }
 
-    .tooltip-icon .tooltip-content {
+    /* 提示内容面板 —— position:fixed 用于脱离父容器
+       - 由 JS 动态定位到 document.body，避免被 overflow:hidden 裁剪
+       - 支持上下两种方向显示（通过 JS 添加/移除 .tooltip-below 类）
+       - 淡入淡出过渡 */
+    .tooltip-content {
       visibility: hidden;
       opacity: 0;
       position: fixed;
@@ -1371,24 +1541,8 @@
       white-space: normal;
       word-break: normal;
       z-index: 10000;
-      transition: opacity 0.15s ease, visibility 0.15s ease;
+      transition: opacity 0.08s ease, visibility 0.08s ease;
       pointer-events: none;
-    }
-
-    .tooltip-icon .tooltip-content::after {
-      content: '';
-      position: absolute;
-      top: 100%;
-      left: 50%;
-      transform: translateX(-50%);
-      border: 5px solid transparent;
-      border-top-color: var(--settings-card-bg);
-    }
-
-    .tooltip-icon:hover .tooltip-content,
-    .tooltip-icon:focus .tooltip-content {
-      visibility: visible;
-      opacity: 1;
     }
 
 
@@ -1411,7 +1565,7 @@
     color: var(--settings-text-primary);
     font-size: 14px;
     cursor: pointer;
-    transition: background-color 0.15s;
+    transition: background-color 0.08s;
     user-select: none;
     background-color: transparent;
     }
@@ -1509,23 +1663,39 @@
             </div>
 
             <div class="settings-content">
-              <!-- 网站导航 / 快速链接 -->
+              <!-- 快速链接 -->
               <div class="settings-card">
-                  <div class="settings-card-title" data-i18n="quicklinks">网站导航</div>
-                    <select id="select-quicklinks" class="select-box">
+                  <div class="settings-card-title" data-i18n="quicklinks">快速链接</div>
+                  <div class="custom-select-wrapper">
+                    <select id="select-quicklinks" class="select-box" tabindex="-1">
                       <option value="0" data-i18n="off">关闭</option>
                       <option value="1" data-i18n="rows1">1 行</option>
                       <option value="2" data-i18n="rows2">2 行</option>
                     </select>
+                    <div class="custom-select-display" data-for="select-quicklinks">
+                      <span class="custom-select-text"></span>
+                      <svg class="custom-select-arrow" viewBox="0 0 12 12" fill="none">
+                        <path d="M2.22 4.47a.75.75 0 0 1 1.06 0L6 7.19l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L2.22 5.53a.75.75 0 0 1 0-1.06z" fill="currentColor"/>
+                      </svg>
+                    </div>
+                  </div>
               </div>
               <div class="settings-card">
                 <div class="settings-card-title" data-i18n="searchEngine">搜索引擎</div>
-                <select id="select-engine" class="select-box">
-                  <option value="bing" data-i18n="bing">Bing</option>
-                  <option value="baidu" data-i18n="baidu">Baidu</option>
-                  <option value="google">Google</option>
-                  <option value="custom" data-i18n="custom">自定义</option>
-                </select>
+                <div class="custom-select-wrapper">
+                  <select id="select-engine" class="select-box" tabindex="-1">
+                    <option value="bing" data-i18n="bing">Bing</option>
+                    <option value="baidu" data-i18n="baidu">Baidu</option>
+                    <option value="google">Google</option>
+                    <option value="custom" data-i18n="custom">自定义</option>
+                  </select>
+                  <div class="custom-select-display" data-for="select-engine">
+                    <span class="custom-select-text"></span>
+                    <svg class="custom-select-arrow" viewBox="0 0 12 12" fill="none">
+                      <path d="M2.22 4.47a.75.75 0 0 1 1.06 0L6 7.19l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L2.22 5.53a.75.75 0 0 1 0-1.06z" fill="currentColor"/>
+                    </svg>
+                  </div>
+                </div>
                 <button id="btn-edit-engine" class="icon-btn-text" style="display:none;" type="button">
                   <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M11.013 1.427a1.75 1.75 0 0 1 2.474 0l1.086 1.086a1.75 1.75 0 0 1 0 2.474l-8.61 8.61c-.21.21-.47.364-.756.445l-3.251.93a.75.75 0 0 1-.927-.928l.93-3.25a1.75 1.75 0 0 1 .445-.758l8.61-8.609z"/></svg>
                   <span data-i18n="editCustomEngine">编辑自定义搜索引擎</span>
@@ -1537,7 +1707,7 @@
                       <svg width="18" height="18" viewBox="0 0 1024 1024" fill="currentColor" aria-hidden="true" style="margin-top: 3px; margin-left: -2px;">
                         <path d="M509.92 795.84c157.904 0 285.92-128.016 285.92-285.92C795.84 352 667.808 224 509.92 224 352 224 224 352 224 509.92c0 157.904 128 285.92 285.92 285.92z m0 48C325.504 843.84 176 694.32 176 509.92 176 325.504 325.504 176 509.92 176c184.416 0 333.92 149.504 333.92 333.92 0 184.416-149.504 333.92-333.92 333.92z m-2.448-400.704h16a16 16 0 0 1 16 16v201.728a16 16 0 0 1-16 16h-16a16 16 0 0 1-16-16V459.136a16 16 0 0 1 16-16z m0-100.176h16a16 16 0 0 1 16 16v23.648a16 16 0 0 1-16 16h-16a16 16 0 0 1-16-16v-23.648a16 16 0 0 1 16-16z"/>
                       </svg>
-                      <span class="tooltip-content" data-i18n-html="forceBingCNDesc"><b>开启</b>：强制使用必应中国版<br><b>关闭</b>：根据网络环境自动选择。<br>此选项可以避免代理设置导致 www.bing.com 无法自动跳转到 cn.bing.com。</span>
+                      <span class="tooltip-content" data-i18n-html="forceBingCNDesc"><span class="tooltip-arrow"></span><b>开启</b>：强制使用必应中国版<br><b>关闭</b>：根据网络环境自动选择。<br>此选项可以避免代理设置导致 www.bing.com 无法自动跳转到 cn.bing.com。</span>
                     </span>
                   </div>
                   <div class="switch-container">
@@ -1616,15 +1786,23 @@
               <!-- 页面语言选择卡片 -->
               <div class="settings-card">
                 <div class="settings-card-title" data-i18n="language">页面语言</div>
-                <select id="select-language" class="select-box">
-                  <option value="auto" data-i18n="langAuto">默认（跟随设备）</option>
-                  <option value="en">English</option>
-                  <option value="ja">日本語</option>
-                  <option value="ru">Русский</option>
-                  <option value="zh-CN">中文-简体</option>
-                  <option value="zh-TW">中文-繁體</option>
-                  <option value="zh-WY">华夏-文言</option>
-                </select>
+                <div class="custom-select-wrapper">
+                  <select id="select-language" class="select-box" tabindex="-1">
+                    <option value="auto" data-i18n="langAuto">默认（跟随设备）</option>
+                    <option value="en">English</option>
+                    <option value="ja">日本語</option>
+                    <option value="ru">Русский</option>
+                    <option value="zh-CN">中文-简体</option>
+                    <option value="zh-TW">中文-繁體</option>
+                    <option value="zh-WY">华夏-文言</option>
+                  </select>
+                  <div class="custom-select-display" data-for="select-language">
+                    <span class="custom-select-text"></span>
+                    <svg class="custom-select-arrow" viewBox="0 0 12 12" fill="none">
+                      <path d="M2.22 4.47a.75.75 0 0 1 1.06 0L6 7.19l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L2.22 5.53a.75.75 0 0 1 0-1.06z" fill="currentColor"/>
+                    </svg>
+                  </div>
+                </div>
                 
               </div>
 
@@ -1703,7 +1881,7 @@
           </div>
         </div>
 
-        <!-- 快捷链接列表（动态渲染） -->
+        <!-- 快速链接列表（动态渲染） -->
         <ntp-quicklinks id="quicklinks" rows="0">
           <!-- 添加按钮 -->
           <div class="quicklink-item quicklink-add-btn quicklink-add-static" style="display: none;">
@@ -1798,21 +1976,21 @@
       </div>
     </div>
 
-    <!-- 添加快捷方式弹窗 -->
+    <!-- 添加快速链接弹窗 -->
     <div id="modal" class="modal-overlay">
       <div class="modal-dialog">
-        <div id="modal-title" class="modal-header" data-i18n="editShortcut">编辑快捷方式</div>
+        <div id="modal-title" class="modal-header" data-i18n="editShortcut">编辑快速链接</div>
         <form id="modal-form" novalidate>
           <div class="form-group">
             <label class="form-label" for="input-name" data-i18n="name">名称</label>
             <div class="input-container" id="container-name">
-              <input type="text" id="input-name" class="input" placeholder="输入快捷方式名称" autocomplete="off" data-i18n-ph="inputNamePh">
+              <input type="text" id="input-name" class="input" placeholder="输入快速链接名称" autocomplete="off" data-i18n-ph="inputNamePh">
             </div>
             <div class="error-tip" id="tip-name">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor">
                 <path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zm0 3a.75.75 0 0 1 .75.75v3.5a.75.75 0 0 1-1.5 0v-3.5A.75.75 0 0 1 8 4zm0 8a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
               </svg>
-              <span id="text-name-error" data-i18n="errorNameReq">请输入快捷方式名称</span>
+              <span id="text-name-error" data-i18n="errorNameReq">请输入快速链接名称</span>
             </div>
           </div>
 
