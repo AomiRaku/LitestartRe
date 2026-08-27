@@ -1252,28 +1252,28 @@
       transition: background-color 0.08s, border-color 0.08s, box-shadow 0.08s;
     }
 
-    .input:hover {
-      border-color: var(--settings-text-secondary);
+    /* 悬停变色(选中时不生效) */
+    .input:hover:not(:focus) {
+      background-color: rgba(0, 0, 0, 0.015) !important;
     }
 
     .input:focus {
-      border-color: var(--accent-foreground-rest);
+      border-color: var(--settings-card-border);
     }
 
     .input-container::after {
       content: '';
       position: absolute;
       bottom: 0;
-      left: 50%;
-      width: 0;
+      left: 0;
+      width: 100%;
       height: 2px;
       background-color: var(--accent-foreground-rest);
-      transition: width 0.1s ease, left 0.1s ease, background-color 0.1s ease;
+      opacity: 0;
     }
 
     .input-container:focus-within::after {
-      width: 100%;
-      left: 0;
+      opacity: 1;
     }
 
     .input-container.error .input {
@@ -1281,9 +1281,8 @@
     }
 
     .input-container.error::after {
-      background-color: var(--btn-danger-color) !important;
-      width: 100% !important;
-      left: 0 !important;
+      background-color: var(--btn-danger-color);
+      opacity: 1;
     }
 
     .error-tip {
