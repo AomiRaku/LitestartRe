@@ -21,9 +21,9 @@
 
 或者使用文件导入
 
-1. 从 [Releases](https://github.com/XingYueFox/Litestart/releases) 下载.CRX或者.ZIP文件
+1. 从 [Releases](https://github.com/XingYueFox/Litestart/releases) 下载最新的.zip文件（不再推荐使用.crx）
 2. 打开浏览器的扩展或者插件管理界面，然后启用开发人员模式
-3. 将你下载的.CRX或者.ZIP文件托入插件界面导入
+3. 将你下载的.crx或者.zip文件托入插件界面导入
 4. 在插件列表找到LiteStart启用
 - ***请注意，如果无法启用请使用.zip导入***
 ***
