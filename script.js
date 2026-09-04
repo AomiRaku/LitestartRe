@@ -1516,6 +1516,20 @@ document.addEventListener('DOMContentLoaded', () => {
         wallpaperPreviewContainer.innerHTML = `
           <img src="${customWallpaperData.url}" alt="背景预览" style="width:100%;height:100%;object-fit:cover;" />
         `;
+        const previewImg = wallpaperPreviewContainer.querySelector('img');
+        previewImg.addEventListener('error', () => {
+          const errWrap = document.createElement('div');
+          errWrap.style.cssText = 'width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;margin-top:-4px;color:rgba(112,112,112,0.25);';
+          const errIcon = document.createElement('div');
+          errIcon.textContent = '×';
+          errIcon.style.cssText = 'font-size:80px;font-weight:700;line-height:1;margin-top:-8px;';
+          const errLabel = document.createElement('div');
+          errLabel.textContent = 'ERROR';
+          errLabel.style.cssText = 'font-size:14px;font-weight:600;letter-spacing:2px;margin-top:4px;color:rgba(112,112,112,0.4);';
+          errWrap.appendChild(errIcon);
+          errWrap.appendChild(errLabel);
+          previewImg.replaceWith(errWrap);
+        });
       }
     }
   }
