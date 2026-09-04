@@ -159,6 +159,7 @@
       pointer-events: none;
     }
 
+    /* 背景图/视频 —— 默认透明，加载完成后通过 .loaded 触发渐入 */
     #bg-video, #bg-image {
       position: absolute;
       top: 0;
@@ -167,6 +168,12 @@
       height: 100%;
       object-fit: cover;
       display: none;
+      opacity: 0;
+      transition: opacity 0.4s ease-in;
+    }
+
+    #bg-video.loaded, #bg-image.loaded {
+      opacity: 1;
     }
 
     /* 基础暗角遮罩 */
