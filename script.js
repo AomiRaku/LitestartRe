@@ -3457,7 +3457,7 @@ inputOnlineUrl?.addEventListener('input', () => {
   // 页面左右各保留的安全边距
   const QUICKLINK_SIDE_MARGIN = 16;
   // 单行模式：每行最多显示的项数，超出的项与"添加"按钮都不再渲染
-  const QUICKLINK_MAX_COLUMNS_ONE_ROW = 10;
+  const QUICKLINK_MAX_COLUMNS_ONE_ROW = 15;
   // 多行模式：每行显示的项数，行数不限（窗口过窄时按实际可用列数收缩）
   const QUICKLINK_MAX_COLUMNS_MULTI_ROW = 9;
 
