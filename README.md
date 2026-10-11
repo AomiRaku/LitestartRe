@@ -1,6 +1,6 @@
 # Litestart 
 
-![main_banner](docs/pics/1111.webp)
+![main_banner](docs/pics/1112.webp)
 
 <strong>面向桌面浏览器可定制的类原生浏览器起始页</strong>
 

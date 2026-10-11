@@ -1,6 +1,6 @@
 # Litestart
 
-![main_banner](docs/pics/1111.webp)
+![main_banner](docs/pics/1112.webp)
 
 <strong>A customizable, Native-like new tab page for desktop browsers</strong>
 
