@@ -1942,7 +1942,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // 背景/壁纸控制DOM元素
   const toggleBgSwitch = document.getElementById('toggle-bg-switch');
   const btnOpenBgModal = document.getElementById('btn-open-bg-modal');
-  const enhancedVisibilityRow = document.getElementById('enhanced-visibility-row');
   const toggleEnhancedVisibility = document.getElementById('toggle-enhanced-visibility');
   
   const btnCloseWallpaperModal = document.getElementById('btn-close-wallpaper-modal');
@@ -2303,10 +2302,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    if (enhancedVisibilityRow) {
-      // 该开关现在是一张独立卡片，显隐值用 block
-      enhancedVisibilityRow.style.display = bgEnabled ? 'block' : 'none';
-    }
     applyEnhancedVisibility();
     applyBgDependentEnabled();
   }
@@ -3462,7 +3457,7 @@ inputOnlineUrl?.addEventListener('input', () => {
   // 页面左右各保留的安全边距
   const QUICKLINK_SIDE_MARGIN = 16;
   // 单行模式：每行最多显示的项数，超出的项与"添加"按钮都不再渲染
-  const QUICKLINK_MAX_COLUMNS_ONE_ROW = 10;
+  const QUICKLINK_MAX_COLUMNS_ONE_ROW = 15;
   // 多行模式：每行显示的项数，行数不限（窗口过窄时按实际可用列数收缩）
   const QUICKLINK_MAX_COLUMNS_MULTI_ROW = 9;
 
