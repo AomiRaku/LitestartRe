@@ -1942,7 +1942,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // 背景/壁纸控制DOM元素
   const toggleBgSwitch = document.getElementById('toggle-bg-switch');
   const btnOpenBgModal = document.getElementById('btn-open-bg-modal');
-  const enhancedVisibilityRow = document.getElementById('enhanced-visibility-row');
   const toggleEnhancedVisibility = document.getElementById('toggle-enhanced-visibility');
   
   const btnCloseWallpaperModal = document.getElementById('btn-close-wallpaper-modal');
@@ -2303,10 +2302,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    if (enhancedVisibilityRow) {
-      // 该开关现在是一张独立卡片，显隐值用 block
-      enhancedVisibilityRow.style.display = bgEnabled ? 'block' : 'none';
-    }
     applyEnhancedVisibility();
     applyBgDependentEnabled();
   }

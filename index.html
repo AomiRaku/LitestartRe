@@ -2220,18 +2220,18 @@
                       <button type="button" class="btn btn-secondary" id="btn-custom-url-wallpaper" style="flex: 1;" data-i18n="customUrl">自定义</button>
                     </div>
                   </div>
-                </div>
 
-                <!-- 增强元素可见性：只有背景开启时才出现，放在最后 -->
-                <div id="enhanced-visibility-row" class="settings-card" style="display: none;">
-                  <div class="setting-row">
-                    <div class="setting-label-group" data-i18n="enhancedVisibility">增强元素可见性</div>
-                    <div class="switch-container">
-                      <span class="setting-status-text" id="status-enhanced-visibility" data-i18n="off">关闭</span>
-                      <label class="switch">
-                        <input type="checkbox" id="toggle-enhanced-visibility">
-                        <span class="slider"></span>
-                      </label>
+                  <!-- 增强元素可见性：始终显示，背景关闭时随上方各项一同置灰 -->
+                  <div id="enhanced-visibility-row" class="settings-card">
+                    <div class="setting-row">
+                      <div class="setting-label-group" data-i18n="enhancedVisibility">增强元素可见性</div>
+                      <div class="switch-container">
+                        <span class="setting-status-text" id="status-enhanced-visibility" data-i18n="off">关闭</span>
+                        <label class="switch">
+                          <input type="checkbox" id="toggle-enhanced-visibility">
+                          <span class="slider"></span>
+                        </label>
+                      </div>
                     </div>
                   </div>
                 </div>
