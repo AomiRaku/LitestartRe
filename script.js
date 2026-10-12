@@ -2017,7 +2017,7 @@ document.addEventListener('DOMContentLoaded', () => {
   window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
     const link = document.getElementById('favicon');
     if (link) {
-      const icon = e.matches ? 'img/icon_d.png' : 'img/icon_l.png';
+      const icon = e.matches ? 'img/icon_d.svg' : 'img/icon_l.svg';
       link.href = icon + '?r=' + Math.random();
     }
   });
