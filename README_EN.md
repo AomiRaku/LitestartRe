@@ -1,6 +1,6 @@
 # Litestart
 
-<img src="docs/pics/1112B.webp" alt="main_banner" style="zoom:67%;" />
+<img src="docs/pics/1112B.webp" alt="main_banner" height="300px" />
 
 <strong>A customizable, Native-like new tab page for desktop browsers</strong>
 
