@@ -1,6 +1,6 @@
 # Litestart
 
-![main_banner](docs/pics/1111.webp)
+<img src="docs/pics/1112B.webp" alt="main_banner" height="300px" />
 
 <strong>A customizable, Native-like new tab page for desktop browsers</strong>
 
@@ -42,8 +42,7 @@ Or use file import
 - Customize the background, search engine, and layout.
 - Pin any websites you want to keep on this page.
 - Or set any wallpaper you like.
-<img width="500" alt="215014" src="docs/pics/2004.webp" />
-<img width="500" alt="215014" src="docs/pics/2009.webp" />
+<img alt="Function Preview" src="docs/pics/2010.webp" />
 
 
 ## System & Browser Compatibility

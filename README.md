@@ -1,6 +1,6 @@
 # Litestart 
 
-![main_banner](docs/pics/1111.webp)
+<img src="docs/pics/1112B.webp" alt="main_banner" height="300px" />
 
 <strong>面向桌面浏览器可定制的类原生浏览器起始页</strong>
 
@@ -42,8 +42,7 @@
 - 自定义背景、搜索引擎以及布局
 - 固定你所想放在此处的网站
 - 亦或是任何一个壁纸
-<img width="500" alt="215014" src="docs/pics/2004.webp" />
-<img width="500" alt="215014" src="docs/pics/2009.webp" />
+<img alt="Function Preview" src="docs/pics/2010.webp" />
 
 
 ## 适用范围
