@@ -42,6 +42,7 @@
 - 自定义背景、搜索引擎以及布局
 - 固定你所想放在此处的网站
 - 亦或是任何一个壁纸
+<img width="500" alt="215014" src="docs/pics/2006.webp" />
 <img width="500" alt="215014" src="docs/pics/2004.webp" />
 <img width="500" alt="215014" src="docs/pics/2009.webp" />
 
