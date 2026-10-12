@@ -1,4 +1,4 @@
-const APP_VERSION = '1.8.0';           // 发行版本
+const APP_VERSION = '1.8.1';           // 发行版本
 const GITHUB_REPO = 'XingYueFox/Litestart';
 
 const logos = {
@@ -72,7 +72,7 @@ const i18nData = {
     download: '下载',
     updateAvailable: '可用更新',
     aboutDesc: '一个简洁、快速的浏览器起始页。',
-    litever: '版本 1.8.0 | 更新时间：2026-10-11',
+    litever: '版本 1.8.1 | 更新时间：2026-10-12',
     versionInfo: '版本信息',
     and: '和',
     searchPlaceholder: '搜索或输入 Web 地址',
@@ -213,7 +213,7 @@ const i18nData = {
     download: '下載',
     updateAvailable: '可用更新',
     aboutDesc: '一個簡潔、快速的瀏覽器起始頁。',
-    litever: '版本 1.8.0 | 更新時間：2026-10-11',
+    litever: '版本 1.8.1 | 更新時間：2026-10-12',
     versionInfo: '版本資訊',
     and: '與',
     searchPlaceholder: '搜尋或輸入 Web 地址',
@@ -339,7 +339,7 @@ const i18nData = {
     download: 'Download',
     updateAvailable: 'Update available',
     aboutDesc: 'A simple and fast browser start page.',
-    litever: 'Version 1.8.0 | Updated: 2026-10-11',
+    litever: 'Version 1.8.1 | Updated: 2026-10-12',
     versionInfo: 'Version Info',
     and: '&',
     searchPlaceholder: 'Search the web or enter address',
@@ -467,7 +467,7 @@ const i18nData = {
     download: 'ダウンロード',
     updateAvailable: 'アップデートがあります',
     aboutDesc: 'シンプルで高速なブラウザスタートページです。',
-    litever: 'バージョン 1.8.0 | 更新日: 2026-10-11',
+    litever: 'バージョン 1.8.1 | 更新日: 2026-10-12',
     versionInfo: 'バージョン情報',
     and: 'と',
     searchPlaceholder: 'Web を検索またはアドレスを入力',
@@ -594,7 +594,7 @@ const i18nData = {
     download: 'Скачать',
     updateAvailable: 'Доступно обновление',
     aboutDesc: 'Простая и быстрая страница запуска браузера.',
-    litever: 'Версия 1.8.0 | Обновлено: 2026-10-11',
+    litever: 'Версия 1.8.1 | Обновлено: 2026-10-12',
     versionInfo: 'Информация о версии',
     and: 'и',
     searchPlaceholder: 'Введите поисковый запрос или URL',
@@ -940,6 +940,15 @@ const Storage = {
       } else {
         console.warn('无法保存设置到 LocalStorage:', e);
       }
+      return false;
+    }
+  },
+  remove(key) {
+    try {
+      localStorage.removeItem(key);
+      return true;
+    } catch (e) {
+      console.warn('无法删除本地设置:', e);
       return false;
     }
   }
@@ -1930,6 +1939,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const tipEngineName = document.getElementById('tip-engine-name');
   const tipEngineUrl = document.getElementById('tip-engine-url');
   const btnEngineCancel = document.getElementById('btn-engine-cancel');
+  const btnEngineDelete = document.getElementById('btn-engine-delete');
 
   // 自定义标题图片相关 DOM
   const engineLogoImg = document.getElementById('engine-logo-img');
@@ -2027,6 +2037,8 @@ document.addEventListener('DOMContentLoaded', () => {
     name: '',
     url: ''
   });
+  // 切到"自定义"之前选中的引擎；用户取消编辑时用它回退
+  let engineBeforeCustom = null;
 
   const engineSearchUrls = {
     bing: 'https://www.bing.com/search?q=',
@@ -2050,11 +2062,9 @@ document.addEventListener('DOMContentLoaded', () => {
   btnSettings?.addEventListener('click', (e) => {
     e.stopPropagation();
     togglePopover(popoverSettings, popoverWaffle);
-    // 打开设置面板时直接回到主设置页（此时不做切换过渡，面板自身已有淡入），
-    // 避免停留在上次打开的二级页
+    // 打开时保留上次所在的页面（点外部收起不会重置页面状态，刷新页面才会回到主设置页），
+    // 这里只同步一下滚动条，避免高度变化后滑块位置不对
     if (popoverSettings?.classList.contains('active')) {
-      applySettingsPageClasses('main');
-      popoverSettings.scrollTop = 0;
       updateSettingsScrollbar();
       revealSettingsScrollbar();
     }
@@ -2063,6 +2073,10 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   document.addEventListener('click', (e) => {
+    // 弹窗（如"自定义搜索引擎"）挂在 body 下，不在任何面板内部。
+    // 若按"面板外"处理，点一下弹窗就会把设置面板一起收起，很反直觉，所以直接跳过
+    if (e.target.closest && e.target.closest('.modal-overlay')) return;
+
     if (!popoverWaffle?.contains(e.target) && !btnWaffle?.contains(e.target)) {
       popoverWaffle?.classList.remove('active');
     }
@@ -3187,11 +3201,15 @@ inputOnlineUrl?.addEventListener('input', () => {
   // 设置面板切换监听
   selectEngine?.addEventListener('change', (e) => {
     const val = e.target.value;
+    // 切换前的选择（下面马上会写存储，所以要在这之前读）
+    const previousEngine = Storage.get('ntp_engine', 'bing');
     setLogo(val);
     updateEngineEditButton(val);
     updateForceBingCNRow(val);
     Storage.set('ntp_engine', val);
     if (val === 'custom' && (!customEngineConfig.url || customEngineConfig.url === 'https://duckduckgo.com/?q=%s')) {
+      // 自定义配置还没填好，弹窗会拦住；先记住原来的选择，取消时好回退
+      engineBeforeCustom = previousEngine === 'custom' ? 'bing' : previousEngine;
       openCustomEngineModal();
     }
   });
@@ -3203,7 +3221,7 @@ inputOnlineUrl?.addEventListener('input', () => {
   });
 
   btnEditEngine?.addEventListener('click', () => {
-    openCustomEngineModal();
+    openCustomEngineModal(true);
   });
 
   toggleHistorySwitch?.addEventListener('change', (e) => {
@@ -3354,7 +3372,9 @@ inputOnlineUrl?.addEventListener('input', () => {
   }
 
   // 打开/重置自定义搜索引擎编辑弹窗
-  function openCustomEngineModal() {
+  // fromEdit 为 true 表示用户是从"编辑自定义搜索引擎"按钮进来的；
+  // 首次选"自定义"时是弹窗拦着让用户配置，这时显示删除按钮会反直觉，所以不显示
+  function openCustomEngineModal(fromEdit) {
     if (inputEngineName) inputEngineName.value = customEngineConfig.name || '';
     if (inputEngineUrl) inputEngineUrl.value = customEngineConfig.url || '';
     // 恢复已保存的标题图片到临时变量
@@ -3364,17 +3384,46 @@ inputOnlineUrl?.addEventListener('input', () => {
     containerEngineUrl?.classList.remove('error');
     tipEngineName?.classList.remove('active');
     tipEngineUrl?.classList.remove('active');
+    if (btnEngineDelete) btnEngineDelete.style.display = fromEdit ? 'inline-flex' : 'none';
     customEngineModal?.classList.add('active');
     setTimeout(() => inputEngineName?.focus(), 50);
   }
 
-  // 关闭自定义搜索引擎编辑弹窗
+  // 关闭自定义搜索引擎编辑弹窗。
+  // 如果此时仍没有可用的自定义配置（例如用户直接取消），就把引擎选择退回切换前的那个，
+  // 否则界面会停在"自定义"上、首页既没有搜索引擎也没有 Logo
   function closeCustomEngineModal() {
     customEngineModal?.classList.remove('active');
+    if (!customEngineConfig.url && engineBeforeCustom) {
+      const target = engineBeforeCustom;
+      selectEngine.value = target;
+      setLogo(target);
+      updateEngineEditButton(target);
+      updateForceBingCNRow(target);
+      Storage.set('ntp_engine', target);
+      refreshCustomSelects();   // 同步自定义下拉的显示文本
+    }
+    engineBeforeCustom = null;
   }
 
   btnEngineCancel?.addEventListener('click', closeCustomEngineModal);
 
+  // 删除自定义搜索引擎：清空配置并切回默认的 Bing
+  btnEngineDelete?.addEventListener('click', () => {
+    customEngineConfig = { name: '', url: '', logo: '' };
+    Storage.remove('ntp_custom_engine_config');
+    tempEngineLogo = '';
+
+    // 已经手动切回默认引擎，清掉回退记录避免关闭弹窗时重复处理
+    engineBeforeCustom = null;
+    selectEngine.value = 'bing';
+    setLogo('bing');
+    updateEngineEditButton('bing');
+    updateForceBingCNRow('bing');
+    Storage.set('ntp_engine', 'bing');
+    refreshCustomSelects();
+    closeCustomEngineModal();
+  });
   // ===== 自定义标题图片：选择 / 删除 =====
   btnUploadEngineLogo?.addEventListener('click', () => {
     inputEngineLogoFile?.click();
