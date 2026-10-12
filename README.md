@@ -1,6 +1,6 @@
 # Litestart 
 
-![main_banner](docs/pics/1111.webp)
+<img src="docs/pics/1112B.webp" alt="main_banner" style="zoom:67%;" />
 
 <strong>面向桌面浏览器可定制的类原生浏览器起始页</strong>
 
