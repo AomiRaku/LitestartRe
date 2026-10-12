@@ -3018,9 +3018,9 @@ inputOnlineUrl?.addEventListener('input', () => {
   // 应用搜索栏可见性（使用 visibility，保留网格占位，避免其他元素位移）
   function applySearchVisibility() {
     if (searchVisible) {
-      document.body.removeAttribute('data-search-hidden');
+      document.documentElement.removeAttribute('data-search-hidden');
     } else {
-      document.body.setAttribute('data-search-hidden', 'true');
+      document.documentElement.setAttribute('data-search-hidden', 'true');
     }
     // 下拉只表示"悬挂 / 居中"，是否显示由开关承担
     if (selectLayout) {

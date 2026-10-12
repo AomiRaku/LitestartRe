@@ -4,13 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="referrer" content="strict-origin">
-    <script>
-    (function() {
-      var isDark = matchMedia('(prefers-color-scheme: dark)').matches;
-      var icon = isDark ? 'img/icon_d.svg' : 'img/icon_l.svg';
-      document.write('<link rel="icon" id="favicon" type="image/svg+xml" href="' + icon + '?r=' + Math.random() + '" />');
-    })();
-    </script>
+    <!-- 必须同步加载：在首帧之前设置主题图标与"隐藏搜索框"状态 -->
+    <script src="early.js"></script>
     <title data-i18n="pageTitle">新标签页</title>
     <meta name="description" content="可定制的浏览器类原生起始页-简洁无需多言" />
     <style>
@@ -1811,7 +1806,7 @@
     }
 
     /* 关闭搜索栏时，隐藏搜索框但保留其在网格中的占位，但同时避免其他元素发生位移（ */
-    body[data-search-hidden="true"] #search-container {
+    html[data-search-hidden="true"] #search-container {
       visibility: hidden;
       pointer-events: none;
     }
