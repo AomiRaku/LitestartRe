@@ -42,9 +42,7 @@ Or use file import
 - Customize the background, search engine, and layout.
 - Pin any websites you want to keep on this page.
 - Or set any wallpaper you like.
-<img width="500" alt="215014" src="docs/pics/2006.webp" />
-<img width="500" alt="215014" src="docs/pics/2004.webp" />
-<img width="500" alt="215014" src="docs/pics/2009.webp" />
+<img alt="Function Preview" src="docs/pics/2010.webp" />
 
 
 ## System & Browser Compatibility
