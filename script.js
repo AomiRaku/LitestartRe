@@ -89,7 +89,10 @@ const i18nData = {
     restoreDefault: '恢复默认',
     editShortcut: '编辑快速链接',
     name: '名称',
-    inputNamePh: '输入快速链接名称',
+    icon: '图标',
+    iconAuto: '自动解析',
+    iconFirstChar: '首字符',
+    inputNamePh: '名称',
     errorNameReq: '请输入快速链接名称',
     errorUrlReq: '请输入网址',
     delete: '删除',
@@ -235,7 +238,10 @@ const i18nData = {
     restoreDefault: '恢復預設',
     editShortcut: '編輯快速連結',
     name: '名稱',
-    inputNamePh: '輸入快速連結名稱',
+    icon: '圖示',
+    iconAuto: '自動解析',
+    iconFirstChar: '首字元',
+    inputNamePh: '名稱',
     errorNameReq: '請輸入快速連結名稱',
     errorUrlReq: '請輸入網址',
     delete: '刪除',
@@ -366,7 +372,10 @@ const i18nData = {
     restoreDefault: 'Restore default',
     editShortcut: 'Edit quick link',
     name: 'Name',
-    inputNamePh: 'Enter quick link name',
+    icon: 'Icon',
+    iconAuto: 'Auto (favicon)',
+    iconFirstChar: 'First letter',
+    inputNamePh: 'Name',
     errorNameReq: 'Please enter quick link name',
     errorUrlReq: 'Please enter URL',
     delete: 'Delete',
@@ -499,7 +508,10 @@ const i18nData = {
     restoreDefault: 'デフォルトに戻す',
     editShortcut: 'クイックリンクを編集',
     name: '名前',
-    inputNamePh: 'クイックリンク名を入力',
+    icon: 'アイコン',
+    iconAuto: '自動取得',
+    iconFirstChar: '頭文字',
+    inputNamePh: '名前',
     errorNameReq: 'クイックリンク名を入力してください',
     errorUrlReq: 'URLを入力してください',
     delete: '削除',
@@ -631,7 +643,10 @@ const i18nData = {
     restoreDefault: 'Сбросить',
     editShortcut: 'Изменить быструю ссылку',
     name: 'Название',
-    inputNamePh: 'Введите название быстрой ссылки',
+    icon: 'Значок',
+    iconAuto: 'Автоматически',
+    iconFirstChar: 'Первая буква',
+    inputNamePh: 'Название',
     errorNameReq: 'Введите название быстрой ссылки',
     errorUrlReq: 'Введите URL',
     delete: 'Удалить',
@@ -859,6 +874,7 @@ function applyLanguage(langConfig) {
   try {
     applySearchPlaceholder();
     updateCustomEngineOption();
+    setupThemeOptionScroll();   // 文案长度随语言变化，需重新量一次
   } catch (err) {
     console.warn('搜索框提示同步失败:', err);
   }
@@ -1486,14 +1502,17 @@ function refreshCustomSelects() {
     if (selectedOption) {
       textEl.textContent = selectedOption.textContent.trim();
     }
-    const dropdown = document.querySelector('.custom-select-dropdown.active[data-for-select="' + selectId + '"]') || null;
-    if (dropdown) {
-      const options = dropdown.querySelectorAll('.custom-select-option');
-      options.forEach((optEl, i) => {
-        optEl.textContent = nativeSelect.options[i].textContent.trim();
-        optEl.classList.toggle('selected', i === nativeSelect.selectedIndex);
+    // 刷新"所有已创建"的浮层，而不只是当前打开的那个：
+    // 浮层是懒创建后缓存复用的，切语言时它多半是关着的，只改 active 的那个
+    // 会让下次打开时仍是旧语言的选项文本（表现为"必须刷新页面"）。
+    document.querySelectorAll('.custom-select-dropdown[data-for-select="' + selectId + '"]')
+      .forEach(dropdown => {
+        dropdown.querySelectorAll('.custom-select-option').forEach((optEl, i) => {
+          const src = nativeSelect.options[i];
+          if (src) optEl.textContent = src.textContent.trim();
+          optEl.classList.toggle('selected', i === nativeSelect.selectedIndex);
+        });
       });
-    }
   });
 }
 
@@ -1950,6 +1969,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const modalForm = document.getElementById('modal-form');
   const inputName = document.getElementById('input-name');
   const inputUrl = document.getElementById('input-url');
+  const selectIconMode = document.getElementById('select-icon-mode');
   const containerName = document.getElementById('container-name');
   const containerUrl = document.getElementById('container-url');
   const tipName = document.getElementById('tip-name');
@@ -2087,6 +2107,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (link) {
       link.href = (resolved === 'dark' ? 'img/icon_d.svg' : 'img/icon_l.svg') + '?r=' + Math.random();
     }
+
+    // 选中项会加粗，文字宽度随之变化，重新量一次
+    setupThemeOptionScroll();
   }
 
   themeOptionEls.forEach(el => {
@@ -3651,7 +3674,8 @@ inputOnlineUrl?.addEventListener('input', () => {
 
     const safeTitle = sanitizeInput(item.title);
     const initialChar = (safeTitle || 'W').charAt(0).toUpperCase();
-    const faviconUrl = getFaviconUrl(item.url);
+    // 图标模式：auto = 解析站点图标（失败回退首字符）；text = 直接用首字符
+    const faviconUrl = item.iconMode === 'text' ? '' : getFaviconUrl(item.url);
 
     let iconContent = '';
     if (faviconUrl) {
@@ -3752,7 +3776,7 @@ inputOnlineUrl?.addEventListener('input', () => {
     // 缓存键必须带上标题与网址：只改名称时项数与 id 都没变，
     // 否则这里会被判成"无需重建"，界面要刷新才更新
     const renderKey = [rows, perRow, showAddButton ? '1' : '0', quicklinksList.length,
-      quicklinksList.map(i => i.id + '~' + i.title + '~' + i.url).join(';')].join('|');
+      quicklinksList.map(i => i.id + '~' + i.title + '~' + i.url + '~' + (i.iconMode || 'auto')).join(';')].join('|');
     const widthChanged = quicklinksElem.style.getPropertyValue('--quicklinks-content-width') !== contentWidth + 'px';
 
     if (!force && renderKey === quicklinksLastRenderKey && !widthChanged) return;
@@ -3902,6 +3926,8 @@ function onDrop(e) {
     currentEditingId = null;
     if (inputName) inputName.value = '';
     if (inputUrl) inputUrl.value = '';
+    if (selectIconMode) selectIconMode.value = 'auto';
+    refreshCustomSelects();          // 同步下拉的显示文本
     clearErrors();
     if (btnDelete) btnDelete.style.display = 'none';
     modalOverlay?.classList.add('active');
@@ -3919,6 +3945,8 @@ function onDrop(e) {
     currentEditingId = item.id;
     if (inputName) inputName.value = item.title;
     if (inputUrl) inputUrl.value = item.url;
+    if (selectIconMode) selectIconMode.value = item.iconMode === 'text' ? 'text' : 'auto';
+    refreshCustomSelects();
     clearErrors();
     if (btnDelete) btnDelete.style.display = 'inline-flex';
     modalOverlay?.classList.add('active');
@@ -3948,6 +3976,7 @@ function onDrop(e) {
     clearErrors();
 
     const title = sanitizeInput(inputName.value.trim());
+    const iconMode = selectIconMode?.value === 'text' ? 'text' : 'auto';
     // URL 原样保存：它只会被赋给 href/src 这类属性，不经过 HTML 解析；
     // 在这里转义会把含 & 的地址（多个查询参数）写坏
     let url = inputUrl.value.trim();
@@ -3981,13 +4010,14 @@ function onDrop(e) {
     if (currentEditingId) {
       const itemIndex = quicklinksList.findIndex(item => item.id === currentEditingId);
       if (itemIndex !== -1) {
-        quicklinksList[itemIndex] = { ...quicklinksList[itemIndex], title, url };
+        quicklinksList[itemIndex] = { ...quicklinksList[itemIndex], title, url, iconMode };
       }
     } else {
       const newItem = {
         id: Date.now().toString(),
         title,
-        url
+        url,
+        iconMode
       };
       quicklinksList.push(newItem);
     }
@@ -4286,6 +4316,26 @@ function getEngineDisplayName() {
   }
   const names = { bing: 'Bing', baidu: 'Baidu', google: 'Google' };
   return names[engine] || 'Bing';
+}
+
+// 主题模式按钮的文案在俄语等语言下会比格子宽；量出溢出距离交给 CSS 来回滚动。
+// 与 applyLanguage / refreshCustomSelects 同级：applyLanguage 内部要调用它。
+function setupThemeOptionScroll() {
+  // 注意：要量"裁切窗口"(.theme-option-label) —— 内层是 inline-block + nowrap，
+  // 宽度恒等于全部文字宽，scrollWidth - clientWidth 永远是 0，量它测不出溢出。
+  document.querySelectorAll('.theme-option-label').forEach(label => {
+    const inner = label.querySelector('.theme-option-label-inner');
+    if (!inner) return;
+    const overflow = label.scrollWidth - label.clientWidth;
+    if (overflow > 1) {
+      // 居中导致两端各溢出 half，来回各走 half（+2px 余量，确保能看到首尾字符）
+      inner.style.setProperty('--label-scroll-x', (overflow / 2 + 2) + 'px');
+      inner.classList.add('overflowing');
+    } else {
+      inner.classList.remove('overflowing');
+      inner.style.removeProperty('--label-scroll-x');
+    }
+  });
 }
 
 // 搜索框提示文本：把模板里的 {name} 换成当前引擎名。
