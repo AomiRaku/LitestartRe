@@ -1493,10 +1493,16 @@
     }
 
     .quicklink-menu-item svg {
-      width: 16px;
-      height: 16px;                  /* 定宽，保证两项文字左边缘对齐 */
+      width: 18px;
+      height: 18px;                  /* 定宽，保证各项文字左边缘对齐 */
       flex-shrink: 0;
       display: block;
+    }
+
+    /* 铅笔图标的图形占位比另两个更满，视觉上偏大；
+       整体尺寸调大后它仍保留一点收敛，使三项视觉重量一致 */
+    .quicklink-menu-item[data-action="edit"] svg {
+      transform: scale(0.9);
     }
 
     .quicklink-menu-item:hover {
@@ -2817,6 +2823,10 @@
         <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.25 4.5A1.75 1.75 0 0 0 4.5 6.25v11.5c0 .966.783 1.75 1.75 1.75h11.5a1.75 1.75 0 0 0 1.75-1.75v-4a.75.75 0 0 1 1.5 0v4A3.25 3.25 0 0 1 17.75 21H6.25A3.25 3.25 0 0 1 3 17.75V6.25A3.25 3.25 0 0 1 6.25 3h4a.75.75 0 0 1 0 1.5zM13 3.75a.75.75 0 0 1 .75-.75h6.5a.75.75 0 0 1 .75.75v6.5a.75.75 0 0 1-1.5 0V5.56l-5.22 5.22a.75.75 0 0 1-1.06-1.06l5.22-5.22h-4.69a.75.75 0 0 1-.75-.75"/></svg>
         <span data-i18n="openInNewTab">在新标签页打开</span>
       </button>
+      <button type="button" class="quicklink-menu-item" data-action="copy" role="menuitem">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" fill-rule="nonzero" d="M13.753 2c1.158 0 2.11.875 2.234 2h1.763a2.25 2.25 0 0 1 2.245 2.096L20 6.25v6a.75.75 0 0 1-1.493.102l-.007-.102v-6a.75.75 0 0 0-.648-.743L17.75 5.5h-2.132c-.403.6-1.088.993-1.865.993h-3.506A2.244 2.244 0 0 1 8.382 5.5H6.25a.75.75 0 0 0-.743.648L5.5 6.25v13.505c0 .38.282.693.648.743l.204.013a.75.75 0 0 1-.102 1.494a2.25 2.25 0 0 1-2.245-2.096L4 19.755V6.25a2.25 2.25 0 0 1 2.096-2.245L6.25 4h1.763a2.247 2.247 0 0 1 2.234-2h3.506zm3.497 12.5h1a3.75 3.75 0 0 1 .202 7.495l-.199.005l-1 .005a.75.75 0 0 1-.108-1.493l.102-.007l1.003-.005a2.25 2.25 0 0 0 .154-4.495L18.25 16h-1a.75.75 0 0 1-.102-1.493l.102-.007h1h-1zm-5 0h1a.75.75 0 0 1 .102 1.493L13.25 16h-1a2.25 2.25 0 0 0-.154 4.495l.154.005h1a.75.75 0 0 1 .102 1.493L13.25 22h-1a3.75 3.75 0 0 1-.2-7.495l.2-.005h1h-1zm0 3h6a.75.75 0 0 1 .102 1.493L18.25 19h-6a.75.75 0 0 1-.102-1.493l.102-.007h6h-6zm1.503-14h-3.506a.747.747 0 0 0 0 1.493h3.506a.747.747 0 1 0 0-1.493z"/></svg>
+        <span data-i18n="copyAddress">复制地址</span>
+      </button>
       <button type="button" class="quicklink-menu-item" data-action="edit" role="menuitem">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.952 3.048a3.58 3.58 0 0 0-5.06 0L3.94 15a3.1 3.1 0 0 0-.825 1.476L2.02 21.078a.75.75 0 0 0 .904.903l4.601-1.096a3.1 3.1 0 0 0 1.477-.825l11.95-11.95a3.58 3.58 0 0 0 0-5.06m-4 1.06a2.078 2.078 0 1 1 2.94 2.94L19 7.939L16.06 5zM15 6.062L17.94 9l-10 10c-.21.21-.474.357-.763.426l-3.416.814l.813-3.416c.069-.29.217-.554.427-.764z"/></svg>
         <span data-i18n="edit">编辑</span>
@@ -2991,6 +3001,22 @@
         <div class="modal-footer">
           <div class="modal-footer-right">
             <button type="button" id="btn-reset-done-confirm" class="btn btn-primary" data-i18n="refreshNow">立即刷新</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 恢复配置前的风险确认：点「继续」才真正打开文件选择器 -->
+    <div id="modal-restore-warn" class="modal-overlay">
+      <div class="modal-dialog">
+        <div class="modal-header" data-i18n="restoreWarnTitle">请谨慎导入陌生来源的配置文件</div>
+        <div style="padding: 8px 0 16px 0; color: var(--neutral-foreground-rest); font-size: 14px; line-height: 1.7;">
+          <p style="margin: 0;" data-i18n="restoreWarnDesc">陌生来源的配置文件可能会在 快速链接、搜索引擎、壁纸链接 中包含危险的脚本。</p>
+        </div>
+        <div class="modal-footer">
+          <div class="modal-footer-right">
+            <button type="button" id="btn-restore-warn-cancel" class="btn btn-secondary" data-i18n="cancel">取消</button>
+            <button type="button" id="btn-restore-warn-continue" class="btn btn-primary" data-i18n="continueAction">继续</button>
           </div>
         </div>
       </div>

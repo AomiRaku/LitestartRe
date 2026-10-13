@@ -93,6 +93,7 @@ const i18nData = {
     iconFirstChar: '首字符',
     iconPreset: "预置",
     openInNewTab: "在新标签页打开",
+    copyAddress: "复制地址",
     edit: "编辑",
     presetHome: "首页",
     presetSearch: "搜索",
@@ -134,6 +135,9 @@ const i18nData = {
     errorUrlReq: '请输入网址',
     delete: '删除',
     cancel: '取消',
+    restoreWarnTitle: '请谨慎导入陌生来源的配置文件',
+    restoreWarnDesc: '陌生来源的配置文件可能会在 快速链接、搜索引擎、壁纸链接 中包含危险的脚本。',
+    continueAction: '继续',
     save: '保存',
     customEngineTitle: '自定义搜索引擎',
     engineName: '搜索引擎名称',
@@ -273,6 +277,7 @@ const i18nData = {
     iconFirstChar: '首字元',
     iconPreset: "預置",
     openInNewTab: "在新分頁開啟",
+    copyAddress: "複製位址",
     edit: "編輯",
     presetHome: "首頁",
     presetSearch: "搜尋",
@@ -314,6 +319,9 @@ const i18nData = {
     errorUrlReq: '請輸入網址',
     delete: '刪除',
     cancel: '取消',
+    restoreWarnTitle: '請謹慎匯入陌生來源的設定檔',
+    restoreWarnDesc: '陌生來源的設定檔可能會在 快速連結、搜尋引擎、桌布連結 中包含危險的指令碼。',
+    continueAction: '繼續',
     save: '儲存',
     customEngineTitle: '自訂搜尋引擎',
     engineName: '搜尋引擎名稱',
@@ -437,6 +445,7 @@ const i18nData = {
     iconFirstChar: 'First letter',
     iconPreset: "Preset",
     openInNewTab: "Open in new tab",
+    copyAddress: "Copy address",
     edit: "Edit",
     presetHome: "Home",
     presetSearch: "Search",
@@ -478,6 +487,9 @@ const i18nData = {
     errorUrlReq: 'Please enter URL',
     delete: 'Delete',
     cancel: 'Cancel',
+    restoreWarnTitle: 'Be careful with configuration files from unknown sources',
+    restoreWarnDesc: 'Configuration files from unknown sources may contain dangerous scripts in Quick Links, Search Engines, or Wallpaper URLs.',
+    continueAction: 'Continue',
     save: 'Save',
     customEngineTitle: 'Custom Search Engine',
     engineName: 'Engine Name',
@@ -603,6 +615,7 @@ const i18nData = {
     iconFirstChar: '頭文字',
     iconPreset: "プリセット",
     openInNewTab: "新しいタブで開く",
+    copyAddress: "アドレスをコピー",
     edit: "編集",
     presetHome: "ホーム",
     presetSearch: "検索",
@@ -644,6 +657,9 @@ const i18nData = {
     errorUrlReq: 'URLを入力してください',
     delete: '削除',
     cancel: 'キャンセル',
+    restoreWarnTitle: '不明な提供元の設定ファイルにはご注意ください',
+    restoreWarnDesc: '不明な提供元の設定ファイルには、クイックリンク、検索エンジン、壁紙リンクに危険なスクリプトが含まれている可能性があります。',
+    continueAction: '続行',
     save: 'OK',
     customEngineTitle: 'カスタム検索エンジン',
     engineName: '検索エンジン名',
@@ -769,6 +785,7 @@ const i18nData = {
     iconFirstChar: 'Первая буква',
     iconPreset: "Пресет",
     openInNewTab: "Открыть в новой вкладке",
+    copyAddress: "Скопировать адрес",
     edit: "Изменить",
     presetHome: "Главная",
     presetSearch: "Поиск",
@@ -810,6 +827,9 @@ const i18nData = {
     errorUrlReq: 'Введите URL',
     delete: 'Удалить',
     cancel: 'Отмена',
+    restoreWarnTitle: 'Будьте осторожны с файлами конфигурации из неизвестных источников',
+    restoreWarnDesc: 'Файлы конфигурации из неизвестных источников могут содержать опасные скрипты в быстрых ссылках, поисковых системах или ссылках на обои.',
+    continueAction: 'Продолжить',
     save: 'Сохранить',
     customEngineTitle: 'Пользовательский поиск',
     engineName: 'Название',
@@ -2947,6 +2967,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnManageProfilesNext = document.getElementById('btn-manage-profiles-next');
   const manageProfileOptions = document.getElementById('manage-profile-options');
   const fileInputRestore = document.getElementById('file-input-restore');
+  const modalRestoreWarn = document.getElementById('modal-restore-warn');
+  const btnRestoreWarnCancel = document.getElementById('btn-restore-warn-cancel');
+  const btnRestoreWarnContinue = document.getElementById('btn-restore-warn-continue');
   const modalRestoreDone = document.getElementById('modal-restore-done');
   const btnRestoreDoneConfirm = document.getElementById('btn-restore-done-confirm');
 
@@ -3021,11 +3044,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // 取消按钮
   btnManageProfilesCancel?.addEventListener('click', closeManageProfilesModal);
 
-  // 点击遮罩关闭
-  modalManageProfiles?.addEventListener('click', (e) => {
-    if (e.target === modalManageProfiles) closeManageProfilesModal();
-  });
-
   // 鼠标点击选择操作项
   manageProfileOptions?.addEventListener('click', (e) => {
     const option = e.target.closest('.manage-option');
@@ -3068,9 +3086,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function runManageProfilesAction() {
     if (manageSelectedAction === 'import') {
-      closeManageProfilesModal();
-      // 紧接着用户点击同步触发，保证能唤起文件选择框
-      fileInputRestore?.click();
+      // 先弹风险提示，用户点「继续」才打开文件选择器
+      modalRestoreWarn?.classList.add('active');
     } else if (manageSelectedAction === 'init') {
       closeManageProfilesModal();
       // 初始化需要二次确认，沿用原有确认弹窗
@@ -3080,6 +3097,18 @@ document.addEventListener('DOMContentLoaded', () => {
       closeManageProfilesModal();
     }
   }
+
+  // 风险提示的两个按钮：取消则什么都不做；继续才去选文件
+  btnRestoreWarnCancel?.addEventListener('click', () => {
+    modalRestoreWarn?.classList.remove('active');
+  });
+
+  btnRestoreWarnContinue?.addEventListener('click', () => {
+    modalRestoreWarn?.classList.remove('active');
+    closeManageProfilesModal();
+    // 由这次点击同步触发，保证能唤起文件选择框
+    fileInputRestore?.click();
+  });
 
   // 导出配置
   function exportConfigFile() {
@@ -3324,15 +3353,6 @@ document.addEventListener('DOMContentLoaded', () => {
   tipOnlineUrl?.classList.remove('active');
 
   if (!url) {
-    containerOnlineUrl?.classList.add('error');
-    tipOnlineUrl?.classList.add('active');
-    inputOnlineUrl?.focus();
-    return;
-  }
-
-  // 只接受 http(s)：new URL() 本身会放行 javascript:/data: 等协议，
-  // 而这个值会被存库并最终赋给 <img>/<video> 的 src
-  if (!/^https?:\/\//i.test(url)) {
     containerOnlineUrl?.classList.add('error');
     tipOnlineUrl?.classList.add('active');
     inputOnlineUrl?.focus();
@@ -3918,9 +3938,8 @@ inputOnlineUrl?.addEventListener('input', () => {
       tipEngineUrl?.classList.add('active');
       if (!hasError) inputEngineUrl?.focus();
       hasError = true;
-    } else if (!/^https?:\/\/[^\s]*%s/i.test(url)) {
-      // 必须是 http(s) 且含 %s：该值经 replace 后直接赋给 location.href，
-      // 放行 javascript: 会导致点击搜索即执行脚本
+    } else if (!url.includes('%s')) {
+      // 必须含 %s 作为搜索词占位符；不限制协议
       containerEngineUrl?.classList.add('error');
       tipEngineUrl?.classList.add('active');
       if (!hasError) inputEngineUrl?.focus();
@@ -4299,7 +4318,33 @@ function onDrop(e) {
     tipUrl?.classList.remove('active');
   });
 
-  // ===== 快速链接的右键菜单：在新标签页打开 / 编辑 =====
+  // 复制文本到剪贴板：优先 Clipboard API，失败时退回旧的 execCommand 方案
+  // （扩展页面是安全上下文，正常走第一条路径）
+  async function copyTextToClipboard(text) {
+    try {
+      await navigator.clipboard.writeText(text);
+      return true;
+    } catch (err) {
+      try {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.setAttribute('readonly', '');
+        ta.style.position = 'fixed';
+        ta.style.top = '-1000px';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        const done = document.execCommand('copy');
+        document.body.removeChild(ta);
+        return done;
+      } catch (err2) {
+        console.warn('复制链接失败:', err2);
+        return false;
+      }
+    }
+  }
+
+  // ===== 快速链接的右键菜单：在新标签页打开 / 复制链接 / 编辑 =====
   const quicklinkMenu = document.getElementById('quicklink-menu');
   let quicklinkMenuTarget = null;
 
@@ -4338,6 +4383,8 @@ function onDrop(e) {
     if (!link) return;
     if (action === 'open') {
       window.open(link.url, '_blank', 'noopener');
+    } else if (action === 'copy') {
+      copyTextToClipboard(link.url);
     } else if (action === 'edit') {
       openEditModal(link);            // 与三个点按钮同一个入口
     }
@@ -4544,14 +4591,14 @@ function onDrop(e) {
       if (!hasError) inputUrl.focus();
       hasError = true;
     } else {
-      // 省略协议时补上 https://
-      if (!/^[a-z][a-z0-9+.-]*:\/\//i.test(url)) {
+      // 省略协议时补上 https://（带任何协议的都原样保留，
+      // 这样 javascript:、about:blank、edge://flags、WeChat:// 都能直接用）
+      if (!/^[a-z][a-z0-9+.-]*:/i.test(url)) {
         url = 'https://' + url;
       }
-      // 只接受 http(s)：getDomain('javascript://alert(1)') 会返回 "alert(1)"，
-      // 拿它当安全依据会让该地址入库并赋给 <a>.href
+      // 仅要求能解析出域名：不限制协议
       const domain = getDomain(url);
-      if (!domain || !/^https?:\/\//i.test(url)) {
+      if (!domain) {
         showUrlError();
         if (!hasError) inputUrl.focus();
         hasError = true;
