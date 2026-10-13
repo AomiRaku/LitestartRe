@@ -14,16 +14,12 @@ const logos = {
     </svg>
   `,
   baidu: `
-    <picture>
-      <source srcset="img/logo/baidu_logo_dark.png" media="(prefers-color-scheme: dark)">
-      <img src="img/logo/baidu_logo_light.png" alt="Baidu Logo" class="baidu-logo-img">
-    </picture>
+    <img src="img/logo/baidu_logo_light.png" alt="Baidu Logo" class="baidu-logo-img logo-for-light">
+    <img src="img/logo/baidu_logo_dark.png" alt="Baidu Logo" class="baidu-logo-img logo-for-dark">
   `,
   google: `
-    <picture>
-      <source srcset="img/logo/google_logo_dark.png" media="(prefers-color-scheme: dark)">
-      <img src="img/logo/google_logo_light.png" alt="Google Logo" class="google-logo-img">
-    </picture>
+    <img src="img/logo/google_logo_light.png" alt="Google Logo" class="google-logo-img logo-for-light">
+    <img src="img/logo/google_logo_dark.png" alt="Google Logo" class="google-logo-img logo-for-dark">
   `,
   custom: ``
 };
@@ -77,6 +73,10 @@ const i18nData = {
     and: '和',
     searchPlaceholder: '今天想用 {name} 搜索什么？',
     customEngineWithName: '自定义（{name}）',
+    themeMode: '主题模式',
+    themeAuto: '系统',
+    themeLight: '浅色',
+    themeDark: '深色',
     searchInput: '搜索输入框',
     clearSearchHistory: '清除搜索历史记录',
     customBackground: '自定义背景',
@@ -219,6 +219,10 @@ const i18nData = {
     and: '與',
     searchPlaceholder: '今天想用 {name} 搜尋什麼？',
     customEngineWithName: '自訂（{name}）',
+    themeMode: '主題模式',
+    themeAuto: '系統',
+    themeLight: '淺色',
+    themeDark: '深色',
     searchInput: '搜尋輸入框',
     clearSearchHistory: '清除搜尋紀錄',
     customBackground: '自訂背景',
@@ -346,6 +350,10 @@ const i18nData = {
     and: '&',
     searchPlaceholder: 'What do you want to search with {name} today?',
     customEngineWithName: 'Custom ({name})',
+    themeMode: 'Theme',
+    themeAuto: 'System',
+    themeLight: 'Light',
+    themeDark: 'Dark',
     searchInput: 'Search input',
     clearSearchHistory: 'Clear search history',
     customBackground: 'Custom Background',
@@ -475,6 +483,10 @@ const i18nData = {
     and: 'と',
     searchPlaceholder: '今日は {name} で何を検索しますか？',
     customEngineWithName: 'カスタム（{name}）',
+    themeMode: 'テーマ',
+    themeAuto: 'システム',
+    themeLight: 'ライト',
+    themeDark: 'ダーク',
     searchInput: '検索入力ボックス',
     clearSearchHistory: '検索履歴を消去',
     customBackground: 'カスタム背景',
@@ -603,6 +615,10 @@ const i18nData = {
     and: 'и',
     searchPlaceholder: 'Что поищем сегодня через {name}?',
     customEngineWithName: 'Свой ({name})',
+    themeMode: 'Тема',
+    themeAuto: 'Системная',
+    themeLight: 'Светлая',
+    themeDark: 'Тёмная',
     searchInput: 'Поле поиска',
     clearSearchHistory: 'Очистить историю поиска',
     customBackground: 'Пользовательский фон',
@@ -2037,13 +2053,52 @@ document.addEventListener('DOMContentLoaded', () => {
   let draggedId = null;//拖拽实现
   let selectedSuggestionIndex = -1;
 
-  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
+  // ===== 主题模式（跟随系统 / 浅色 / 深色）=====
+  const THEME_KEY = 'ntp_theme';
+  const themeOptionEls = document.querySelectorAll('.theme-option');
+
+  // 'auto' 时按系统偏好解析成实际生效的主题
+  function resolveTheme(pref) {
+    if (pref === 'light' || pref === 'dark') return pref;
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+
+  // 应用主题：写 <html data-theme>、同步按钮选中态、同步标签页图标
+  function applyTheme() {
+    const pref = Storage.get(THEME_KEY, 'auto');
+    const resolved = resolveTheme(pref);
+    document.documentElement.setAttribute('data-theme', resolved);
+
+    themeOptionEls.forEach(el => {
+      const on = el.getAttribute('data-theme-val') === pref;
+      el.classList.toggle('active', on);
+      el.setAttribute('aria-checked', on ? 'true' : 'false');
+    });
+
     const link = document.getElementById('favicon');
     if (link) {
-      const icon = e.matches ? 'img/icon_d.svg' : 'img/icon_l.svg';
-      link.href = icon + '?r=' + Math.random();
+      link.href = (resolved === 'dark' ? 'img/icon_d.svg' : 'img/icon_l.svg') + '?r=' + Math.random();
     }
+  }
+
+  themeOptionEls.forEach(el => {
+    el.addEventListener('click', () => {
+      Storage.set(THEME_KEY, el.getAttribute('data-theme-val'));
+      applyTheme();
+    });
   });
+
+  // 系统主题变化：只有"跟随系统"时才需要跟着变
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+    if (Storage.get(THEME_KEY, 'auto') === 'auto') applyTheme();
+  });
+
+  // 兜一层：主题应用失败不该连累后面的初始化（背景、快速链接等都排在它后面）
+  try {
+    applyTheme();
+  } catch (err) {
+    console.warn('主题初始化失败:', err);
+  }
 
   // 默认与自定义搜索引擎
   let customEngineConfig = Storage.get('ntp_custom_engine_config', {
@@ -2584,6 +2639,7 @@ document.addEventListener('DOMContentLoaded', () => {
     'ntp_show_logo',
     'ntp_show_add_button',
     'ntp_show_quicklinks',
+    'ntp_theme',
     'ntp_search_visible',
     'ntp_force_bing_cn',
     'ntp_bg_enabled',

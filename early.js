@@ -28,4 +28,15 @@
   } catch (e) {
     /* 读不到或格式异常时按默认（显示）处理，交给主脚本修正 */
   }
+  // 3) 主题模式：把最终生效的主题提前写到 <html> 上，避免首帧闪成另一种配色。
+  //    存储值是 'auto' / 'light' / 'dark'，auto 时按系统偏好解析。
+  try {
+    var pref = JSON.parse(localStorage.getItem('ntp_theme') || '"auto"');
+    var resolved = (pref === 'light' || pref === 'dark')
+      ? pref
+      : (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    document.documentElement.setAttribute('data-theme', resolved);
+  } catch (e) {
+    /* 失败时由主脚本补上 */
+  }
 })();
