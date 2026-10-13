@@ -25,7 +25,7 @@
       --neutral-foreground-rest: #262626;      /* 主文本颜色 (深灰色) */
       --neutral-foreground-secondary: #616161; /* 次要文本颜色 */
       --logo-color: #737373;                   /* Bing/系统 Logo 主色 */
-      --placeholder-color: #737373;            /* 输入框占位符颜色 */
+      --placeholder-color: #9b9b9b;            /* 输入框占位符颜色（淡一些） */
 
       /* 3. 互动与填充色  */
       --neutral-fill-rest: rgba(0, 0, 0, 0.04);/* 按钮常规浅灰填充 */
@@ -89,7 +89,7 @@
         --neutral-foreground-rest: #f5f5f5;
         --neutral-foreground-secondary: #adadad;
         --logo-color: #f5f5f5;
-        --placeholder-color: #adadad;
+        --placeholder-color: #8f8f8f;
 
         --neutral-fill-rest: rgba(255, 255, 255, 0.06);
         --neutral-fill-hover: rgba(255, 255, 255, 0.12);
@@ -2363,13 +2363,13 @@
 
         <!-- 搜索框容器 -->
         <div id="search-container">
-          <div id="fakebox" role="searchbox" tabindex="0" aria-label="搜索或输入 Web 地址" data-i18n-aria="searchPlaceholder">
+          <div id="fakebox" role="searchbox" tabindex="0" aria-label="今天想用 Bing 搜索什么？" data-i18n-aria="searchPlaceholder">
             <svg aria-hidden="true" id="searchbutton" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path d="M10 2.75a7.25 7.25 0 015.63 11.82l4.9 4.9a.75.75 0 01-.98 1.13l-.08-.07-4.9-4.9A7.25 7.25 0 1110 2.75zm0 1.5a5.75 5.75 0 100 11.5 5.75 5.75 0 000-11.5z">
               </path>
             </svg>
             <div id="placeholder" aria-hidden="true" data-i18n="searchPlaceholder">
-              搜索或输入 Web 地址
+              今天想用 Bing 搜索什么？
             </div>
             <input type="text" id="search-input" aria-label="搜索输入框" autocomplete="off" data-i18n-aria="searchInput">
           </div>

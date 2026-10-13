@@ -75,7 +75,8 @@ const i18nData = {
     litever: '版本 1.8.1 | 更新时间：2026-10-12',
     versionInfo: '版本信息',
     and: '和',
-    searchPlaceholder: '搜索或输入 Web 地址',
+    searchPlaceholder: '今天想用 {name} 搜索什么？',
+    customEngineWithName: '自定义（{name}）',
     searchInput: '搜索输入框',
     clearSearchHistory: '清除搜索历史记录',
     customBackground: '自定义背景',
@@ -216,7 +217,8 @@ const i18nData = {
     litever: '版本 1.8.1 | 更新時間：2026-10-12',
     versionInfo: '版本資訊',
     and: '與',
-    searchPlaceholder: '搜尋或輸入 Web 地址',
+    searchPlaceholder: '今天想用 {name} 搜尋什麼？',
+    customEngineWithName: '自訂（{name}）',
     searchInput: '搜尋輸入框',
     clearSearchHistory: '清除搜尋紀錄',
     customBackground: '自訂背景',
@@ -342,7 +344,8 @@ const i18nData = {
     litever: 'Version 1.8.1 | Updated: 2026-10-12',
     versionInfo: 'Version Info',
     and: '&',
-    searchPlaceholder: 'Search the web or enter address',
+    searchPlaceholder: 'What do you want to search with {name} today?',
+    customEngineWithName: 'Custom ({name})',
     searchInput: 'Search input',
     clearSearchHistory: 'Clear search history',
     customBackground: 'Custom Background',
@@ -470,7 +473,8 @@ const i18nData = {
     litever: 'バージョン 1.8.1 | 更新日: 2026-10-12',
     versionInfo: 'バージョン情報',
     and: 'と',
-    searchPlaceholder: 'Web を検索またはアドレスを入力',
+    searchPlaceholder: '今日は {name} で何を検索しますか？',
+    customEngineWithName: 'カスタム（{name}）',
     searchInput: '検索入力ボックス',
     clearSearchHistory: '検索履歴を消去',
     customBackground: 'カスタム背景',
@@ -597,7 +601,8 @@ const i18nData = {
     litever: 'Версия 1.8.1 | Обновлено: 2026-10-12',
     versionInfo: 'Информация о версии',
     and: 'и',
-    searchPlaceholder: 'Введите поисковый запрос или URL',
+    searchPlaceholder: 'Что поищем сегодня через {name}?',
+    customEngineWithName: 'Свой ({name})',
     searchInput: 'Поле поиска',
     clearSearchHistory: 'Очистить историю поиска',
     customBackground: 'Пользовательский фон',
@@ -833,6 +838,14 @@ function applyLanguage(langConfig) {
 
   // 12.同步「快速链接」的“添加”按钮文案（避免整页重扫，也不必重建整个列表）
   if (typeof syncQuicklinksLanguage === 'function') syncQuicklinksLanguage();
+
+  // 13.搜索框提示与"自定义"选项都含引擎名，要在上面刷完后再覆盖一次
+  try {
+    applySearchPlaceholder();
+    updateCustomEngineOption();
+  } catch (err) {
+    console.warn('搜索框提示同步失败:', err);
+  }
 
   // ===== 工具提示(Tooltip) 初始化 =====
 
@@ -3207,6 +3220,7 @@ inputOnlineUrl?.addEventListener('input', () => {
     updateEngineEditButton(val);
     updateForceBingCNRow(val);
     Storage.set('ntp_engine', val);
+    applySearchPlaceholder();
     if (val === 'custom' && (!customEngineConfig.url || customEngineConfig.url === 'https://duckduckgo.com/?q=%s')) {
       // 自定义配置还没填好，弹窗会拦住；先记住原来的选择，取消时好回退
       engineBeforeCustom = previousEngine === 'custom' ? 'bing' : previousEngine;
@@ -3401,7 +3415,8 @@ inputOnlineUrl?.addEventListener('input', () => {
       updateEngineEditButton(target);
       updateForceBingCNRow(target);
       Storage.set('ntp_engine', target);
-      refreshCustomSelects();   // 同步自定义下拉的显示文本
+      refreshCustomSelects();    // 同步自定义下拉的显示文本
+      applySearchPlaceholder();  // 搜索框提示里也带着引擎名，一起退回
     }
     engineBeforeCustom = null;
   }
@@ -3422,6 +3437,8 @@ inputOnlineUrl?.addEventListener('input', () => {
     updateForceBingCNRow('bing');
     Storage.set('ntp_engine', 'bing');
     refreshCustomSelects();
+    applySearchPlaceholder();
+    updateCustomEngineOption();
     closeCustomEngineModal();
   });
   // ===== 自定义标题图片：选择 / 删除 =====
@@ -3490,6 +3507,9 @@ inputOnlineUrl?.addEventListener('input', () => {
     if (selectEngine && selectEngine.value === 'custom') {
       setLogo('custom');
     }
+    // 名称可能变了，同步搜索框提示与下拉里的"自定义（名称）"
+    applySearchPlaceholder();
+    updateCustomEngineOption();
     closeCustomEngineModal();
   });
 
@@ -4160,6 +4180,10 @@ searchInput?.addEventListener('input', () => {
   translateSourceLabel(); // 初始化时翻译来源标签
 
   // 初始化自定义下拉组件
+  // ===== 搜索框提示与"自定义"选项的引擎名同步 =====
+  // 必须定义在 applyLanguage 之外：它内部会调用，外部（切换/保存/删除自定义引擎）也要用。
+  // 实现上只读 DOM 与 localStorage，不依赖可能在前面尚未初始化的模块级变量。
+
   initCustomSelects();
 
   // 首次使用引导：只在没点过九点菜单时出现
@@ -4174,3 +4198,52 @@ searchInput?.addEventListener('input', () => {
   // 初始化悬浮滚动条
   updateSettingsScrollbar();
 });
+
+// ===== 搜索框提示与「自定义」选项的引擎名同步 =====
+// 必须和 applyLanguage / refreshCustomSelects 同级（即在 DOMContentLoaded 回调之外）：
+// applyLanguage 内部会调用它们，若定义在回调内部，那边的作用域看不到，会抛 ReferenceError。
+// 实现上只读 DOM 与 localStorage，不依赖回调里尚未初始化的模块级变量。
+
+// 当前搜索引擎的展示名：内置用固定名，自定义用用户填的名称
+function getEngineDisplayName() {
+  const sel = document.getElementById('select-engine');
+  const engine = sel ? sel.value : 'bing';
+  if (engine === 'custom') {
+    const cfg = Storage.get('ntp_custom_engine_config', {}) || {};
+    return cfg.name || 'Custom';
+  }
+  const names = { bing: 'Bing', baidu: 'Baidu', google: 'Google' };
+  return names[engine] || 'Bing';
+}
+
+// 搜索框提示文本：把模板里的 {name} 换成当前引擎名。
+// 必须排在 applyLanguage 的 data-i18n 扫描之后，否则模板会被原样写进 DOM
+function applySearchPlaceholder() {
+  const el = document.getElementById('placeholder');
+  if (!el) return;
+  const dict = i18nData[getResolvedLanguageCode(localStorage.getItem('liteStart_language') || 'auto')] || i18nData['zh-CN'];
+  const tpl = dict.searchPlaceholder;
+  if (!tpl) return;
+  const text = String(tpl).replace('{name}', getEngineDisplayName());
+  el.textContent = text;
+  const fakebox = document.getElementById('fakebox');
+  if (fakebox) fakebox.setAttribute('aria-label', text);
+}
+
+// 设置里的「自定义」选项：配过自定义引擎就显示成「自定义（名称）」
+function updateCustomEngineOption() {
+  const sel = document.getElementById('select-engine');
+  if (!sel) return;
+  const opt = sel.querySelector('option[value="custom"]');
+  if (!opt) return;
+  const dict = i18nData[getResolvedLanguageCode(localStorage.getItem('liteStart_language') || 'auto')] || i18nData['zh-CN'];
+  const cfg = Storage.get('ntp_custom_engine_config', {}) || {};
+  const name = cfg.name;
+  opt.textContent = name
+    ? String(dict.customEngineWithName || '').replace('{name}', name)
+    : (dict.custom || '自定义');
+  // 自定义下拉面板的选项文本是构建时固化的：这里主动丢弃它，
+  // 下次展开时会按新的 option 文本重建（否则会一直显示旧名字）
+  document.querySelector('.custom-select-dropdown[data-for-select="select-engine"]')?.remove();
+  refreshCustomSelects();
+}
