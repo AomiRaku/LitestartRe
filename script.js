@@ -2597,8 +2597,9 @@ document.addEventListener('DOMContentLoaded', () => {
       const data = await response.json();
       let url = data.url;
       if (url && url.startsWith('http')) {
+        // 与其它入口一致：缺协议时补 http（支持 https 的站点会自行跳转）
         if (!url.startsWith('http://') && !url.startsWith('https://')) {
-          url = 'https://' + url;
+          url = 'http://' + url;
         }
         return { url, title: data.title || '', copyright: data.copyright || '' };
       }
@@ -3348,11 +3349,28 @@ document.addEventListener('DOMContentLoaded', () => {
   onlineWallpaperForm?.addEventListener('submit', (e) => {
   e.preventDefault();
   // URL 原样保存；预览改用 DOM 赋值，不再拼进 HTML
-  const url = inputOnlineUrl.value.trim();
+  // 注意用 let：下面缺协议时会重新赋值（const 会抛 TypeError 让整个提交静默中断）
+  let url = inputOnlineUrl.value.trim();
   containerOnlineUrl?.classList.remove('error');
   tipOnlineUrl?.classList.remove('active');
 
   if (!url) {
+    containerOnlineUrl?.classList.add('error');
+    tipOnlineUrl?.classList.add('active');
+    inputOnlineUrl?.focus();
+    return;
+  }
+
+  // 省略协议时补上 http://（与快速链接同一套规则）：
+  // 形如 "example.com/a.jpg" 也能直接用；带冒号的（WeChat://、about:blank 等）原样保留，
+  // 随后仍会被下面的 http(s) 白名单拦掉
+  if (!/^[a-z][a-z0-9+.-]*:/i.test(url)) {
+    url = 'http://' + url;
+  }
+
+  // 只允许 http(s)：该值最终赋给 <img>/<video> 的 src，
+  // 限定协议可以避免填进其它协议后静默加载失败
+  if (!/^https?:\/\//i.test(url)) {
     containerOnlineUrl?.classList.add('error');
     tipOnlineUrl?.classList.add('active');
     inputOnlineUrl?.focus();
@@ -3938,12 +3956,19 @@ inputOnlineUrl?.addEventListener('input', () => {
       tipEngineUrl?.classList.add('active');
       if (!hasError) inputEngineUrl?.focus();
       hasError = true;
-    } else if (!url.includes('%s')) {
-      // 必须含 %s 作为搜索词占位符；不限制协议
-      containerEngineUrl?.classList.add('error');
-      tipEngineUrl?.classList.add('active');
-      if (!hasError) inputEngineUrl?.focus();
-      hasError = true;
+    } else {
+      // 省略协议时补上 http://（与快速链接同一套规则）：
+      // 否则 location.href 会把它当相对地址，跳到扩展自己的路径下
+      if (!/^[a-z][a-z0-9+.-]*:/i.test(url)) {
+        url = 'http://' + url;
+      }
+      if (!url.includes('%s')) {
+        // 必须含 %s 作为搜索词占位符；不限制协议
+        containerEngineUrl?.classList.add('error');
+        tipEngineUrl?.classList.add('active');
+        if (!hasError) inputEngineUrl?.focus();
+        hasError = true;
+      }
     }
 
     if (hasError) return;
@@ -4591,14 +4616,23 @@ function onDrop(e) {
       if (!hasError) inputUrl.focus();
       hasError = true;
     } else {
-      // 省略协议时补上 https://（带任何协议的都原样保留，
-      // 这样 javascript:、about:blank、edge://flags、WeChat:// 都能直接用）
+      // 省略协议时补上 http://（带任何协议的都原样保留，
+      // 这样 javascript:、about:blank、edge://flags、WeChat:// 都能直接用）。
+      // 用 http 而不是 https 作默认值：只支持 http 的站点用 https 会连不上，
+      // 而支持 https 的站点收到 http 请求会自行 301 跳转，兼容性更好。
       if (!/^[a-z][a-z0-9+.-]*:/i.test(url)) {
-        url = 'https://' + url;
+        url = 'http://' + url;
       }
-      // 仅要求能解析出域名：不限制协议
-      const domain = getDomain(url);
-      if (!domain) {
+      // 只校验能被解析成合法 URL，不限制协议。
+      // 这里不能用 getDomain()（它取 hostname）：about:blank、javascript:xxx
+      // 这类地址没有主机名，会被误判为空而拒绝。
+      let parsedOk = true;
+      try {
+        new URL(url);
+      } catch (err) {
+        parsedOk = false;
+      }
+      if (!parsedOk) {
         showUrlError();
         if (!hasError) inputUrl.focus();
         hasError = true;
