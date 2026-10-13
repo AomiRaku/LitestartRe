@@ -34,7 +34,6 @@ const i18nData = {
     back: '返回',
     quicklinkStyle: '快速链接样式',
     showQuicklinks: '显示快速链接',
-    quicklinks: '快速链接',
     off: '关闭',
     on: '打开',
     rows1: '一行',
@@ -45,7 +44,6 @@ const i18nData = {
     custom: '自定义',
     editCustomEngine: '编辑自定义搜索引擎',
     saveHistory: '保存搜索历史记录',
-    layout: '页面布局',
     inspirational: '展望',
     focused: '聚焦',
     appreciate: '欣赏',
@@ -79,16 +77,15 @@ const i18nData = {
     themeDark: '深色',
     searchInput: '搜索输入框',
     clearSearchHistory: '清除搜索历史记录',
-    customBackground: '自定义背景',
     usingDefaultBg: '正在使用默认背景',
     sourceLocal: '来自本地图片',
     sourceBingDaily: '来自 Bing 每日壁纸',
     sourceCustomUrl: '来自自定义链接',
-    selectImage: '选择本地图片或视频',
     uploadFile: '选择文件',
     restoreDefault: '恢复默认',
     editShortcut: '编辑快速链接',
     name: '名称',
+    bingCN: 'Bing',
     icon: '图标',
     iconAuto: '自动解析',
     iconFirstChar: '首字符',
@@ -117,21 +114,13 @@ const i18nData = {
     forceBingCN: '强制使用必应中国版',
     forceBingCNDesc: '<b>开启</b>：强制使用必应中国版<br><b>关闭</b>：根据网络环境自动选择。<br>此选项可以避免代理设置导致 www.bing.com 无法自动跳转到 cn.bing.com。',
     enhancedVisibility: '增强元素可见性',
-    enhancedVisibilityDesc: '开启背景时给Logo和顶部按钮添加半透明背景，使其在背景图上更清晰',
     addlink: '添加',
     addQuicklink: '添加快速链接',
 
     // 个人资料菜单
-    accountDetails: '编辑账户信息',
     manageProfiles: '备份与重置',
-    initConfig: '重置',
 
    // 编辑个人资料弹窗
-    editProfile: '编辑个人资料',
-    profileAvatar: '头像',
-    uploadAvatar: '选择头像',
-    removeAvatar: '删除头像',
-    description: '描述',
 
     // 管理配置文件弹窗
     manageProfilesTitle: '配置备份与重置',
@@ -165,7 +154,6 @@ const i18nData = {
     qlPositionBottom: '底部',
     layoutHanging: '悬挂',
     layoutCentered: '居中',
-    layoutHidden: '关闭',
     showLogo: '显示 Logo',
     showAddButton: '在快速链接区域显示添加按钮',
 
@@ -183,7 +171,6 @@ const i18nData = {
     back: '返回',
     quicklinkStyle: '快速連結樣式',
     showQuicklinks: '顯示快速連結',
-    quicklinks: '快速連結',
     off: '關閉',
     on: '開啟',
     rows1: '一行',
@@ -194,7 +181,6 @@ const i18nData = {
     custom: '自訂',
     editCustomEngine: '編輯自訂搜尋引擎',
     saveHistory: '儲存搜尋紀錄',
-    layout: '頁面佈局',
     inspirational: '展望',
     focused: '聚焦',
     appreciate: '欣賞',
@@ -228,16 +214,15 @@ const i18nData = {
     themeDark: '深色',
     searchInput: '搜尋輸入框',
     clearSearchHistory: '清除搜尋紀錄',
-    customBackground: '自訂背景',
     usingDefaultBg: '正在使用預設背景',
     sourceLocal: '來自本機圖片',
     sourceBingDaily: '來自 Bing 每日桌布',
     sourceCustomUrl: '來自自訂連結',
-    selectImage: '選擇本機圖片或影片',
     uploadFile: '選擇檔案',
     restoreDefault: '恢復預設',
     editShortcut: '編輯快速連結',
     name: '名稱',
+    bingCN: 'Bing',
     icon: '圖示',
     iconAuto: '自動解析',
     iconFirstChar: '首字元',
@@ -266,17 +251,9 @@ const i18nData = {
     forceBingCN: '強制使用必應中國版',
     forceBingCNDesc: '<b>開啟</b>：強制使用必應中國版<br><b>關閉</b>：根據網路環境自動選擇。<br>此選項可以避免代理設定導致 www.bing.com 無法自動跳轉到 cn.bing.com。',
     enhancedVisibility: '增強元素可見性',
-    enhancedVisibilityDesc: '開啟背景時給Logo和頂部按鈕添加半透明背景，使其在背景圖上更清晰',
     addlink: '新增',
     addQuicklink: '新增快速連結',
-    accountDetails: '編輯帳戶資訊',
     manageProfiles: '備份與重設',
-    initConfig: '重設',
-    editProfile: '編輯個人資料',
-    profileAvatar: '頭像',
-    uploadAvatar: '選擇頭像',
-    removeAvatar: '刪除頭像',
-    description: '描述',
     manageProfilesTitle: '設定備份與重設',
     selectOperation: '選擇要執行的操作',
     exportConfig: '匯出設定',
@@ -300,7 +277,6 @@ const i18nData = {
     qlPositionBottom: '底部',
     layoutHanging: '懸掛',
     layoutCentered: '居中',
-    layoutHidden: '關閉',
     showLogo: '顯示 Logo',
     showAddButton: '在快速連結區域顯示新增按鈕',
     customTitleImage: '自訂標題圖片',
@@ -316,7 +292,6 @@ const i18nData = {
     back: 'Back',
     quicklinkStyle: 'Quicklink style',
     showQuicklinks: 'Show quicklinks',
-    quicklinks: 'Quick Links',
     off: 'Off',
     on: 'On',
     rows1: 'One row',
@@ -327,7 +302,6 @@ const i18nData = {
     custom: 'Custom',
     editCustomEngine: 'Edit custom search engine',
     saveHistory: 'Save search history',
-    layout: 'Layout',
     inspirational: 'Inspirational',
     focused: 'Focused',
     appreciate: 'Appreciate',
@@ -362,12 +336,10 @@ const i18nData = {
     themeDark: 'Dark',
     searchInput: 'Search input',
     clearSearchHistory: 'Clear search history',
-    customBackground: 'Custom Background',
     usingDefaultBg: 'Using default background',
     sourceLocal: 'From local image',
     sourceBingDaily: 'From Bing Daily Wallpaper',
     sourceCustomUrl: 'From custom URL',
-    selectImage: 'Select local image or video',
     uploadFile: 'Select file',
     restoreDefault: 'Restore default',
     editShortcut: 'Edit quick link',
@@ -401,17 +373,9 @@ const i18nData = {
     forceBingCN: 'Force Bing China',
     forceBingCNDesc: '<b>On</b>: Forces cn.bing.com<br><b>Off</b>: Automatically selects based on network conditions.<br>This option prevents proxy settings from interfering with automatic redirection of www.bing.com to cn.bing.com.',
     enhancedVisibility: 'Enhance Element Visibility',
-    enhancedVisibilityDesc: 'Adds semi-transparent backgrounds to Logo and header buttons when background is enabled for better clarity',
     addlink: 'Add',
     addQuicklink: 'Add quicklink',
-    accountDetails: 'Edit Account',
     manageProfiles: 'Backup & Reset',
-    initConfig: 'Reset',
-    editProfile: 'Edit Profile',
-    profileAvatar: 'Avatar',
-    uploadAvatar: 'Select Avatar',
-    removeAvatar: 'Remove Avatar',
-    description: 'Description',
     manageProfilesTitle: 'Backup & Reset',
     selectOperation: 'Select an action',
     exportConfig: 'Export Config',
@@ -435,7 +399,6 @@ const i18nData = {
     qlPositionBottom: 'Bottom',
     layoutHanging: 'Hanging',
     layoutCentered: 'Centered',
-    layoutHidden: 'Hidden',
     showLogo: 'Show logo',
     showAddButton: 'Show add button in quicklinks area',
     customTitleImage: 'Custom Title Image',
@@ -452,7 +415,6 @@ const i18nData = {
     back: '戻る',
     quicklinkStyle: 'クイックリンクの表示',
     showQuicklinks: 'クイックリンクを表示',
-    quicklinks: 'クイックリンク',
     off: 'オフ',
     on: 'オン',
     rows1: '1 行',
@@ -463,7 +425,6 @@ const i18nData = {
     custom: 'カスタム',
     editCustomEngine: 'カスタム検索エンジンを編集',
     saveHistory: '検索履歴を保存',
-    layout: 'レイアウト',
     inspirational: 'シンプル',
     focused: 'フォーカス',
     appreciate: '鑑賞',
@@ -498,12 +459,10 @@ const i18nData = {
     themeDark: 'ダーク',
     searchInput: '検索入力ボックス',
     clearSearchHistory: '検索履歴を消去',
-    customBackground: 'カスタム背景',
     usingDefaultBg: 'デフォルトの背景を使用中',
     sourceLocal: 'ローカル画像より',
     sourceBingDaily: 'Bing 今日の壁紙より',
     sourceCustomUrl: 'カスタムURLより',
-    selectImage: 'ローカル画像または動画を選択',
     uploadFile: 'ファイルを選択',
     restoreDefault: 'デフォルトに戻す',
     editShortcut: 'クイックリンクを編集',
@@ -537,17 +496,9 @@ const i18nData = {
     forceBingCN: 'Bing中国版を強制使用',
     forceBingCNDesc: '<b>ON</b>：cn.bing.com を強制使用<br><b>OFF</b>：ネットワーク環境に応じて自動的に選択<br>このオプションにより、プロキシ設定による www.bing.com から cn.bing.com への自動リダイレクトの妨げを防ぎます。',
     enhancedVisibility: '要素の視認性を向上',
-    enhancedVisibilityDesc: '背景有効時にロゴとヘッダーボタンに半透明の背景を追加し、見やすくします',
     addlink: '追加',
     addQuicklink: 'クイックリンクを追加',
-    accountDetails: 'アカウント編集',
     manageProfiles: 'バックアップとリセット',
-    initConfig: 'リセット',
-    editProfile: 'プロファイル編集',
-    profileAvatar: 'アバター',
-    uploadAvatar: 'アバターを選択',
-    removeAvatar: '削除',
-    description: '説明',
     manageProfilesTitle: 'バックアップとリセット',
     selectOperation: '実行する操作を選択',
     exportConfig: '設定をエクスポート',
@@ -571,7 +522,6 @@ const i18nData = {
     qlPositionBottom: '下部',
     layoutHanging: 'ハンギング',
     layoutCentered: '中央',
-    layoutHidden: '非表示',
     showLogo: 'ロゴを表示',
     showAddButton: 'クイックリンクに追加ボタンを表示',
     customTitleImage: 'カスタムタイトル画像',
@@ -587,7 +537,6 @@ const i18nData = {
     back: 'Назад',
     quicklinkStyle: 'Вид быстрых ссылок',
     showQuicklinks: 'Показывать быстрые ссылки',
-    quicklinks: 'Быстрые ссылки',
     off: 'Выкл',
     on: 'Вкл',
     rows1: 'Одна строка',
@@ -633,12 +582,10 @@ const i18nData = {
     themeDark: 'Тёмная',
     searchInput: 'Поле поиска',
     clearSearchHistory: 'Очистить историю поиска',
-    customBackground: 'Пользовательский фон',
     usingDefaultBg: 'Используется стандартный фон',
     sourceLocal: 'Из локального изображения',
     sourceBingDaily: 'Из ежедневных обоев Bing',
     sourceCustomUrl: 'Из пользовательской ссылки',
-    selectImage: 'Выберите локальное фото или видео',
     uploadFile: 'Выбрать файл',
     restoreDefault: 'Сбросить',
     editShortcut: 'Изменить быструю ссылку',
@@ -671,17 +618,9 @@ const i18nData = {
     forceBingCN: 'Принудительно использовать Bing China',
     forceBingCNDesc: '<b>Вкл.</b>: Принудительно использует cn.bing.com<br><b>Выкл.</b>: Автоматический выбор в зависимости от сетевых условий<br>Этот параметр предотвращает проблемы с прокси, мешающие автоматическому редиректу www.bing.com на cn.bing.com.',
     enhancedVisibility: 'Повысить видимость элементов',
-    enhancedVisibilityDesc: 'Добавляет полупрозрачный фон к логотипу и кнопкам заголовка при включенном фоне для лучшей читаемости',
     addlink: 'Добавить',
     addQuicklink: 'Добавить быструю ссылку',
-    accountDetails: 'Редактировать аккаунт',
     manageProfiles: 'Резервная копия',
-    initConfig: 'Сброс',
-    editProfile: 'Редактировать профиль',
-    profileAvatar: 'Аватар',
-    uploadAvatar: 'Выбрать аватар',
-    removeAvatar: 'Удалить',
-    description: 'Описание',
     manageProfilesTitle: 'Резервное копирование и сброс',
     selectOperation: 'Выберите действие',
     exportConfig: 'Экспорт настроек',
@@ -705,7 +644,6 @@ const i18nData = {
     qlPositionBottom: 'Внизу',
     layoutHanging: 'Подвесной',
     layoutCentered: 'По центру',
-    layoutHidden: 'Скрыто',
     showLogo: 'Показывать логотип',
     showAddButton: 'Кнопка добавления в быстрых ссылках',
     // ...
@@ -2313,6 +2251,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let quicklinkPosition = Storage.get('ntp_quicklink_position', 'auto');
   let historyEnabled = Storage.get('ntp_history_enabled', true);
   let searchHistory = Storage.get('ntp_search_history', []);
+  if (!Array.isArray(searchHistory)) searchHistory = [];   // 备份导入/手改可能写入非数组
   let showTimeCapsule = Storage.get('ntp_show_time_capsule', false);
   let showMenuButton = Storage.get('ntp_show_menu_button', true);
   let forceBingCN = Storage.get('ntp_force_bing_cn', false);
@@ -3009,6 +2948,15 @@ document.addEventListener('DOMContentLoaded', () => {
     return;
   }
 
+  // 只接受 http(s)：new URL() 本身会放行 javascript:/data: 等协议，
+  // 而这个值会被存库并最终赋给 <img>/<video> 的 src
+  if (!/^https?:\/\//i.test(url)) {
+    containerOnlineUrl?.classList.add('error');
+    tipOnlineUrl?.classList.add('active');
+    inputOnlineUrl?.focus();
+    return;
+  }
+
   // 简单URL格式校验
   try {
     new URL(url);
@@ -3587,7 +3535,9 @@ inputOnlineUrl?.addEventListener('input', () => {
       tipEngineUrl?.classList.add('active');
       if (!hasError) inputEngineUrl?.focus();
       hasError = true;
-    } else if (!url.includes('%s')) {
+    } else if (!/^https?:\/\/[^\s]*%s/i.test(url)) {
+      // 必须是 http(s) 且含 %s：该值经 replace 后直接赋给 location.href，
+      // 放行 javascript: 会导致点击搜索即执行脚本
       containerEngineUrl?.classList.add('error');
       tipEngineUrl?.classList.add('active');
       if (!hasError) inputEngineUrl?.focus();
@@ -3610,6 +3560,7 @@ inputOnlineUrl?.addEventListener('input', () => {
 
   // B2.快速链接列表管理
   let quicklinksList = Storage.get('ntp_quicklinks_list', []);
+  if (!Array.isArray(quicklinksList)) quicklinksList = [];
 
 
   //=====快捷方式自适应计算--开始=====
@@ -3660,8 +3611,6 @@ inputOnlineUrl?.addEventListener('input', () => {
     return Math.min(available, QUICKLINK_MAX_COLUMNS_ONE_ROW);
   }
 
-  // 记录一次渲染，便于在浏览器控制台核对重建次数（Debug 用）
-  window.__qlDebug = { renders: 0, columns: 0, lastRows: null };
   //=====快捷方式自适应计算--结束=====
 
   
@@ -3755,8 +3704,6 @@ inputOnlineUrl?.addEventListener('input', () => {
       quicklinksElem.textContent = '';
       quicklinksElem.style.removeProperty('--quicklinks-content-width');
       quicklinksLastRenderKey = 'off';
-      window.__qlDebug.columns = perRow;
-      window.__qlDebug.lastRows = rows;
       return;
     }
 
@@ -3797,9 +3744,6 @@ inputOnlineUrl?.addEventListener('input', () => {
     quicklinksElem.appendChild(fragment);
     syncQuicklinksLanguage();
 
-    window.__qlDebug.renders += 1;
-    window.__qlDebug.columns = perRow;
-    window.__qlDebug.lastRows = rows;
   }
 
   // 窗口尺寸变化：合并到下一帧处理，并且只在列数真正变化时才重建 DOM
@@ -3993,8 +3937,14 @@ function onDrop(e) {
       if (!hasError) inputUrl.focus();
       hasError = true;
     } else {
+      // 省略协议时补上 https://
+      if (!/^[a-z][a-z0-9+.-]*:\/\//i.test(url)) {
+        url = 'https://' + url;
+      }
+      // 只接受 http(s)：getDomain('javascript://alert(1)') 会返回 "alert(1)"，
+      // 拿它当安全依据会让该地址入库并赋给 <a>.href
       const domain = getDomain(url);
-      if (!domain) {
+      if (!domain || !/^https?:\/\//i.test(url)) {
         showUrlError();
         if (!hasError) inputUrl.focus();
         hasError = true;
@@ -4002,10 +3952,6 @@ function onDrop(e) {
     }
 
     if (hasError) return;
-
-    if (!/^[a-z][a-z0-9+.-]*:\/\//i.test(url)) {
-      url = 'https://' + url;
-    }
 
     if (currentEditingId) {
       const itemIndex = quicklinksList.findIndex(item => item.id === currentEditingId);
@@ -4084,11 +4030,13 @@ function onDrop(e) {
     totalItems.forEach((itemObj) => {
       const li = document.createElement('li');
       li.className = 'suggestion-item' + (itemObj.isHistory ? ' history' : '');
-      li.innerHTML = `${itemObj.isHistory ? historySvgIcon : searchSvgIcon}<span class="suggestion-text">${sanitizeInput(itemObj.text)}</span>`;
+      // 历史项入库时已转义，只需转义来自接口的建议词
+      const labelText = itemObj.isHistory ? itemObj.text : sanitizeInput(itemObj.text);
+      li.innerHTML = `${itemObj.isHistory ? historySvgIcon : searchSvgIcon}<span class="suggestion-text">${labelText}</span>`;
       
       li.addEventListener('click', () => {
         if (searchInput) searchInput.value = decodeInput(itemObj.text);
-        doSearch(itemObj.text);
+        doSearch(decodeInput(itemObj.text));   // 搜索要用原文，不能用转义后的实体
       });
 
       suggestionList.appendChild(li);
@@ -4232,7 +4180,7 @@ searchInput?.addEventListener('input', () => {
     items.forEach((item, index) => {
       if (index === selectedSuggestionIndex) {
         item.classList.add('selected');
-        if (searchInput) searchInput.value = item.querySelector('.suggestion-text').textContent;
+        if (searchInput) searchInput.value = decodeInput(item.querySelector('.suggestion-text').textContent);
       } else {
         item.classList.remove('selected');
       }
