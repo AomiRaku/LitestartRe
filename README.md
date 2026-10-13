@@ -11,7 +11,7 @@
 
 ## 快速开始
 
-从商店下载Litestart
+建议从插件商店获取和更新 Litestart 
 
 <a href="https://microsoftedge.microsoft.com/addons/detail/gpfegedemfdpmggmbmcboldmdcmmobjc"><img src="docs/get/edge-addon.webp" alt="Get it from Microsoft Edge" height="48"></a>&nbsp;&nbsp;<a href="https://addons.mozilla.org/firefox/addon/litestart/"><img src="docs/get/ff-addon.webp" alt="Get it from Firefox ADD-ON" height="48"></a>
 

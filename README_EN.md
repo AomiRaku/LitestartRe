@@ -13,7 +13,7 @@ Cutting out the clutter, Litestart aims to provide you with a seamless, fast, an
 
 ## Quick Start
 
-Get Litestart from browser store
+It is recommended to obtain and update Litestart from the plugin store
 
 <a href="https://microsoftedge.microsoft.com/addons/detail/gpfegedemfdpmggmbmcboldmdcmmobjc"><img src="docs/get/edge-addon.webp" alt="Get it from Microsoft Edge" height="48"></a>&nbsp;&nbsp;<a href="https://addons.mozilla.org/firefox/addon/litestart/"><img src="docs/get/ff-addon.webp" alt="Get it from Firefox ADD-ON" height="48"></a>
 
