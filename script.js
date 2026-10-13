@@ -154,7 +154,8 @@ const i18nData = {
     forceBingCN: '强制使用必应中国版',
     forceBingCNDesc: '<b>开启</b>：强制使用必应中国版<br><b>关闭</b>：根据网络环境自动选择。<br>此选项可以避免代理设置导致 www.bing.com 无法自动跳转到 cn.bing.com。',
     enhancedVisibility: '增强元素可见性',
-    enhancedBlur: '启用模糊',
+    enhancedBlur: '衬底启用模糊',
+    bgVignette: '背景边角晕影',
     enhancedBlurTip: '此选项可能会对设备功耗有轻微影响。',
     addlink: '添加',
     addQuicklink: '添加快速链接',
@@ -333,7 +334,8 @@ const i18nData = {
     forceBingCN: '強制使用必應中國版',
     forceBingCNDesc: '<b>開啟</b>：強制使用必應中國版<br><b>關閉</b>：根據網路環境自動選擇。<br>此選項可以避免代理設定導致 www.bing.com 無法自動跳轉到 cn.bing.com。',
     enhancedVisibility: '增強元素可見性',
-    enhancedBlur: '啟用模糊',
+    enhancedBlur: '襯底啟用模糊',
+    bgVignette: '背景邊角暈影',
     enhancedBlurTip: '此選項可能會對裝置耗電有輕微影響。',
     addlink: '新增',
     addQuicklink: '新增快速連結',
@@ -497,7 +499,8 @@ const i18nData = {
     forceBingCN: 'Force Bing China',
     forceBingCNDesc: '<b>On</b>: Forces cn.bing.com<br><b>Off</b>: Automatically selects based on network conditions.<br>This option prevents proxy settings from interfering with automatic redirection of www.bing.com to cn.bing.com.',
     enhancedVisibility: 'Enhance Element Visibility',
-    enhancedBlur: 'Enable blur',
+    enhancedBlur: 'Enable backdrop blur',
+    bgVignette: 'Background vignette',
     enhancedBlurTip: 'This option may slightly increase power consumption.',
     addlink: 'Add',
     addQuicklink: 'Add quicklink',
@@ -662,7 +665,8 @@ const i18nData = {
     forceBingCN: 'Bing中国版を強制使用',
     forceBingCNDesc: '<b>ON</b>：cn.bing.com を強制使用<br><b>OFF</b>：ネットワーク環境に応じて自動的に選択<br>このオプションにより、プロキシ設定による www.bing.com から cn.bing.com への自動リダイレクトの妨げを防ぎます。',
     enhancedVisibility: '要素の視認性を向上',
-    enhancedBlur: 'ぼかしを有効化',
+    enhancedBlur: '下地のぼかしを有効化',
+    bgVignette: '背景のビネット',
     enhancedBlurTip: 'このオプションは消費電力にわずかな影響を与える可能性があります。',
     addlink: '追加',
     addQuicklink: 'クイックリンクを追加',
@@ -826,7 +830,8 @@ const i18nData = {
     forceBingCN: 'Принудительно использовать Bing China',
     forceBingCNDesc: '<b>Вкл.</b>: Принудительно использует cn.bing.com<br><b>Выкл.</b>: Автоматический выбор в зависимости от сетевых условий<br>Этот параметр предотвращает проблемы с прокси, мешающие автоматическому редиректу www.bing.com на cn.bing.com.',
     enhancedVisibility: 'Повысить видимость элементов',
-    enhancedBlur: 'Включить размытие',
+    enhancedBlur: 'Размытие подложки',
+    bgVignette: 'Виньетка фона',
     enhancedBlurTip: 'Эта опция может незначительно увеличить энергопотребление.',
     addlink: 'Добавить',
     addQuicklink: 'Добавить быструю ссылку',
@@ -1016,6 +1021,12 @@ function applyLanguage(langConfig) {
   if (statusEnhancedBlur) {
     const isChecked = document.getElementById('toggle-enhanced-blur')?.checked || false;
     statusEnhancedBlur.innerText = isChecked ? dict.on : dict.off;
+  }
+
+  const statusBgVignette = document.getElementById('status-bg-vignette');
+  if (statusBgVignette) {
+    const isChecked = document.getElementById('toggle-bg-vignette')?.checked ?? true;
+    statusBgVignette.innerText = isChecked ? dict.on : dict.off;
   }
 
   // 11.刷新自定义下拉选项文本
@@ -1935,72 +1946,6 @@ document.addEventListener('DOMContentLoaded', () => {
     settingsPageLayout?.classList.toggle('active', name === 'layout');
   }
 
-  // 设置面板高度过渡：与二级页切换同一套手法。
-  // 用于"面板内某一行出现/消失"这类会改变浮窗高度的操作，避免高度突变。
-  function animatePopoverHeight(mutate) {
-    if (!popoverSettings) { mutate(); return; }
-
-    // 上一次过渡没结束又触发：先清掉残留的内联样式与定时器
-    if (settingsPageAnimTimer) {
-      clearTimeout(settingsPageAnimTimer);
-      settingsPageAnimTimer = null;
-    }
-    popoverSettings.style.transition = '';
-    popoverSettings.style.height = '';
-    popoverSettings.style.overflowY = '';
-
-    // 系统开启"减少动态效果"时直接切换，不做过渡
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      mutate();
-      updateSettingsScrollbar();
-      return;
-    }
-
-    const startHeight = popoverSettings.offsetHeight;
-    const prevThumbHeight = settingsScrollbarThumb ? settingsScrollbarThumb.style.height : '';
-    const prevThumbTransform = settingsScrollbarThumb ? settingsScrollbarThumb.style.transform : '';
-    if (settingsScrollbarThumb) {
-      settingsScrollbarThumb.style.height = '0px';
-      settingsScrollbarThumb.style.transform = 'none';
-    }
-
-    mutate();
-
-    void popoverSettings.offsetHeight;
-    popoverSettings.style.height = 'auto';
-    void popoverSettings.offsetHeight;
-    const endHeight = popoverSettings.getBoundingClientRect().height;
-    const endScrollHeight = popoverSettings.scrollHeight;
-
-    if (settingsScrollbar && settingsScrollbarThumb) {
-      const metrics = computeSettingsScrollbarMetrics(endHeight, endScrollHeight);
-      settingsScrollbarCanScroll = metrics.maxScroll > 2;
-      if (settingsScrollbarCanScroll) {
-        settingsScrollbarThumb.style.height = metrics.thumbHeight + 'px';
-        settingsScrollbarThumb.style.transform = 'translateY(' + SETTINGS_SCROLLBAR_INSET + 'px)';
-        revealSettingsScrollbar();
-      } else {
-        settingsScrollbarThumb.style.height = prevThumbHeight;
-        settingsScrollbarThumb.style.transform = prevThumbTransform;
-        hideSettingsScrollbar();
-      }
-    }
-
-    popoverSettings.style.height = startHeight + 'px';
-    void popoverSettings.offsetHeight;
-    popoverSettings.style.transition = 'height ' + SETTINGS_PAGE_ANIM_MS + 'ms ease';
-    popoverSettings.style.overflowY = 'hidden';
-    popoverSettings.style.height = endHeight + 'px';
-
-    settingsPageAnimTimer = setTimeout(() => {
-      popoverSettings.style.transition = '';
-      popoverSettings.style.height = '';
-      popoverSettings.style.overflowY = '';
-      settingsPageAnimTimer = null;
-      updateSettingsScrollbar();
-    }, SETTINGS_PAGE_ANIM_MS + 30);
-  }
-
   function showSettingsPage(name) {
     if (!popoverSettings) return;
 
@@ -2290,6 +2235,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnOpenBgModal = document.getElementById('btn-open-bg-modal');
   const toggleEnhancedVisibility = document.getElementById('toggle-enhanced-visibility');
   const toggleEnhancedBlur = document.getElementById('toggle-enhanced-blur');
+  const toggleBgVignette = document.getElementById('toggle-bg-vignette');
   
   const btnCloseWallpaperModal = document.getElementById('btn-close-wallpaper-modal');
   const toggleBgModalSwitch = document.getElementById('toggle-bg-modal-switch');
@@ -2610,6 +2556,8 @@ document.addEventListener('DOMContentLoaded', () => {
   let customWallpaperData = null;
   let enhancedVisibility = Storage.get('ntp_enhanced_visibility', false);
   let enhancedBlur = Storage.get('ntp_enhanced_blur', false);
+  // 背景边角晕影默认开启，所以缺省值是 true
+  let bgVignette = Storage.get('ntp_bg_vignette', true);
   let searchVisible = Storage.get('ntp_search_visible', true);
   let showLogo = Storage.get('ntp_show_logo', true);
   // 快速链接区"添加"按钮的显隐（默认关闭）
@@ -2669,6 +2617,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (toggleForceBingCN) toggleForceBingCN.checked = forceBingCN;
   if (toggleEnhancedVisibility) toggleEnhancedVisibility.checked = enhancedVisibility;
   if (toggleEnhancedBlur) toggleEnhancedBlur.checked = enhancedBlur;
+  if (toggleBgVignette) toggleBgVignette.checked = bgVignette;
 
   setLogo(savedEngine);
   updateEngineEditButton(savedEngine);
@@ -2707,6 +2656,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     applyEnhancedVisibility();
+    applyBgVignette();
     applyBgDependentEnabled();
   }
 
@@ -2742,20 +2692,35 @@ document.addEventListener('DOMContentLoaded', () => {
       statusBlur.innerText = (toggleEnhancedBlur && toggleEnhancedBlur.checked) ? d.on : d.off;
     }
 
+    // 该行始终显示：增强可见性关闭时整行置灰（复用 .setting-row.disabled 的样式），
+    // 不再显隐，因此也不需要高度过渡
     const blurRow = document.getElementById('enhanced-blur-row');
     if (blurRow) {
-      const want = active ? '' : 'none';
-      const apply = () => { blurRow.style.display = want; };
-      // 面板打开时套用与二级页切换相同的高度过渡，浮窗长度不会突变
-      if (blurRow.style.display !== want && popoverSettings?.classList.contains('active')) {
-        animatePopoverHeight(apply);
+      blurRow.classList.toggle('disabled', !active);
+      if (active) {
+        blurRow.removeAttribute('inert');
       } else {
-        apply();
+        blurRow.setAttribute('inert', '');   // 置灰时同时移出可聚焦序列
       }
     }
   }
 
   // 背景关闭时，依赖背景的设置（选择图片 / 在线内容）整体置灰且不可交互
+  // 背景边角晕影：只切换 body 上的标记，具体遮罩在 CSS 里换掉 radial 那层
+  function applyBgVignette() {
+    if (bgVignette) {
+      document.body.removeAttribute('data-bg-vignette');
+    } else {
+      document.body.setAttribute('data-bg-vignette', 'off');
+    }
+    // 状态文案与开关同源，避免出现"开关关闭、文案打开"
+    const status = document.getElementById('status-bg-vignette');
+    if (status) {
+      const d = currentDict();
+      status.innerText = bgVignette ? d.on : d.off;
+    }
+  }
+
   function applyBgDependentEnabled() {
     if (!bgDependentSettings) return;
     if (bgEnabled) {
@@ -3003,6 +2968,7 @@ document.addEventListener('DOMContentLoaded', () => {
     'ntp_bg_enabled',
     'ntp_enhanced_visibility',
     'ntp_enhanced_blur',
+    'ntp_bg_vignette',
     'ntp_custom_engine_config',
     'ntp_custom_wallpaper'
   ];
@@ -3212,6 +3178,12 @@ document.addEventListener('DOMContentLoaded', () => {
     Storage.set('ntp_enhanced_blur', enhancedBlur);
     applyEnhancedVisibility();
     applyLanguage(localStorage.getItem('liteStart_language') || 'auto');
+  });
+
+  toggleBgVignette?.addEventListener('change', (e) => {
+    bgVignette = e.target.checked;
+    Storage.set('ntp_bg_vignette', bgVignette);
+    applyBgVignette();
   });
 
   // 背景设置：在设置面板内切换到二级页（不再弹窗）

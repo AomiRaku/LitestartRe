@@ -178,9 +178,10 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: 
+      /* 第一层是整体色调，第二层是边角晕影（可通过"背景边角晕影"开关整体关闭） */
+      background:
         linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1)),
-        radial-gradient(circle at center, rgba(255,255,255,0) 60%, rgba(255,255,255,0.20) 100%);
+        var(--bg-vignette, radial-gradient(circle at center, rgba(255,255,255,0) 60%, rgba(255,255,255,0.20) 100%));
       display: none;
       opacity: 0;
       transition: opacity 0.2s ease-in;
@@ -190,11 +191,16 @@
       opacity: 1;
     }
 
+    /* 关闭"背景边角晕影"：把那个 radial 层替换成 none（两层渐变里只留整体色调） */
+    body[data-bg-vignette="off"] {
+      --bg-vignette: none;
+    }
+
     /* 暗色模式下遮罩 */
     :root[data-theme="dark"] body.bg-enabled #bg-overlay {
       background:
         linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
-        radial-gradient(circle at center, rgba(0,0,0,0) 40%, rgba(0,0,0,0.5) 100%);
+        var(--bg-vignette, radial-gradient(circle at center, rgba(0,0,0,0) 40%, rgba(0,0,0,0.5) 100%));
     }
 
     /* 仅在开启壁纸(body.bg-enabled)时，才显示壁纸容器和遮罩 */
@@ -2523,10 +2529,10 @@
                       </div>
                     </div>
 
-                    <!-- 启用模糊：只在"增强元素可见性"开启时出现，由脚本控制显隐 -->
-                    <div class="setting-row" id="enhanced-blur-row" style="display:none; margin-top: 8px;">
+                    <!-- 启用模糊：始终显示，增强元素可见性关闭时整行置灰 -->
+                    <div class="setting-row disabled" id="enhanced-blur-row" style="margin-top: 8px;">
                       <div class="setting-label-group">
-                        <span data-i18n="enhancedBlur">启用模糊</span>
+                        <span data-i18n="enhancedBlur">衬底启用模糊</span>
                         <span class="tooltip-icon" tabindex="0">
                           <svg width="18" height="18" viewBox="0 0 1024 1024" fill="currentColor" aria-hidden="true" style="margin-top: 3px; margin-left: -2px;">
                             <path d="M509.92 795.84c157.904 0 285.92-128.016 285.92-285.92C795.84 352 667.808 224 509.92 224 352 224 224 352 224 509.92c0 157.904 128 285.92 285.92 285.92z m0 48C325.504 843.84 176 694.32 176 509.92 176 325.504 325.504 176 509.92 176c184.416 0 333.92 149.504 333.92 333.92 0 184.416-149.504 333.92-333.92 333.92z m-2.448-400.704h16a16 16 0 0 1 16 16v201.728a16 16 0 0 1-16 16h-16a16 16 0 0 1-16-16V459.136a16 16 0 0 1 16-16z m0-100.176h16a16 16 0 0 1 16 16v23.648a16 16 0 0 1-16 16h-16a16 16 0 0 1-16-16v-23.648a16 16 0 0 1 16-16z"/>
@@ -2538,6 +2544,22 @@
                         <span class="setting-status-text" id="status-enhanced-blur" data-i18n="off">关闭</span>
                         <label class="switch">
                           <input type="checkbox" id="toggle-enhanced-blur">
+                          <span class="slider"></span>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- 背景边角晕影：控制壁纸上那层暗角/亮角遮罩，默认开启。
+                       独立成组：它只跟"背景"开关走，与上面的增强可见性无关。
+                       位置仍在 #bg-dependent-settings 内，背景关闭时同样会置灰。 -->
+                  <div class="settings-card" id="bg-vignette-card">
+                    <div class="setting-row">
+                      <div class="setting-label-group" data-i18n="bgVignette">背景边角晕影</div>
+                      <div class="switch-container">
+                        <span class="setting-status-text" id="status-bg-vignette" data-i18n="on">打开</span>
+                        <label class="switch">
+                          <input type="checkbox" id="toggle-bg-vignette">
                           <span class="slider"></span>
                         </label>
                       </div>
