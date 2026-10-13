@@ -1406,6 +1406,23 @@ function quicklinkPresetBody(id, style) {
   return (style === 'regular' ? icon.regular : icon.body) || '';
 }
 
+// ===== 站点图标覆盖 =====
+// 有些站点自动解析出的 favicon 在深色主题下不可用（GitHub 的图标是纯黑，
+// 深色主题下还是黑的）。这里为这些域名备一份 fill="currentColor" 的官方标记，
+// 颜色跟随 .quicklink-icon 的文字色，于是在深色主题下自动变成浅色。
+const SITE_ICON_OVERRIDES = {
+  "github.com": {
+    viewBox: "0 0 512 512",
+    body: "<path fill=\"currentColor\" fill-rule=\"evenodd\" d=\"M256 6.3C114.6 6.3 0 120.9 0 262.3c0 113.3 73.3 209 175 242.9c12.8 2.2 17.6-5.4 17.6-12.2c0-6.1-.3-26.2-.3-47.7c-64.3 11.8-81-15.7-86.1-30.1c-2.9-7.4-15.4-30.1-26.2-36.2c-9-4.8-21.8-16.6-.3-17c20.2-.3 34.6 18.6 39.4 26.2c23 38.7 59.8 27.8 74.6 21.1c2.2-16.6 9-27.8 16.3-34.2c-57-6.4-116.5-28.5-116.5-126.4c0-27.8 9.9-50.9 26.2-68.8c-2.6-6.4-11.5-32.6 2.6-67.8c0 0 21.4-6.7 70.4 26.2c20.5-5.8 42.2-8.6 64-8.6s43.5 2.9 64 8.6c49-33.3 70.4-26.2 70.4-26.2c14.1 35.2 5.1 61.4 2.6 67.8c16.3 17.9 26.2 40.6 26.2 68.8c0 98.2-59.8 120-116.8 126.4c9.3 8 17.3 23.4 17.3 47.4c0 34.2-.3 61.8-.3 70.4c0 6.7 4.8 14.7 17.6 12.2C438.7 471.3 512 375.3 512 262.3c0-141.4-114.6-256-256-256\"/>"
+  }
+};
+
+// 取某个 URL 的站点图标覆盖项；忽略 www. 前缀与大小写，子域不匹配
+function getSiteIconOverride(urlStr) {
+  const host = String(getDomain(urlStr) || "").replace(/^www\./i, "").toLowerCase();
+  return host ? (SITE_ICON_OVERRIDES[host] || null) : null;
+}
+
 // 对用户输入进行 HTML 转义，防止 XSS
 function sanitizeInput(str) {
   return str
@@ -3876,11 +3893,16 @@ inputOnlineUrl?.addEventListener('input', () => {
     const faviconUrl = (item.iconMode === 'text' || item.iconMode === 'preset') ? '' : getFaviconUrl(item.url);
     const presetStyle = item.iconPresetStyle === 'regular' ? 'regular' : 'filled';
     const presetBody = item.iconMode === 'preset' ? quicklinkPresetBody(item.iconPreset, presetStyle) : '';
+    // 站点图标覆盖只在"自动解析"模式下生效（首字符/预置是用户显式指定的）
+    const siteOverride = item.iconMode === 'auto' ? getSiteIconOverride(item.url) : null;
     const presetLabel = item.iconMode === 'preset' ? (currentDict()[iconPresetKey(item.iconPreset)] || safeTitle) : '';
 
     let iconContent = '';
     if (presetBody) {
       iconContent = `<svg viewBox="0 0 24 24" width="20" height="20" role="img" aria-label="${sanitizeInput(presetLabel)}">${presetBody}</svg>`;
+    } else if (siteOverride) {
+      // 用站点官方标记替代 favicon；fill=currentColor 让它跟随主题（深色下自动变浅）
+      iconContent = `<svg class="quicklink-site-icon" viewBox="${siteOverride.viewBox}" role="img" aria-label="${safeTitle}">${siteOverride.body}</svg>`;
     } else if (faviconUrl) {
       iconContent = `<img src="${faviconUrl}" alt="${safeTitle}" loading="lazy" 
                         onerror="this.onerror=null; this.parentNode.innerText='${initialChar}';">`;
