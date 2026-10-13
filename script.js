@@ -2721,6 +2721,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // 换了壁纸（或重新开启背景）时把晕影复位为打开：
+  // 新壁纸的明暗分布与上一张不同，沿用上次的关闭状态往往不合适。
+  function resetBgVignette() {
+    if (bgVignette) return;                 // 本来就是开的，不必动存储
+    bgVignette = true;
+    Storage.set('ntp_bg_vignette', true);
+    if (toggleBgVignette) toggleBgVignette.checked = true;
+    applyBgVignette();
+  }
+
   function applyBgDependentEnabled() {
     if (!bgDependentSettings) return;
     if (bgEnabled) {
@@ -3161,6 +3171,7 @@ document.addEventListener('DOMContentLoaded', () => {
   toggleBgModalSwitch?.addEventListener('change', (e) => {
     bgEnabled = e.target.checked;
     Storage.set('ntp_bg_enabled', bgEnabled);
+    if (bgEnabled) resetBgVignette();     // 重新开启背景时，晕影复位为打开
     applyBackgroundState();
     if (bgEnabled) ensureBingDailyFresh();
     applyLanguage(localStorage.getItem('liteStart_language') || 'auto');
@@ -3223,6 +3234,7 @@ document.addEventListener('DOMContentLoaded', () => {
           type: isVideo ? 'video' : 'image',
           url: URL.createObjectURL(blob)
         };
+        resetBgVignette();
         applyBackgroundState();
       } else {
         alert('壁纸保存失败，请重试。');
@@ -3237,6 +3249,7 @@ document.addEventListener('DOMContentLoaded', () => {
     revokeBlobUrl(customWallpaperData?.url);
     customWallpaperData = null;
     await saveWallpaperData(null);
+    resetBgVignette();
     applyBackgroundState();
   });
 
@@ -3268,6 +3281,7 @@ document.addEventListener('DOMContentLoaded', () => {
         bgEnabled = true;
         Storage.set('ntp_bg_enabled', true);
       }
+      resetBgVignette();
       applyBackgroundState();
       if (toggleBgSwitch) toggleBgSwitch.checked = true;
       if (toggleBgModalSwitch) toggleBgModalSwitch.checked = true;
@@ -3344,6 +3358,7 @@ document.addEventListener('DOMContentLoaded', () => {
     bgEnabled = true;
     Storage.set('ntp_bg_enabled', true);
   }
+  resetBgVignette();
   applyBackgroundState();
   if (toggleBgSwitch) toggleBgSwitch.checked = true;
   if (toggleBgModalSwitch) toggleBgModalSwitch.checked = true;
