@@ -63,7 +63,7 @@
       --settings-card-hover: #f9f9f9;
       --settings-text-primary: #1b1b1b;
       --settings-text-secondary: #707070;
-      --settings-thumb-bg: #f4f5f7;
+      --settings-thumb-bg: #d5d9de;
       --settings-thumb-border: #d4d4d4;
 
       --enhanced-visibility-bg: rgba(255, 255, 255, 0.45);
@@ -767,15 +767,52 @@
     /* 卡片视图选择器 */
     /* 主题模式：连体滑块（跟随系统 / 浅色 / 深色） */
     .theme-switch {
+      position: relative;
       display: flex;
       gap: 2px;
       padding: 2px;
       border: 1px solid var(--settings-card-border);
       border-radius: 6px;
+      background-color: var(--input-bg);        /* 凹槽底色 */
+    }
+
+    /* 滑块：由 idx-N 类驱动位移，切换时平滑滑动（宽度 = (100% − 2×2 padding − 2×2 gap) / 3） */
+    .theme-switch::before {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: calc((100% - 8px) / 3);
+      height: calc(100% - 4px);
+      border-radius: 4px;
       background-color: var(--settings-card-bg);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+      transform: translateX(0);
+      transition: transform 0.1s ease;
+      pointer-events: none;
+    }
+
+    .theme-switch.idx-1::before {
+      transform: translateX(calc(100% + 2px));
+    }
+
+    .theme-switch.idx-2::before {
+      transform: translateX(calc(200% + 4px));
+    }
+
+    :root[data-theme="dark"] .theme-switch::before {
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .theme-switch::before {
+        transition: none;
+      }
     }
 
     .theme-option {
+      position: relative;
+      z-index: 1;
       flex: 1;
       display: inline-flex;
       align-items: center;
@@ -793,12 +830,11 @@
       transition: border-color 0.08s, background-color 0.08s;
     }
 
+    /* 选中态的背景由 .theme-switch::before 那块滑块承担 */
     .theme-option.active {
-      background-color: rgba(127, 127, 127, 0.16);
-    }
-
-    :root[data-theme="dark"] .theme-option.active {
-      background-color: rgba(255, 255, 255, 0.12);
+      position: relative;
+      z-index: 1;
+      font-weight: 600;
     }
 
     .theme-option svg {
@@ -814,16 +850,58 @@
     }
 
     .layout-presets {
+      position: relative;
       display: flex;
       gap: 2px;
       padding: 2px;
       border: 1px solid var(--settings-card-border);
       border-radius: 6px;
-      background-color: var(--settings-card-bg);
+      background-color: var(--input-bg);
       margin-top: 10px;
     }
 
+    /* 预设的滑块：与主题模式同一套，圆角跟随预设项（8px） */
+    .layout-presets::before {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: calc((100% - 8px) / 3);
+      height: calc(100% - 4px);
+      border-radius: 4px;     /* 容器 6px − padding 2px，与主题滑块一致 */
+      background-color: var(--settings-card-bg);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+      transform: translateX(0);
+      transition: transform 0.1s ease, opacity 0.15s ease;
+      pointer-events: none;
+    }
+
+    .layout-presets.idx-1::before {
+      transform: translateX(calc(100% + 2px));
+    }
+
+    .layout-presets.idx-2::before {
+      transform: translateX(calc(200% + 4px));
+    }
+
+    /* 当前配置和三个预设都不一致时不显示滑块 */
+    .layout-presets.no-thumb::before {
+      opacity: 0;
+    }
+
+    :root[data-theme="dark"] .layout-presets::before {
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .layout-presets::before {
+        transition: none;
+      }
+    }
+
     .preset-card {
+      position: relative;
+      z-index: 1;
       flex: 1;
       border: none;
       background-color: transparent;
@@ -840,32 +918,33 @@
     /* 悬停一律"加深"：未选中项叠一层黑；深色主题底色本来就暗，比例给大些 */
     .theme-option:hover,
     .preset-card:hover {
-      background-color: rgba(0, 0, 0, 0.06);
+      background-color: rgba(0, 0, 0, 0.04);
     }
 
     :root[data-theme="dark"] .theme-option:hover,
     :root[data-theme="dark"] .preset-card:hover {
-      background-color: rgba(0, 0, 0, 0.22);
+      background-color: rgba(0, 0, 0, 0.14);
     }
 
-    .preset-card.active {
-      background-color: rgba(127, 127, 127, 0.16);
-    }
-
-    :root[data-theme="dark"] .preset-card.active {
-      background-color: rgba(255, 255, 255, 0.12);
-    }
-
-    /* 已选中项悬停：比选中态再深一档（深色主题下顺着"提亮"的方向加强，否则会糊进底色） */
+    /* 已选中项不参与上面的叠黑（背景由滑块承担，叠黑会盖在滑块上显得变色） */
     .theme-option.active:hover,
     .preset-card.active:hover {
-      background-color: rgba(127, 127, 127, 0.28);
+      background-color: transparent;
     }
 
     :root[data-theme="dark"] .theme-option.active:hover,
     :root[data-theme="dark"] .preset-card.active:hover {
-      background-color: rgba(255, 255, 255, 0.2);
+      background-color: transparent;
     }
+
+    /* 选中态的背景由 .layout-presets::before 承担 */
+    .preset-card.active {
+      position: relative;
+      z-index: 1;
+      font-weight: 600;
+    }
+
+
 
     .preset-thumb {
       width: 100%;

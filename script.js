@@ -2075,6 +2075,14 @@ document.addEventListener('DOMContentLoaded', () => {
       el.setAttribute('aria-checked', on ? 'true' : 'false');
     });
 
+    // 滑块位置：交给 .theme-switch::before 做位移动画
+    const themeSwitchEl = document.getElementById('theme-switch');
+    if (themeSwitchEl) {
+      const idx = ({ auto: 0, light: 1, dark: 2 })[pref] ?? 0;
+      themeSwitchEl.classList.remove('idx-0', 'idx-1', 'idx-2');
+      themeSwitchEl.classList.add('idx-' + idx);
+    }
+
     const link = document.getElementById('favicon');
     if (link) {
       link.href = (resolved === 'dark' ? 'img/icon_d.svg' : 'img/icon_l.svg') + '?r=' + Math.random();
@@ -3217,6 +3225,14 @@ inputOnlineUrl?.addEventListener('input', () => {
     document.querySelectorAll('.preset-card').forEach(card => {
       card.classList.toggle('active', card.dataset.layoutVal === matched);
     });
+
+    // 滑块位置：交给 .layout-presets::before 做位移动画；三个都不匹配时隐藏滑块
+    const presetsEl = document.querySelector('.layout-presets');
+    if (presetsEl) {
+      const idx = ['inspirational', 'focused', 'appreciate'].indexOf(matched);
+      presetsEl.classList.remove('idx-0', 'idx-1', 'idx-2', 'no-thumb');
+      presetsEl.classList.add(idx < 0 ? 'no-thumb' : 'idx-' + idx);
+    }
   }
 
   // 初始化：按当前配置决定选中态（可能一个都不选）
