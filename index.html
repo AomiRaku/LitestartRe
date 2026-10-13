@@ -246,10 +246,20 @@
       background-color: var(--enhanced-visibility-bg-hover);
     }
 
+    /* 增强可见性：只给链接名称垫底（与 Logo 同一档底色） */
     body.bg-enabled[data-enhanced-visibility="true"] .quicklink-title {
       background-color: var(--enhanced-visibility-logo-bg);
       border-radius: 4px;
       padding: 3px 5px;
+    }
+
+    /* 「启用模糊」：给增强可见性产生的那些衬底加背景模糊 */
+    body.bg-enabled[data-enhanced-visibility="true"][data-enhanced-blur="true"] .header-button,
+    body.bg-enabled[data-enhanced-visibility="true"][data-enhanced-blur="true"] #logo,
+    body.bg-enabled[data-enhanced-visibility="true"][data-enhanced-blur="true"] #time-display,
+    body.bg-enabled[data-enhanced-visibility="true"][data-enhanced-blur="true"] .quicklink-title {
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
     }
 
     body.bg-enabled[data-enhanced-visibility="true"] #fakebox:hover {
@@ -1402,6 +1412,7 @@
 
     .quicklink-title {
       max-width: 74px;
+      font-size: 13px;          /* 比 .quicklink-item 继承来的 12px 大一号 */
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
@@ -1892,16 +1903,25 @@
       transition: opacity 0.15s, transform 0.15s;
     }
 
-    .quicklink-item.drag-over {
-      background-color: var(--neutral-fill-hover);
-      border-radius: 8px;
-      transform: scale(1.02);
-      transition: all 0.08s ease;
+    /* 落点提示：一条竖线。鼠标在目标项左半 → 插到它前面（线在左），
+       右半 → 插到它后面（线在右），落点与实际插入位置一致。 */
+    .quicklink-item.drag-over::before {
+      content: '';
+      position: absolute;
+      top: 4px;
+      bottom: 4px;
+      width: 2px;
+      border-radius: 1px;
+      background-color: var(--accent-foreground-rest);
+      pointer-events: none;
     }
 
-    .quicklink-item.drag-over .quicklink-icon {
-      box-shadow: 0 0 0 2px var(--accent-foreground-rest);
-      transition: box-shadow 0.08s ease;
+    .quicklink-item.drag-over[data-drop="before"]::before {
+      left: -5px;                       /* 落在两项之间的空隙里 */
+    }
+
+    .quicklink-item.drag-over[data-drop="after"]::before {
+      right: -5px;
     }
 
     /* ===== 工具提示(Tooltip)样式 ===== */
@@ -2502,6 +2522,26 @@
                         </label>
                       </div>
                     </div>
+
+                    <!-- 启用模糊：只在"增强元素可见性"开启时出现，由脚本控制显隐 -->
+                    <div class="setting-row" id="enhanced-blur-row" style="display:none; margin-top: 8px;">
+                      <div class="setting-label-group">
+                        <span data-i18n="enhancedBlur">启用模糊</span>
+                        <span class="tooltip-icon" tabindex="0">
+                          <svg width="18" height="18" viewBox="0 0 1024 1024" fill="currentColor" aria-hidden="true" style="margin-top: 3px; margin-left: -2px;">
+                            <path d="M509.92 795.84c157.904 0 285.92-128.016 285.92-285.92C795.84 352 667.808 224 509.92 224 352 224 224 352 224 509.92c0 157.904 128 285.92 285.92 285.92z m0 48C325.504 843.84 176 694.32 176 509.92 176 325.504 325.504 176 509.92 176c184.416 0 333.92 149.504 333.92 333.92 0 184.416-149.504 333.92-333.92 333.92z m-2.448-400.704h16a16 16 0 0 1 16 16v201.728a16 16 0 0 1-16 16h-16a16 16 0 0 1-16-16V459.136a16 16 0 0 1 16-16z m0-100.176h16a16 16 0 0 1 16 16v23.648a16 16 0 0 1-16 16h-16a16 16 0 0 1-16-16v-23.648a16 16 0 0 1 16-16z"/>
+                          </svg>
+                          <span class="tooltip-content" data-i18n="enhancedBlurTip">此选项可能会对设备功耗有轻微影响。</span>
+                        </span>
+                      </div>
+                      <div class="switch-container">
+                        <span class="setting-status-text" id="status-enhanced-blur" data-i18n="off">关闭</span>
+                        <label class="switch">
+                          <input type="checkbox" id="toggle-enhanced-blur">
+                          <span class="slider"></span>
+                        </label>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -2708,8 +2748,6 @@
                       </svg>
                 </div>
               </div>
-              <!-- 「预置」图标的二级宫格面板：5 列 × 7 行，内容由脚本填充 -->
-              <div class="icon-preset-panel" id="icon-preset-panel" role="listbox" aria-label="预置图标"></div>
             </div>
 
             <div class="form-group">
@@ -2950,6 +2988,11 @@
       </div>
     </div>
 
+
+    <!-- 「预置」图标的二级宫格面板：5 列 × 7 行，内容由脚本填充。
+         必须挂在 body 下：它是 position:fixed 的浮层，若留在 .modal-overlay 里，
+         会被该 overlay 的层叠上下文限制，压不过挂在 body 上的自定义下拉浮层。 -->
+    <div class="icon-preset-panel" id="icon-preset-panel" role="listbox" aria-label="预置图标"></div>
 
 <script src="script.js"></script>
 </body>

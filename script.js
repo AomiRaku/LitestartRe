@@ -154,6 +154,8 @@ const i18nData = {
     forceBingCN: '强制使用必应中国版',
     forceBingCNDesc: '<b>开启</b>：强制使用必应中国版<br><b>关闭</b>：根据网络环境自动选择。<br>此选项可以避免代理设置导致 www.bing.com 无法自动跳转到 cn.bing.com。',
     enhancedVisibility: '增强元素可见性',
+    enhancedBlur: '启用模糊',
+    enhancedBlurTip: '此选项可能会对设备功耗有轻微影响。',
     addlink: '添加',
     addQuicklink: '添加快速链接',
 
@@ -331,6 +333,8 @@ const i18nData = {
     forceBingCN: '強制使用必應中國版',
     forceBingCNDesc: '<b>開啟</b>：強制使用必應中國版<br><b>關閉</b>：根據網路環境自動選擇。<br>此選項可以避免代理設定導致 www.bing.com 無法自動跳轉到 cn.bing.com。',
     enhancedVisibility: '增強元素可見性',
+    enhancedBlur: '啟用模糊',
+    enhancedBlurTip: '此選項可能會對裝置耗電有輕微影響。',
     addlink: '新增',
     addQuicklink: '新增快速連結',
     manageProfiles: '備份與重設',
@@ -493,6 +497,8 @@ const i18nData = {
     forceBingCN: 'Force Bing China',
     forceBingCNDesc: '<b>On</b>: Forces cn.bing.com<br><b>Off</b>: Automatically selects based on network conditions.<br>This option prevents proxy settings from interfering with automatic redirection of www.bing.com to cn.bing.com.',
     enhancedVisibility: 'Enhance Element Visibility',
+    enhancedBlur: 'Enable blur',
+    enhancedBlurTip: 'This option may slightly increase power consumption.',
     addlink: 'Add',
     addQuicklink: 'Add quicklink',
     manageProfiles: 'Backup & Reset',
@@ -656,6 +662,8 @@ const i18nData = {
     forceBingCN: 'Bing中国版を強制使用',
     forceBingCNDesc: '<b>ON</b>：cn.bing.com を強制使用<br><b>OFF</b>：ネットワーク環境に応じて自動的に選択<br>このオプションにより、プロキシ設定による www.bing.com から cn.bing.com への自動リダイレクトの妨げを防ぎます。',
     enhancedVisibility: '要素の視認性を向上',
+    enhancedBlur: 'ぼかしを有効化',
+    enhancedBlurTip: 'このオプションは消費電力にわずかな影響を与える可能性があります。',
     addlink: '追加',
     addQuicklink: 'クイックリンクを追加',
     manageProfiles: 'バックアップとリセット',
@@ -818,6 +826,8 @@ const i18nData = {
     forceBingCN: 'Принудительно использовать Bing China',
     forceBingCNDesc: '<b>Вкл.</b>: Принудительно использует cn.bing.com<br><b>Выкл.</b>: Автоматический выбор в зависимости от сетевых условий<br>Этот параметр предотвращает проблемы с прокси, мешающие автоматическому редиректу www.bing.com на cn.bing.com.',
     enhancedVisibility: 'Повысить видимость элементов',
+    enhancedBlur: 'Включить размытие',
+    enhancedBlurTip: 'Эта опция может незначительно увеличить энергопотребление.',
     addlink: 'Добавить',
     addQuicklink: 'Добавить быструю ссылку',
     manageProfiles: 'Резервная копия',
@@ -1002,11 +1012,18 @@ function applyLanguage(langConfig) {
     statusEnhancedVisibility.innerText = isChecked ? dict.on : dict.off;
   }
 
+  const statusEnhancedBlur = document.getElementById('status-enhanced-blur');
+  if (statusEnhancedBlur) {
+    const isChecked = document.getElementById('toggle-enhanced-blur')?.checked || false;
+    statusEnhancedBlur.innerText = isChecked ? dict.on : dict.off;
+  }
+
   // 11.刷新自定义下拉选项文本
   refreshCustomSelects();
 
-  // 12.同步「快速链接」的“添加”按钮文案（避免整页重扫，也不必重建整个列表）
-  if (typeof syncQuicklinksLanguage === 'function') syncQuicklinksLanguage();
+  // 注：「添加」按钮的文案由第 1 步的 [data-i18n="addlink"] 扫描覆盖，
+  // 不必在这里再调 syncQuicklinksLanguage —— 它定义在 DOMContentLoaded 回调内，
+  // 顶层函数访问不到该标识符（typeof 返回 'undefined'，调用永不执行）。
 
   // 13.搜索框提示与"自定义"选项都含引擎名，要在上面刷完后再覆盖一次
   try {
@@ -1918,6 +1935,72 @@ document.addEventListener('DOMContentLoaded', () => {
     settingsPageLayout?.classList.toggle('active', name === 'layout');
   }
 
+  // 设置面板高度过渡：与二级页切换同一套手法。
+  // 用于"面板内某一行出现/消失"这类会改变浮窗高度的操作，避免高度突变。
+  function animatePopoverHeight(mutate) {
+    if (!popoverSettings) { mutate(); return; }
+
+    // 上一次过渡没结束又触发：先清掉残留的内联样式与定时器
+    if (settingsPageAnimTimer) {
+      clearTimeout(settingsPageAnimTimer);
+      settingsPageAnimTimer = null;
+    }
+    popoverSettings.style.transition = '';
+    popoverSettings.style.height = '';
+    popoverSettings.style.overflowY = '';
+
+    // 系统开启"减少动态效果"时直接切换，不做过渡
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      mutate();
+      updateSettingsScrollbar();
+      return;
+    }
+
+    const startHeight = popoverSettings.offsetHeight;
+    const prevThumbHeight = settingsScrollbarThumb ? settingsScrollbarThumb.style.height : '';
+    const prevThumbTransform = settingsScrollbarThumb ? settingsScrollbarThumb.style.transform : '';
+    if (settingsScrollbarThumb) {
+      settingsScrollbarThumb.style.height = '0px';
+      settingsScrollbarThumb.style.transform = 'none';
+    }
+
+    mutate();
+
+    void popoverSettings.offsetHeight;
+    popoverSettings.style.height = 'auto';
+    void popoverSettings.offsetHeight;
+    const endHeight = popoverSettings.getBoundingClientRect().height;
+    const endScrollHeight = popoverSettings.scrollHeight;
+
+    if (settingsScrollbar && settingsScrollbarThumb) {
+      const metrics = computeSettingsScrollbarMetrics(endHeight, endScrollHeight);
+      settingsScrollbarCanScroll = metrics.maxScroll > 2;
+      if (settingsScrollbarCanScroll) {
+        settingsScrollbarThumb.style.height = metrics.thumbHeight + 'px';
+        settingsScrollbarThumb.style.transform = 'translateY(' + SETTINGS_SCROLLBAR_INSET + 'px)';
+        revealSettingsScrollbar();
+      } else {
+        settingsScrollbarThumb.style.height = prevThumbHeight;
+        settingsScrollbarThumb.style.transform = prevThumbTransform;
+        hideSettingsScrollbar();
+      }
+    }
+
+    popoverSettings.style.height = startHeight + 'px';
+    void popoverSettings.offsetHeight;
+    popoverSettings.style.transition = 'height ' + SETTINGS_PAGE_ANIM_MS + 'ms ease';
+    popoverSettings.style.overflowY = 'hidden';
+    popoverSettings.style.height = endHeight + 'px';
+
+    settingsPageAnimTimer = setTimeout(() => {
+      popoverSettings.style.transition = '';
+      popoverSettings.style.height = '';
+      popoverSettings.style.overflowY = '';
+      settingsPageAnimTimer = null;
+      updateSettingsScrollbar();
+    }, SETTINGS_PAGE_ANIM_MS + 30);
+  }
+
   function showSettingsPage(name) {
     if (!popoverSettings) return;
 
@@ -2206,6 +2289,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const toggleBgSwitch = document.getElementById('toggle-bg-switch');
   const btnOpenBgModal = document.getElementById('btn-open-bg-modal');
   const toggleEnhancedVisibility = document.getElementById('toggle-enhanced-visibility');
+  const toggleEnhancedBlur = document.getElementById('toggle-enhanced-blur');
   
   const btnCloseWallpaperModal = document.getElementById('btn-close-wallpaper-modal');
   const toggleBgModalSwitch = document.getElementById('toggle-bg-modal-switch');
@@ -2525,6 +2609,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let bgEnabled = Storage.get('ntp_bg_enabled', false);
   let customWallpaperData = null;
   let enhancedVisibility = Storage.get('ntp_enhanced_visibility', false);
+  let enhancedBlur = Storage.get('ntp_enhanced_blur', false);
   let searchVisible = Storage.get('ntp_search_visible', true);
   let showLogo = Storage.get('ntp_show_logo', true);
   // 快速链接区"添加"按钮的显隐（默认关闭）
@@ -2583,6 +2668,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (toggleHistorySwitch) toggleHistorySwitch.checked = historyEnabled;
   if (toggleForceBingCN) toggleForceBingCN.checked = forceBingCN;
   if (toggleEnhancedVisibility) toggleEnhancedVisibility.checked = enhancedVisibility;
+  if (toggleEnhancedBlur) toggleEnhancedBlur.checked = enhancedBlur;
 
   setLogo(savedEngine);
   updateEngineEditButton(savedEngine);
@@ -2626,10 +2712,46 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 根据"增强可见性"设置与背景开关，切换 body 的 data 属性
   function applyEnhancedVisibility() {
-    if (enhancedVisibility && bgEnabled) {
+    const active = !!(enhancedVisibility && bgEnabled);
+    if (active) {
       document.body.setAttribute('data-enhanced-visibility', 'true');
     } else {
       document.body.removeAttribute('data-enhanced-visibility');
+    }
+
+    // 「启用模糊」依附于增强可见性：不生效时复位成关闭并隐藏该行。
+    // 复位集中在这里，保证所有关闭路径（手动关、背景关闭时自动关）行为一致。
+    if (!active) {
+      if (enhancedBlur) {
+        enhancedBlur = false;
+        Storage.set('ntp_enhanced_blur', false);
+      }
+      if (toggleEnhancedBlur) toggleEnhancedBlur.checked = false;
+      document.body.removeAttribute('data-enhanced-blur');
+    } else if (enhancedBlur) {
+      document.body.setAttribute('data-enhanced-blur', 'true');
+    } else {
+      document.body.removeAttribute('data-enhanced-blur');
+    }
+
+    // 状态文案在这里同步（而不只靠 applyLanguage）：本函数会把 checkbox 复位，
+    // 文案必须跟着走，否则导入数据这类加载路径会出现"开关关闭、文案打开"
+    const statusBlur = document.getElementById('status-enhanced-blur');
+    if (statusBlur) {
+      const d = currentDict();
+      statusBlur.innerText = (toggleEnhancedBlur && toggleEnhancedBlur.checked) ? d.on : d.off;
+    }
+
+    const blurRow = document.getElementById('enhanced-blur-row');
+    if (blurRow) {
+      const want = active ? '' : 'none';
+      const apply = () => { blurRow.style.display = want; };
+      // 面板打开时套用与二级页切换相同的高度过渡，浮窗长度不会突变
+      if (blurRow.style.display !== want && popoverSettings?.classList.contains('active')) {
+        animatePopoverHeight(apply);
+      } else {
+        apply();
+      }
     }
   }
 
@@ -2880,6 +3002,7 @@ document.addEventListener('DOMContentLoaded', () => {
     'ntp_force_bing_cn',
     'ntp_bg_enabled',
     'ntp_enhanced_visibility',
+    'ntp_enhanced_blur',
     'ntp_custom_engine_config',
     'ntp_custom_wallpaper'
   ];
@@ -3080,6 +3203,13 @@ document.addEventListener('DOMContentLoaded', () => {
   toggleEnhancedVisibility?.addEventListener('change', (e) => {
     enhancedVisibility = e.target.checked;
     Storage.set('ntp_enhanced_visibility', enhancedVisibility);
+    applyEnhancedVisibility();
+    applyLanguage(localStorage.getItem('liteStart_language') || 'auto');
+  });
+
+  toggleEnhancedBlur?.addEventListener('change', (e) => {
+    enhancedBlur = e.target.checked;
+    Storage.set('ntp_enhanced_blur', enhancedBlur);
     applyEnhancedVisibility();
     applyLanguage(localStorage.getItem('liteStart_language') || 'auto');
   });
@@ -3894,12 +4024,14 @@ inputOnlineUrl?.addEventListener('input', () => {
     const presetStyle = item.iconPresetStyle === 'regular' ? 'regular' : 'filled';
     const presetBody = item.iconMode === 'preset' ? quicklinkPresetBody(item.iconPreset, presetStyle) : '';
     // 站点图标覆盖只在"自动解析"模式下生效（首字符/预置是用户显式指定的）
-    const siteOverride = item.iconMode === 'auto' ? getSiteIconOverride(item.url) : null;
-    const presetLabel = item.iconMode === 'preset' ? (currentDict()[iconPresetKey(item.iconPreset)] || safeTitle) : '';
+    const siteOverride = (item.iconMode || 'auto') === 'auto' ? getSiteIconOverride(item.url) : null;
+    // 取自 i18n 字典时是原文，需要转义；回退到 safeTitle 时已经转义过了
+    const presetLabel = item.iconMode === 'preset' ? (currentDict()[iconPresetKey(item.iconPreset)] || '') : '';
 
     let iconContent = '';
     if (presetBody) {
-      iconContent = `<svg viewBox="0 0 24 24" width="20" height="20" role="img" aria-label="${sanitizeInput(presetLabel)}">${presetBody}</svg>`;
+      const label = presetLabel ? sanitizeInput(presetLabel) : safeTitle;
+      iconContent = `<svg viewBox="0 0 24 24" width="20" height="20" role="img" aria-label="${label}">${presetBody}</svg>`;
     } else if (siteOverride) {
       // 用站点官方标记替代 favicon；fill=currentColor 让它跟随主题（深色下自动变浅）
       iconContent = `<svg class="quicklink-site-icon" viewBox="${siteOverride.viewBox}" role="img" aria-label="${safeTitle}">${siteOverride.body}</svg>`;
@@ -3913,7 +4045,7 @@ inputOnlineUrl?.addEventListener('input', () => {
     linkElem.innerHTML = `
       <div class="quicklink-icon">${iconContent}</div>
       <span class="quicklink-title">${safeTitle}</span>
-      <button type="button" class="quicklink-edit-btn" title="编辑快速链接">
+      <button type="button" class="quicklink-edit-btn" title="${sanitizeInput(currentDict().editShortcut || '编辑快速链接')}" data-i18n-title="editShortcut">
         <svg width="14" height="14" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
           <path d="M3 8a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0zm5 0a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0zm5 0a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0z"/>
         </svg>
@@ -4048,6 +4180,8 @@ function onDragStart(e) {
   }
   draggedId = id;
   e.dataTransfer.effectAllowed = 'move';
+  // 部分浏览器（Firefox）必须在 dragstart 里写入数据才会真正开始拖拽
+  try { e.dataTransfer.setData('text/plain', id); } catch (err) { /* 个别环境禁止写入，忽略 */ }
   // 给被拖拽元素添加样式
   item.classList.add('dragging');
 }
@@ -4058,34 +4192,63 @@ function onDragEnd(e) {
   // 清理所有高亮
   document.querySelectorAll('.quicklink-item.drag-over').forEach(el => {
     el.classList.remove('drag-over');
+    el.removeAttribute('data-drop');
   });
   draggedId = null;
+}
+
+// 按鼠标落在目标项的左半/右半，决定"插到前面"还是"插到后面"
+function updateDropIndicator(target, clientX) {
+  const rect = target.getBoundingClientRect();
+  const after = clientX > rect.left + rect.width / 2;
+  document.querySelectorAll('.quicklink-item.drag-over').forEach(el => {
+    if (el !== target) {
+      el.classList.remove('drag-over');
+      el.removeAttribute('data-drop');
+    }
+  });
+  target.classList.add('drag-over');
+  target.setAttribute('data-drop', after ? 'after' : 'before');
 }
 
 function onDragOver(e) {
   e.preventDefault();
   e.dataTransfer.dropEffect = 'move';
+  // dragenter 只在进入时触发一次，鼠标在同一项内左右移动要靠 dragover 持续更新
+  const target = e.currentTarget;
+  const targetId = target.dataset.id;
+  if (targetId && targetId !== draggedId) {
+    updateDropIndicator(target, e.clientX);
+  }
 }
 
 function onDragEnter(e) {
   e.preventDefault();
   const target = e.currentTarget;
   const targetId = target.dataset.id;
-  // 只有快速链接（有 data-id）且不是被拖拽自身时，才高亮
+  // 只有快速链接（有 data-id）且不是被拖拽自身时，才显示落点
   if (targetId && targetId !== draggedId) {
-    target.classList.add('drag-over');
+    updateDropIndicator(target, e.clientX);
   }
 }
 
 function onDragLeave(e) {
   const target = e.currentTarget;
+  // 指针从项本身移到它自己的子元素（图标/标题）时 dragleave 也会冒泡上来，
+  // 此时不该清掉落点，否则竖线会闪一下
+  if (e.relatedTarget && target.contains(e.relatedTarget)) {
+    return;
+  }
   target.classList.remove('drag-over');
+  target.removeAttribute('data-drop');
 }
 
 function onDrop(e) {
   e.preventDefault();
   const target = e.currentTarget;
+  const after = target.getAttribute('data-drop') === 'after';
   target.classList.remove('drag-over');
+  target.removeAttribute('data-drop');
 
   const targetId = target.dataset.id;
   if (!targetId || !draggedId || targetId === draggedId) {
@@ -4094,14 +4257,21 @@ function onDrop(e) {
 
   // 查找两个元素在数组中的位置
   const draggedIndex = quicklinksList.findIndex(item => item.id === draggedId);
-  const targetIndex = quicklinksList.findIndex(item => item.id === targetId);
+  let targetIndex = quicklinksList.findIndex(item => item.id === targetId);
 
   if (draggedIndex === -1 || targetIndex === -1) {
     return;
   }
 
-  // 交换位置（将 draggedItem 移动到 targetIndex 位置）
   const [draggedItem] = quicklinksList.splice(draggedIndex, 1);
+  // 取走自己后，原本位于它后面的目标整体前移一位
+  if (draggedIndex < targetIndex) {
+    targetIndex -= 1;
+  }
+  // 落在目标项右半 → 插到它后面
+  if (after) {
+    targetIndex += 1;
+  }
   quicklinksList.splice(targetIndex, 0, draggedItem);
 
   // 持久化并重新渲染
@@ -4192,9 +4362,14 @@ function onDrop(e) {
     if (e.target instanceof Element && e.target.closest('.quicklink-menu')) return;
     hideQuicklinkMenu();
   });
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') hideQuicklinkMenu(); });
-  window.addEventListener('blur', hideQuicklinkMenu);
-  window.addEventListener('resize', hideQuicklinkMenu);
+  // 关闭所有临时浮层（右键菜单 + 预置宫格）
+  function hideQuicklinkPopups() {
+    hideQuicklinkMenu();
+    hideIconPresetPanel();
+  }
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') hideQuicklinkPopups(); });
+  window.addEventListener('blur', hideQuicklinkPopups);
+  window.addEventListener('resize', hideQuicklinkPopups);
 
   // ===== 「预置」图标的二级宫格面板 =====
   const iconPresetPanel = document.getElementById('icon-preset-panel');
@@ -4298,6 +4473,7 @@ function onDrop(e) {
     if (selectIconMode) selectIconMode.value = 'auto';
     window.__iconPresetId = '';
     window.__iconPresetStyle = 'filled';
+    hideIconPresetPanel();           // 收掉上一次残留的宫格面板
     updateIconPresetOption();        // 同步下拉的显示文本
     clearErrors();
     if (btnDelete) btnDelete.style.display = 'none';
@@ -4321,6 +4497,7 @@ function onDrop(e) {
     }
     window.__iconPresetId = item.iconPreset || '';
     window.__iconPresetStyle = item.iconPresetStyle === 'regular' ? 'regular' : 'filled';
+    hideIconPresetPanel();
     updateIconPresetOption();
     clearErrors();
     if (btnDelete) btnDelete.style.display = 'inline-flex';
@@ -4333,7 +4510,14 @@ function onDrop(e) {
     modalOverlay?.classList.remove('active');
     currentEditingId = null;
     clearErrors();
+    hideIconPresetPanel();           // 面板挂在弹窗内，关弹窗时必须一并收起
   }
+
+  // 从下拉里改选图标模式后，触发器文本会被 updateDisplayText 整体重写，
+  // 需要重挂一次预置图标（否则切回「预置」时图标会丢）
+  selectIconMode?.addEventListener('change', () => {
+    updateIconPresetOption();
+  });
 
   btnCancel?.addEventListener('click', closeModal);
 
@@ -4714,16 +4898,17 @@ function currentDict() {
   return i18nData[getResolvedLanguageCode(localStorage.getItem('liteStart_language') || 'auto')] || i18nData['zh-CN'];
 }
 
-// 「预置」选项的显示文本：未选图标时是"预置"，选了之后是"预置（名称）"。
+// 刷新「预置」选项的显示文本，并在触发器上补一个已选图标。
+// <option> 只能放文本，所以选项文字固定是"预置"，图形只能画在
+// .custom-select-text 里（见下面的 .custom-select-preset-icon）。
 // 必须与 applyLanguage / refreshCustomSelects 同级：applyLanguage 内部会调用它，
-// 否则每次切语言都会把选项文本重置回"预置"、丢掉已选图标名。
+// 否则切语言时触发器会丢掉那个图标。
 function updateIconPresetOption() {
   const sel = document.getElementById('select-icon-mode');
   if (!sel) return;
   const opt = sel.querySelector('option[value="preset"]');
   if (!opt) return;
   const base = currentDict().iconPreset || '预置';
-  // 括号里不再写名称：<option> 只能放文本，图形只能画在触发器上
   opt.textContent = base;
   refreshCustomSelects();
 
