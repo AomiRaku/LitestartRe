@@ -14,7 +14,6 @@
       /* 布局尺寸与字体 */
       --header-height: 50px;
       --font-family: 'Segoe UI', Segoe UI Midlevel, Segoe WP, Arial, sans-serif;
-      --borderRadiusMedium: 6px;
 
       /* 1. 基础页面与背景色 */
       --fill-color: #f7f7f7;                   /* 页面主背景色 */
@@ -25,12 +24,11 @@
       --neutral-foreground-rest: #262626;      /* 主文本颜色 (深灰色) */
       --neutral-foreground-secondary: #616161; /* 次要文本颜色 */
       --logo-color: #737373;                   /* Bing/系统 Logo 主色 */
-      --placeholder-color: #737373;            /* 输入框占位符颜色 */
+      --placeholder-color: #9b9b9b;            /* 输入框占位符颜色（淡一些） */
 
       /* 3. 互动与填充色  */
       --neutral-fill-rest: rgba(0, 0, 0, 0.04);/* 按钮常规浅灰填充 */
       --neutral-fill-hover: rgba(0, 0, 0, 0.08);/* 按钮 Hover 填充 */
-      --colorNeutralStroke1Hover: #c7c7c7;     /* 边框 Hover 颜色 */
 
       /* 4. 强调色 */
       --accent-foreground-rest: #000000;       /* 强调色 */
@@ -42,32 +40,30 @@
 
       /* 5. 阴影系统 */
       --shadow2: 0 0 2px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.14);
-      --shadow4: 0 0 2px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.14);
       --shadow16: 0 0 2px rgba(0, 0, 0, 0.12), 0 8px 16px rgba(0, 0, 0, 0.14);
 
       /* 下拉浮层的阴影与描边（深色主题下单独加强） */
       --dropdown-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
-      --dropdown-border: #e5e5e5;
+      --dropdown-border: #d4d4d4;
 
       /* 6. 模态框与弹窗样式 */
       --modal-bg: #ffffff;
       --modal-border: #e0e0e0;
       --modal-mask: rgba(0, 0, 0, 0.4);
       --input-bg: #F2F2F2;
-      --input-border-bottom: #8a8a8a;
 
       /* 7. 设置面板专用颜色 */
       --settings-panel-bg: #EEEEEE;
       --settings-card-bg: #ffffff;
-      --settings-card-border: #e5e5e5;
+      --settings-card-border: #d4d4d4;
       --settings-card-hover: #f9f9f9;
       --settings-text-primary: #1b1b1b;
       --settings-text-secondary: #707070;
-      --settings-thumb-bg: #e1e4e8;
-      --settings-thumb-border: #c8c8c8;
+      --settings-thumb-bg: #d5d9de;
+      --settings-thumb-border: #d4d4d4;
 
-      --enhanced-visibility-bg: rgba(255, 255, 255, 0.3);
-      --enhanced-visibility-bg-hover: rgba(255, 255, 255, 0.5);
+      --enhanced-visibility-bg: rgba(255, 255, 255, 0.45);
+      --enhanced-visibility-bg-hover: rgba(255, 255, 255, 0.65);
       --enhanced-visibility-logo-bg: rgba(255, 255, 255, 0.6);
 
       /* 8. 搜索建议面板颜色 */
@@ -79,9 +75,8 @@
       --search-box-hover-shadow: 0 0 2px rgba(0, 0, 0, 0.16), 0 2px 7px rgba(0, 0, 0, 0.22);
     }
 
-    /* 暗色主题颜色库 */
-    @media (prefers-color-scheme: dark) {
-      :root {
+    /* 暗色主题颜色库（由 <html data-theme> 驱动，见设置里的「主题模式」） */
+    :root[data-theme="dark"] {
         --fill-color: #1f1f1f;
         --fill-popup-color: #2b2b2b;
         --neutral-layer-floating: #2b2b2b;
@@ -89,14 +84,12 @@
         --neutral-foreground-rest: #f5f5f5;
         --neutral-foreground-secondary: #adadad;
         --logo-color: #f5f5f5;
-        --placeholder-color: #adadad;
+        --placeholder-color: #8f8f8f;
 
         --neutral-fill-rest: rgba(255, 255, 255, 0.06);
         --neutral-fill-hover: rgba(255, 255, 255, 0.12);
-        --colorNeutralStroke1Hover: #757575;
 
         --shadow2: 0 0 2px rgba(0, 0, 0, 0.24), 0 1px 2px rgba(0, 0, 0, 0.28);
-        --shadow4: 0 0 2px rgba(0, 0, 0, 0.35), 0 4px 12px rgba(0, 0, 0, 0.3);
         --shadow16: 0 0 2px rgba(0, 0, 0, 0.24), 0 8px 16px rgba(0, 0, 0, 0.28);
 
         /* 深色下黑色阴影几乎不可见，靠"加深的阴影 + 更亮的描边"把浮层托起来（别调太狠，会发脏） */
@@ -107,7 +100,6 @@
         --modal-border: #333333;
         --modal-mask: rgba(0, 0, 0, 0.65);
         --input-bg: #202020;
-        --input-border-bottom: #666666;
         --btn-danger-color: #ff6b6b;
         --btn-danger-hover: #3d1a1a;
 
@@ -125,8 +117,8 @@
         --settings-thumb-bg: #212121;
         --settings-thumb-border: #3d3d3d;
 
-        --enhanced-visibility-bg: rgba(0, 0, 0, 0.3);
-        --enhanced-visibility-bg-hover: rgba(0, 0, 0, 0.5);
+        --enhanced-visibility-bg: rgba(0, 0, 0, 0.45);
+        --enhanced-visibility-bg-hover: rgba(0, 0, 0, 0.65);
         --enhanced-visibility-logo-bg: rgba(0, 0, 0, 0.6);
 
         --suggestion-bg: #2b2b2b;
@@ -135,7 +127,6 @@
         --suggestion-footer-color: #4f8cf6;
 
         --search-box-hover-shadow: 0 0 2px rgba(0, 0, 0, 0.28), 0 3px 9px rgba(0, 0, 0, 0.38);
-      }
     }
 
     html {
@@ -187,9 +178,10 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: 
+      /* 第一层是整体色调，第二层是边角晕影（可通过"背景边角晕影"开关整体关闭） */
+      background:
         linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1)),
-        radial-gradient(circle at center, rgba(255,255,255,0) 60%, rgba(255,255,255,0.20) 100%);
+        var(--bg-vignette, radial-gradient(circle at center, rgba(255,255,255,0) 60%, rgba(255,255,255,0.20) 100%));
       display: none;
       opacity: 0;
       transition: opacity 0.2s ease-in;
@@ -199,13 +191,16 @@
       opacity: 1;
     }
 
+    /* 关闭"背景边角晕影"：把那个 radial 层替换成 none（两层渐变里只留整体色调） */
+    body[data-bg-vignette="off"] {
+      --bg-vignette: none;
+    }
+
     /* 暗色模式下遮罩 */
-    @media (prefers-color-scheme: dark) {
-      body.bg-enabled #bg-overlay {
-        background:
-          linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
-          radial-gradient(circle at center, rgba(0,0,0,0) 40%, rgba(0,0,0,0.5) 100%);
-      }
+    :root[data-theme="dark"] body.bg-enabled #bg-overlay {
+      background:
+        linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
+        var(--bg-vignette, radial-gradient(circle at center, rgba(0,0,0,0) 40%, rgba(0,0,0,0.5) 100%));
     }
 
     /* 仅在开启壁纸(body.bg-enabled)时，才显示壁纸容器和遮罩 */
@@ -220,10 +215,8 @@
     }
 
     /* 暗色模式 + 有壁纸时，Logo 保持白色 */
-    @media (prefers-color-scheme: dark) {
-      body.bg-enabled {
-        --logo-color: #ffffff;
-      }
+    :root[data-theme="dark"] body.bg-enabled {
+      --logo-color: #ffffff;
     }
 
     /* ===== 按钮、窗口、搜索框等元素的过渡动画 =====
@@ -259,10 +252,20 @@
       background-color: var(--enhanced-visibility-bg-hover);
     }
 
+    /* 增强可见性：只给链接名称垫底（与 Logo 同一档底色） */
     body.bg-enabled[data-enhanced-visibility="true"] .quicklink-title {
       background-color: var(--enhanced-visibility-logo-bg);
       border-radius: 4px;
       padding: 3px 5px;
+    }
+
+    /* 「启用模糊」：给增强可见性产生的那些衬底加背景模糊 */
+    body.bg-enabled[data-enhanced-visibility="true"][data-enhanced-blur="true"] .header-button,
+    body.bg-enabled[data-enhanced-visibility="true"][data-enhanced-blur="true"] #logo,
+    body.bg-enabled[data-enhanced-visibility="true"][data-enhanced-blur="true"] #time-display,
+    body.bg-enabled[data-enhanced-visibility="true"][data-enhanced-blur="true"] .quicklink-title {
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
     }
 
     body.bg-enabled[data-enhanced-visibility="true"] #fakebox:hover {
@@ -275,14 +278,13 @@
     }
 
     ntp-shell {
-      --inspirational-neutral-foreground-rest: var(--neutral-foreground-rest);
       height: inherit;
       margin: 0;
       padding: 0;
       min-width: 343px;
       position: relative;
       display: block;
-      font-family: var(--font-family), Segoe UI, Arial, sans-serif;
+      font-family: var(--font-family);
       -webkit-font-smoothing: antialiased;
       align-items: center;
       background-color: var(--fill-color);
@@ -420,12 +422,6 @@
       transition: opacity 0.06s ease-out, transform 0.06s ease-out, visibility 0s linear 0s;
     }
 
-    #popover-waffle {
-      left: 22px;
-      width: 280px;
-      padding: 16px;
-    }
-
     /* 设置弹窗样式 */
     #popover-settings {
       right: 26px;
@@ -541,13 +537,6 @@
       cursor: pointer;
       appearance: none;
       transition: background-color 0.08s ease;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23888' d='M2.22 4.47a.75.75 0 0 1 1.06 0L6 7.19l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L2.22 5.53a.75.75 0 0 1 0-1.06z'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right 10px center;
-    }
-
-    .select-box:not(:open):hover {
-      background-color: var(--neutral-fill-rest);
     }
 
     /* ===== 重写下拉菜单样式 ===== */
@@ -569,6 +558,21 @@
     }
 
     /* 下拉触发器按钮 —— 显示当前选中项文本和箭头 */
+    /* 触发器里的文本：需要容纳"预置 + 图标" */
+    .custom-select-text {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      min-width: 0;
+    }
+
+    .custom-select-preset-icon {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+      display: block;
+    }
+
     .custom-select-display {
       width: 100%;
       height: 32px;
@@ -593,7 +597,6 @@
 
     .custom-select-display.active {
       border-color: var(--accent-foreground-rest);
-      border-width: 1px; 
     }
 
     /* 自定义下拉里不可选的项（例如"底部"模式下的"多行"）
@@ -681,6 +684,27 @@
     .custom-select-option.selected {
       color: var(--accent-foreground-rest);
       font-weight: 600;
+    }
+
+    /* 「预置」项：右侧加箭头，提示它会展开二级图标面板（只作用于这一项） */
+    .custom-select-option[data-value="preset"] {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    /* 与下拉触发器用同一个 chevron 路径（圆头），旋转 90° 表示"进入子级"；
+       用 mask 而不是背景图，颜色才能跟随 currentColor */
+    .custom-select-option[data-value="preset"]::after {
+      content: '';
+      width: 12px;
+      height: 12px;
+      flex-shrink: 0;
+      background-color: var(--settings-text-secondary);
+      -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2.22 4.47a.75.75 0 0 1 1.06 0L6 7.19l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L2.22 5.53a.75.75 0 0 1 0-1.06z'/%3E%3C/svg%3E") center / contain no-repeat;
+      mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2.22 4.47a.75.75 0 0 1 1.06 0L6 7.19l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L2.22 5.53a.75.75 0 0 1 0-1.06z'/%3E%3C/svg%3E") center / contain no-repeat;
+      transform: rotate(-90deg);
     }
 
     /* 设置行 */
@@ -771,6 +795,111 @@
     }
 
     /* 卡片视图选择器 */
+    /* 主题模式：连体滑块（跟随系统 / 浅色 / 深色） */
+    .theme-switch {
+      position: relative;
+      display: flex;
+      gap: 2px;
+      padding: 2px;
+      border: 1px solid var(--settings-card-border);
+      border-radius: 6px;
+      background-color: var(--input-bg);        /* 凹槽底色 */
+    }
+
+    /* 滑块：由 idx-N 类驱动位移，切换时平滑滑动（宽度 = (100% − 2×2 padding − 2×2 gap) / 3） */
+    .theme-switch::before {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: calc((100% - 8px) / 3);
+      height: calc(100% - 4px);
+      border-radius: 4px;
+      background-color: var(--settings-card-bg);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+      transform: translateX(0);
+      transition: transform 0.1s ease;
+      pointer-events: none;
+    }
+
+    .theme-switch.idx-1::before {
+      transform: translateX(calc(100% + 2px));
+    }
+
+    .theme-switch.idx-2::before {
+      transform: translateX(calc(200% + 4px));
+    }
+
+    :root[data-theme="dark"] .theme-switch::before {
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .theme-switch::before {
+        transition: none;
+      }
+    }
+
+    .theme-option {
+      position: relative;
+      z-index: 1;
+      flex: 1;
+      min-width: 0;              /* 关键：不允许长文本把 flex 项撑得比 1/3 宽 */
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      height: 30px;          /* 30 + 2×2(padding) + 2×1(边框) = 36px，整控件高度 */
+      padding: 0 3px;
+      border: none;
+      border-radius: 4px;     /* 外层 6px − padding 2px */
+      background-color: transparent;
+      color: var(--settings-text-primary);
+      font-family: inherit;
+      font-size: 13px;
+      cursor: pointer;
+      transition: border-color 0.08s, background-color 0.08s;
+    }
+
+    /* 选中态的背景由 .theme-switch::before 那块滑块承担 */
+    .theme-option.active {
+      font-weight: 600;
+    }
+
+    /* 长文案（俄语等）不被截断：JS 量出溢出距离后，内层文字来回平移。
+       裁切窗口只框住文字本身（不含图标），所以滚动时可见范围始终是这块固定区域 */
+    .theme-option-label {
+      min-width: 0;
+      overflow: hidden;
+    }
+
+    .theme-option-label-inner {
+      display: inline-block;
+      white-space: nowrap;
+    }
+
+    .theme-option-label-inner.overflowing {
+      animation: theme-label-scroll 5.71s linear infinite;   /* 35% ≈ 2s 停顿 */
+    }
+
+    /* 匀速移动，两端停顿等长（各 35%）。
+       起点停跨越循环接缝，拆成首尾各 17.5%（合计 35%），与终点停一致 */
+    @keyframes theme-label-scroll {
+      0%, 17.5%    { transform: translateX(var(--label-scroll-x, 0)); }
+      32.5%, 67.5% { transform: translateX(calc(-1 * var(--label-scroll-x, 0))); }
+      82.5%, 100%  { transform: translateX(var(--label-scroll-x, 0)); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .theme-option-label-inner.overflowing {
+        animation: none;
+      }
+    }
+
+    .theme-option svg {
+      flex-shrink: 0;
+    }
+
     /* 预设区的小标题 */
     .preset-section-label {
       margin-top: 14px;
@@ -780,17 +909,64 @@
     }
 
     .layout-presets {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
+      position: relative;
+      display: flex;
+      gap: 2px;
+      padding: 2px;
+      border: 1px solid var(--settings-card-border);
+      border-radius: 6px;
+      background-color: var(--input-bg);
       margin-top: 10px;
     }
 
-    .preset-card {
-      border: 1px solid var(--settings-card-border);
+    /* 预设的滑块：与主题模式同一套，圆角同样取 4px（容器 6px − padding 2px） */
+    .layout-presets::before {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: calc((100% - 8px) / 3);
+      height: calc(100% - 4px);
+      border-radius: 4px;     /* 容器 6px − padding 2px，与主题滑块一致 */
       background-color: var(--settings-card-bg);
-      border-radius: 6px;
-      padding: 6px 4px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+      transform: translateX(0);
+      transition: transform 0.1s ease, opacity 0.15s ease;
+      pointer-events: none;
+    }
+
+    .layout-presets.idx-1::before {
+      transform: translateX(calc(100% + 2px));
+    }
+
+    .layout-presets.idx-2::before {
+      transform: translateX(calc(200% + 4px));
+    }
+
+    /* 当前配置和三个预设都不一致时不显示滑块 */
+    .layout-presets.no-thumb::before {
+      opacity: 0;
+    }
+
+    :root[data-theme="dark"] .layout-presets::before {
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .layout-presets::before {
+        transition: none;
+      }
+    }
+
+    .preset-card {
+      position: relative;
+      z-index: 1;
+      flex: 1;
+      min-width: 0;
+      border: none;
+      background-color: transparent;
+      border-radius: 4px;     /* 外层 6px − padding 2px */
+      padding: 6px;              /* 上/左/右等宽：图案到边框的留白一致且稍大 */
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -799,14 +975,35 @@
       transition: border-color 0.08s, background-color 0.08s;
     }
 
+    /* 悬停一律"加深"：未选中项叠一层黑 */
+    .theme-option:hover,
     .preset-card:hover {
-      background-color: var(--settings-card-hover);
+      background-color: rgba(0, 0, 0, 0.04);
     }
 
-    .preset-card.active {
-      border: 2px solid var(--accent-foreground-rest);
-      padding: 5px 3px;
+    /* 深色主题底色本就暗，比例给大些才看得出 */
+    :root[data-theme="dark"] .theme-option:hover,
+    :root[data-theme="dark"] .preset-card:hover {
+      background-color: rgba(0, 0, 0, 0.14);
     }
+
+    /* 已选中项不参与上面的叠黑（背景由滑块承担，叠黑会盖在滑块上显得变色） */
+    .theme-option.active:hover,
+    .preset-card.active:hover {
+      background-color: transparent;
+    }
+
+    :root[data-theme="dark"] .theme-option.active:hover,
+    :root[data-theme="dark"] .preset-card.active:hover {
+      background-color: transparent;
+    }
+
+    /* 选中态的背景由 .layout-presets::before 承担 */
+    .preset-card.active {
+      font-weight: 600;
+    }
+
+
 
     .preset-thumb {
       width: 100%;
@@ -876,7 +1073,7 @@
       border: 1px solid var(--settings-card-border);
       background-color: var(--settings-card-bg);
       color: var(--settings-text-primary);
-      border-radius: 4px;
+      border-radius: 6px;
       font-size: 13px;
       cursor: pointer;
       margin-top: 8px;
@@ -947,6 +1144,19 @@
       object-fit: contain;
     }
 
+    /* 内置引擎的 Logo 各有深浅两套：跟随 <html data-theme>，而不是系统偏好 */
+    .logo-for-dark {
+      display: none;
+    }
+
+    :root[data-theme="dark"] .logo-for-light {
+      display: none;
+    }
+
+    :root[data-theme="dark"] .logo-for-dark {
+      display: inline;
+    }
+
     .custom-engine-logo {
       height: 90px;
       max-width: 400px;
@@ -993,7 +1203,7 @@
     #fakebox #placeholder {
       flex: 1;
       color: var(--placeholder-color);
-      font-family: var(--font-family), Segoe UI, Arial, sans-serif;
+      font-family: var(--font-family);
       font-size: 16px;
       font-weight: 400;
       line-height: 24px;
@@ -1012,7 +1222,7 @@
       border: none;
       outline: none;
       background: transparent;
-      font-family: var(--font-family), Segoe UI, Arial, sans-serif;
+      font-family: var(--font-family);
       font-size: 16px;
       color: var(--neutral-foreground-rest);
       opacity: 1; 
@@ -1175,7 +1385,8 @@
     }
 
     .quicklink-item:hover {
-      background-color: var(--neutral-fill-rest);
+      /* 用悬停档而不是静止档：原来 0.04/0.06 太淡，看不清落点 */
+      background-color: var(--neutral-fill-hover);
     }
 
     .quicklink-icon {
@@ -1199,8 +1410,16 @@
       object-fit: contain;
     }
 
+    /* 站点图标覆盖（如 GitHub）：尺寸与 img 一致，颜色用 currentColor 跟随主题 */
+    .quicklink-site-icon {
+      width: 22px;
+      height: 22px;
+      display: block;
+    }
+
     .quicklink-title {
       max-width: 74px;
+      font-size: 13px;          /* 比 .quicklink-item 继承来的 12px 大一号 */
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
@@ -1219,15 +1438,9 @@
       justify-content: center;
       opacity: 0;
       transition: opacity 0.08s ease-in-out, background-color 0.08s;
-      background-color: rgba(0, 0, 0, 0.05);
+      background-color: transparent;    /* 不再垫圆形底色 */
       fill: var(--neutral-foreground-rest);
       z-index: 2;
-    }
-
-    @media (prefers-color-scheme: dark) {
-      .quicklink-edit-btn {
-        background-color: rgba(255, 255, 255, 0.1);
-      }
     }
 
     .quicklink-item:hover .quicklink-edit-btn {
@@ -1240,6 +1453,60 @@
 
     .quicklink-add-btn {
       cursor: pointer;
+    }
+
+    /* ===== 快速链接的右键菜单 ===== */
+    .quicklink-menu {
+      position: fixed;
+      z-index: 2200;                   /* 高于自定义下拉浮层与图标面板 */
+      display: none;
+      min-width: 152px;
+      padding: 4px;
+      border: 1px solid var(--dropdown-border);
+      border-radius: 6px;
+      background-color: var(--fill-popup-color);
+      box-shadow: var(--dropdown-shadow);
+    }
+
+    .quicklink-menu.active {
+      display: block;
+    }
+
+    .quicklink-menu-item {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;   /* 图标与文字一律靠左 */
+      gap: 10px;
+      width: 100%;
+      padding: 7px 10px;
+      box-sizing: border-box;
+      border: none;
+      border-radius: 4px;
+      background-color: transparent;
+      color: var(--settings-text-primary);
+      font-family: inherit;
+      font-size: 13px;
+      text-align: left;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: background-color 0.08s ease;
+    }
+
+    .quicklink-menu-item svg {
+      width: 18px;
+      height: 18px;                  /* 定宽，保证各项文字左边缘对齐 */
+      flex-shrink: 0;
+      display: block;
+    }
+
+    /* 铅笔图标的图形占位比另两个更满，视觉上偏大；
+       整体尺寸调大后它仍保留一点收敛，使三项视觉重量一致 */
+    .quicklink-menu-item[data-action="edit"] svg {
+      transform: scale(0.9);
+    }
+
+    .quicklink-menu-item:hover {
+      background-color: var(--neutral-fill-hover);
     }
     
     .quicklink-add-icon {
@@ -1313,19 +1580,8 @@
       box-sizing: border-box;
       box-shadow: var(--shadow16);
       color: var(--neutral-foreground-rest);
-      font-family: var(--font-family), Segoe UI, Arial, sans-serif;
+      font-family: var(--font-family);
       position: relative;
-    }
-
-    /* 自定义背景弹窗 */
-    .modal-dialog-large {
-      width: 780px;
-      max-width: 92vw;
-      min-height: 380px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      border-radius: 12px;
     }
 
     .modal-header {
@@ -1337,23 +1593,87 @@
       align-items: center;
     }
 
-    .modal-close-icon {
-      cursor: pointer;
-      color: var(--settings-text-secondary);
-      border-radius: 4px;
-      padding: 4px;
-      display: flex;
-      transition: background-color 0.08s ease;
-    }
-
-    .modal-close-icon:hover {
-      background-color: var(--neutral-fill-hover);
-    }
-
     .form-group {
       display: flex;
       flex-direction: column;
       margin-bottom: 16px;
+    }
+
+    /* 弹窗里的两列排布（图标 + 名称） */
+    .form-row {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .form-row > .form-group {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .form-row > .form-group-narrow {
+      flex: 0 0 34%;
+    }
+
+    /* 弹窗里的下拉要与输入框同高（.input 是 36px / 4px 圆角） */
+    .form-row .custom-select-display {
+      height: 36px;
+      border-radius: 4px;
+    }
+
+    /* ===== 「预置」图标：二级宫格面板（5 列 × 7 行 = 35 个） ===== */
+    .icon-preset-panel {
+      position: fixed;                 /* 由脚本定位到下拉项右侧，不受弹窗 overflow 裁剪 */
+      z-index: 2100;                   /* 盖过自定义下拉浮层（2000） */
+      display: none;
+      gap: 12px;                       /* 左侧实心组 / 右侧描边组之间的间距 */
+      padding: 8px;
+      border: 1px solid var(--dropdown-border);       /* 与自定义下拉浮层同款 */
+      border-radius: 6px;
+      background-color: var(--fill-popup-color);      /* 与自定义下拉浮层同底色 */
+      box-shadow: var(--dropdown-shadow);
+    }
+
+    .icon-preset-panel.active {
+      display: flex;
+    }
+
+    /* 每组 5 列 × 7 行：左为实心（filled），右为描边（regular） */
+    .icon-preset-group {
+      display: grid;
+      grid-template-columns: repeat(5, 32px);
+      gap: 4px;
+    }
+
+    .icon-preset-item {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      border: none;
+      border-radius: 4px;
+      background-color: transparent;
+      color: var(--settings-text-primary);
+      cursor: pointer;
+      transition: background-color 0.08s ease;
+    }
+
+    .icon-preset-item:hover {
+      background-color: var(--neutral-fill-rest);      /* 悬停：浅 */
+    }
+
+    .icon-preset-item.selected {
+      background-color: var(--neutral-fill-hover);     /* 已选中：更深一档 */
+      color: var(--accent-foreground-rest);
+    }
+
+    .icon-preset-item svg {
+      width: 20px;
+      height: 20px;
+      display: block;
+      pointer-events: none;
     }
 
     .form-label {
@@ -1384,9 +1704,9 @@
       transition: background-color 0.08s, border-color 0.08s, box-shadow 0.08s;
     }
 
-    /* 悬停变色(选中时不生效) */
+    /* 悬停变色(选中时不生效)：:hover 特异性本就更高，不需要 !important */
     .input:hover:not(:focus) {
-      background-color: rgba(0, 0, 0, 0.015) !important;
+      background-color: var(--neutral-fill-rest);
     }
 
     .input:focus {
@@ -1453,7 +1773,7 @@
     .btn {
       height: 32px;
       padding: 0 20px;
-      border-radius: 5px;
+      border-radius: 6px;
       font-size: 14px;
       font-weight: 500;
       cursor: pointer;
@@ -1486,12 +1806,10 @@
       background-color: var(--modal-border);
     }
 
-    @media (prefers-color-scheme: dark) {
-      .btn-secondary {
-        background-color: #474747;
+    :root[data-theme="dark"] .btn-secondary {
+      background-color: #474747;
 
-        padding: 0 20px 1px 20px;
-      }
+      padding: 0 20px 1px 20px;
     }
 
     .btn-danger {
@@ -1502,25 +1820,6 @@
 
     .btn-danger:hover {
       background-color: var(--btn-danger-hover);
-    }
-
-    /* 无填充按钮 */
-    .btn-outline {
-      background-color: transparent;
-      border: 1px solid var(--settings-card-border);
-      color: var(--neutral-foreground-rest);
-    }
-
-    .btn-outline:hover {
-      background-color: var(--neutral-fill-hover);
-    }
-
-    /* 背景卡片样式 */
-    .wallpaper-preview-area {
-      display: flex;
-      gap: 24px;
-      align-items: center;
-      margin: 20px 0;
     }
 
     .wallpaper-preview-box {
@@ -1543,26 +1842,6 @@
       object-fit: cover;
     }
 
-    /* 预览图 + 来源标签的纵向包裹容器 */
-    .wallpaper-preview-wrap {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .wallpaper-actions {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      align-items: flex-start;
-    }
-
-    .wallpaper-actions-title {
-      font-size: 16px;
-      font-weight: 600;
-      color: var(--settings-text-primary);
-    }
-
     .file-input-hidden {
       display: none;
     }
@@ -1583,7 +1862,6 @@
       #header { padding: 0 12px; }
       #logo-text { width: 100px; }
       #logo-icon { height: 32px; }
-      .wallpaper-preview-area { flex-direction: column; align-items: flex-start; }
     }
 
     @media (max-width: 343px) {
@@ -1638,16 +1916,25 @@
       transition: opacity 0.15s, transform 0.15s;
     }
 
-    .quicklink-item.drag-over {
-      background-color: var(--neutral-fill-hover);
-      border-radius: 8px;
-      transform: scale(1.02);
-      transition: all 0.08s ease;
+    /* 落点提示：一条竖线。鼠标在目标项左半 → 插到它前面（线在左），
+       右半 → 插到它后面（线在右），落点与实际插入位置一致。 */
+    .quicklink-item.drag-over::before {
+      content: '';
+      position: absolute;
+      top: 4px;
+      bottom: 4px;
+      width: 2px;
+      border-radius: 1px;
+      background-color: var(--accent-foreground-rest);
+      pointer-events: none;
     }
 
-    .quicklink-item.drag-over .quicklink-icon {
-      box-shadow: 0 0 0 2px var(--accent-foreground-rest);
-      transition: box-shadow 0.08s ease;
+    .quicklink-item.drag-over[data-drop="before"]::before {
+      left: -5px;                       /* 落在两项之间的空隙里 */
+    }
+
+    .quicklink-item.drag-over[data-drop="after"]::before {
+      right: -5px;
     }
 
     /* ===== 工具提示(Tooltip)样式 ===== */
@@ -2083,7 +2370,7 @@
                       <svg width="18" height="18" viewBox="0 0 1024 1024" fill="currentColor" aria-hidden="true" style="margin-top: 3px; margin-left: -2px;">
                         <path d="M509.92 795.84c157.904 0 285.92-128.016 285.92-285.92C795.84 352 667.808 224 509.92 224 352 224 224 352 224 509.92c0 157.904 128 285.92 285.92 285.92z m0 48C325.504 843.84 176 694.32 176 509.92 176 325.504 325.504 176 509.92 176c184.416 0 333.92 149.504 333.92 333.92 0 184.416-149.504 333.92-333.92 333.92z m-2.448-400.704h16a16 16 0 0 1 16 16v201.728a16 16 0 0 1-16 16h-16a16 16 0 0 1-16-16V459.136a16 16 0 0 1 16-16z m0-100.176h16a16 16 0 0 1 16 16v23.648a16 16 0 0 1-16 16h-16a16 16 0 0 1-16-16v-23.648a16 16 0 0 1 16-16z"/>
                       </svg>
-                      <span class="tooltip-content" data-i18n-html="forceBingCNDesc"><span class="tooltip-arrow"></span><b>开启</b>：强制使用必应中国版<br><b>关闭</b>：根据网络环境自动选择。<br>此选项可以避免代理设置导致 www.bing.com 无法自动跳转到 cn.bing.com。</span>
+                      <span class="tooltip-content" data-i18n-html="forceBingCNDesc"><b>开启</b>：强制使用必应中国版<br><b>关闭</b>：根据网络环境自动选择。<br>此选项可以避免代理设置导致 www.bing.com 无法自动跳转到 cn.bing.com。</span>
                     </span>
                   </div>
                   <div class="switch-container">
@@ -2124,9 +2411,28 @@
                 </div>
                 <button id="btn-open-bg-modal" class="icon-btn-text" type="button">
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                    <path d="M17.75 3A3.25 3.25 0 0 1 21 6.25v11.5A3.25 3.25 0 0 1 17.75 21H6.25A3.25 3.25 0 0 1 3 17.75V6.25A3.25 3.25 0 0 1 6.25 3zm.58 16.401l-5.805-5.686a.75.75 0 0 0-.966-.071l-.084.07l-5.807 5.687q.274.097.582.099h11.5c.203 0 .399-.035.58-.099l-5.805-5.686zM17.75 4.5H6.25A1.75 1.75 0 0 0 4.5 6.25v11.5q.001.313.103.594l5.823-5.701a2.25 2.25 0 0 1 3.02-.116l.128.116l5.822 5.702q.102-.28.104-.595V6.25a1.75 1.75 0 0 0-1.75-1.75m-2.498 2a2.252 2.252 0 1 1 0 4.504a2.252 2.252 0 0 1 0-4.504m0 1.5a.752.752 0 1 0 0 1.504a.752.752 0 0 0 0-1.504"/></svg>
+                    <path d="M20.998 6.25A3.25 3.25 0 0 0 17.748 3H6.25A3.25 3.25 0 0 0 3 6.25v11.499a3.25 3.25 0 0 0 3.25 3.25h4.914l.356-1.424l.02-.076H6.25q-.308-.001-.582-.1l5.807-5.685l.083-.07a.75.75 0 0 1 .966.07l2.079 2.036l1.06-1.06l-2.09-2.048l-.128-.116a2.25 2.25 0 0 0-3.02.116l-5.822 5.7a1.8 1.8 0 0 1-.103-.593v-11.5c0-.966.783-1.75 1.75-1.75h11.499c.966 0 1.75.784 1.75 1.75v4.983c.478-.19.993-.264 1.5-.22zm-3.495 2.502a2.252 2.252 0 1 0-4.504 0a2.252 2.252 0 0 0 4.504 0m-3.004 0a.752.752 0 1 1 1.504 0a.752.752 0 0 1-1.504 0m4.6 3.917l-5.902 5.901a2.7 2.7 0 0 0-.707 1.248l-.457 1.83c-.2.797.522 1.518 1.318 1.319l1.83-.458a2.7 2.7 0 0 0 1.248-.706L22.33 15.9a2.286 2.286 0 0 0-3.233-3.232"/></svg>
                   <span data-i18n="editBackground">编辑背景</span>
                 </button>
+              </div>
+
+              <!-- 主题模式 -->
+              <div class="settings-card">
+                <div class="settings-card-title" data-i18n="themeMode">主题模式</div>
+                <div class="theme-switch" id="theme-switch" role="radiogroup" aria-label="主题模式">
+                  <button type="button" class="theme-option" data-theme-val="auto" role="radio" aria-checked="true">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><rect x="1.9" y="2.6" width="12.2" height="8.2" rx="1.4"/><path d="M5.4 13.4h5.2" stroke-linecap="round"/></svg>
+                    <span class="theme-option-label"><span class="theme-option-label-inner" data-i18n="themeAuto">系统</span></span>
+                  </button>
+                  <button type="button" class="theme-option" data-theme-val="light" role="radio" aria-checked="false">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" aria-hidden="true"><circle cx="8" cy="8" r="3.1" fill="currentColor" stroke="none"/><path d="M8 1.4v1.4M8 13.2v1.4M14.6 8h-1.4M2.8 8H1.4M12.7 3.3l-1 1M4.3 11.7l-1 1M12.7 12.7l-1-1M4.3 4.3l-1-1"/></svg>
+                    <span class="theme-option-label"><span class="theme-option-label-inner" data-i18n="themeLight">浅色</span></span>
+                  </button>
+                  <button type="button" class="theme-option" data-theme-val="dark" role="radio" aria-checked="false">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M13.6 9.8A5.8 5.8 0 0 1 6.2 2.4a5.9 5.9 0 1 0 7.4 7.4Z"/></svg>
+                    <span class="theme-option-label"><span class="theme-option-label-inner" data-i18n="themeDark">深色</span></span>
+                  </button>
+                </div>
               </div>
 
               <!-- 页面语言选择卡片 -->
@@ -2225,6 +2531,42 @@
                         <span class="setting-status-text" id="status-enhanced-visibility" data-i18n="off">关闭</span>
                         <label class="switch">
                           <input type="checkbox" id="toggle-enhanced-visibility">
+                          <span class="slider"></span>
+                        </label>
+                      </div>
+                    </div>
+
+                    <!-- 启用模糊：始终显示，增强元素可见性关闭时整行置灰 -->
+                    <div class="setting-row disabled" id="enhanced-blur-row" style="margin-top: 8px;">
+                      <div class="setting-label-group">
+                        <span data-i18n="enhancedBlur">衬底启用模糊</span>
+                        <span class="tooltip-icon" tabindex="0">
+                          <svg width="18" height="18" viewBox="0 0 1024 1024" fill="currentColor" aria-hidden="true" style="margin-top: 3px; margin-left: -2px;">
+                            <path d="M509.92 795.84c157.904 0 285.92-128.016 285.92-285.92C795.84 352 667.808 224 509.92 224 352 224 224 352 224 509.92c0 157.904 128 285.92 285.92 285.92z m0 48C325.504 843.84 176 694.32 176 509.92 176 325.504 325.504 176 509.92 176c184.416 0 333.92 149.504 333.92 333.92 0 184.416-149.504 333.92-333.92 333.92z m-2.448-400.704h16a16 16 0 0 1 16 16v201.728a16 16 0 0 1-16 16h-16a16 16 0 0 1-16-16V459.136a16 16 0 0 1 16-16z m0-100.176h16a16 16 0 0 1 16 16v23.648a16 16 0 0 1-16 16h-16a16 16 0 0 1-16-16v-23.648a16 16 0 0 1 16-16z"/>
+                          </svg>
+                          <span class="tooltip-content" data-i18n="enhancedBlurTip">此选项可能会对设备功耗有轻微影响。</span>
+                        </span>
+                      </div>
+                      <div class="switch-container">
+                        <span class="setting-status-text" id="status-enhanced-blur" data-i18n="off">关闭</span>
+                        <label class="switch">
+                          <input type="checkbox" id="toggle-enhanced-blur">
+                          <span class="slider"></span>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- 背景边角晕影：控制壁纸上那层暗角/亮角遮罩，默认开启。
+                       独立成组：它只跟"背景"开关走，与上面的增强可见性无关。
+                       位置仍在 #bg-dependent-settings 内，背景关闭时同样会置灰。 -->
+                  <div class="settings-card" id="bg-vignette-card">
+                    <div class="setting-row">
+                      <div class="setting-label-group" data-i18n="bgVignette">背景边角晕影</div>
+                      <div class="switch-container">
+                        <span class="setting-status-text" id="status-bg-vignette" data-i18n="on">打开</span>
+                        <label class="switch">
+                          <input type="checkbox" id="toggle-bg-vignette">
                           <span class="slider"></span>
                         </label>
                       </div>
@@ -2363,13 +2705,13 @@
 
         <!-- 搜索框容器 -->
         <div id="search-container">
-          <div id="fakebox" role="searchbox" tabindex="0" aria-label="搜索或输入 Web 地址" data-i18n-aria="searchPlaceholder">
+          <div id="fakebox" role="searchbox" tabindex="0" aria-label="今天想用 Bing 搜索什么？" data-i18n-aria="searchPlaceholder">
             <svg aria-hidden="true" id="searchbutton" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path d="M10 2.75a7.25 7.25 0 015.63 11.82l4.9 4.9a.75.75 0 01-.98 1.13l-.08-.07-4.9-4.9A7.25 7.25 0 1110 2.75zm0 1.5a5.75 5.75 0 100 11.5 5.75 5.75 0 000-11.5z">
               </path>
             </svg>
             <div id="placeholder" aria-hidden="true" data-i18n="searchPlaceholder">
-              搜索或输入 Web 地址
+              今天想用 Bing 搜索什么？
             </div>
             <input type="text" id="search-input" aria-label="搜索输入框" autocomplete="off" data-i18n-aria="searchInput">
           </div>
@@ -2419,16 +2761,35 @@
       <div class="modal-dialog">
         <div id="modal-title" class="modal-header" data-i18n="editShortcut">编辑快速链接</div>
         <form id="modal-form" novalidate>
-          <div class="form-group">
-            <label class="form-label" for="input-name" data-i18n="name">名称</label>
-            <div class="input-container" id="container-name">
-              <input type="text" id="input-name" class="input" placeholder="输入快速链接名称" autocomplete="off" data-i18n-ph="inputNamePh">
+          <div class="form-row">
+            <div class="form-group form-group-narrow">
+              <label class="form-label" for="select-icon-mode" data-i18n="icon">图标</label>
+              <div class="custom-select-wrapper">
+                <select id="select-icon-mode" class="select-box" tabindex="-1" aria-label="图标">
+                  <option value="auto" data-i18n="iconAuto">自动解析</option>
+                  <option value="text" data-i18n="iconFirstChar">首字符</option>
+                  <option value="preset" data-i18n="iconPreset">预置</option>
+                </select>
+                <div class="custom-select-display" data-for="select-icon-mode">
+                  <span class="custom-select-text"></span>
+                  <svg class="custom-select-arrow" viewBox="0 0 12 12" fill="none">
+                        <path d="M2.22 4.47a.75.75 0 0 1 1.06 0L6 7.19l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L2.22 5.53a.75.75 0 0 1 0-1.06z" fill="currentColor"/>
+                      </svg>
+                </div>
+              </div>
             </div>
-            <div class="error-tip" id="tip-name">
-              <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor">
-                <path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zm0 3a.75.75 0 0 1 .75.75v3.5a.75.75 0 0 1-1.5 0v-3.5A.75.75 0 0 1 8 4zm0 8a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
-              </svg>
-              <span id="text-name-error" data-i18n="errorNameReq">请输入快速链接名称</span>
+
+            <div class="form-group">
+              <label class="form-label" for="input-name" data-i18n="name">名称</label>
+              <div class="input-container" id="container-name">
+                <input type="text" id="input-name" class="input" placeholder="名称" autocomplete="off" data-i18n-ph="inputNamePh">
+              </div>
+              <div class="error-tip" id="tip-name">
+                <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor">
+                  <path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zm0 3a.75.75 0 0 1 .75.75v3.5a.75.75 0 0 1-1.5 0v-3.5A.75.75 0 0 1 8 4zm0 8a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+                </svg>
+                <span id="text-name-error" data-i18n="errorNameReq">请输入快速链接名称</span>
+              </div>
             </div>
           </div>
 
@@ -2454,6 +2815,22 @@
           </div>
         </form>
       </div>
+    </div>
+
+    <!-- 快速链接的右键菜单 -->
+    <div class="quicklink-menu" id="quicklink-menu" role="menu">
+      <button type="button" class="quicklink-menu-item" data-action="open" role="menuitem">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.25 4.5A1.75 1.75 0 0 0 4.5 6.25v11.5c0 .966.783 1.75 1.75 1.75h11.5a1.75 1.75 0 0 0 1.75-1.75v-4a.75.75 0 0 1 1.5 0v4A3.25 3.25 0 0 1 17.75 21H6.25A3.25 3.25 0 0 1 3 17.75V6.25A3.25 3.25 0 0 1 6.25 3h4a.75.75 0 0 1 0 1.5zM13 3.75a.75.75 0 0 1 .75-.75h6.5a.75.75 0 0 1 .75.75v6.5a.75.75 0 0 1-1.5 0V5.56l-5.22 5.22a.75.75 0 0 1-1.06-1.06l5.22-5.22h-4.69a.75.75 0 0 1-.75-.75"/></svg>
+        <span data-i18n="openInNewTab">在新标签页打开</span>
+      </button>
+      <button type="button" class="quicklink-menu-item" data-action="copy" role="menuitem">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" fill-rule="nonzero" d="M13.753 2c1.158 0 2.11.875 2.234 2h1.763a2.25 2.25 0 0 1 2.245 2.096L20 6.25v6a.75.75 0 0 1-1.493.102l-.007-.102v-6a.75.75 0 0 0-.648-.743L17.75 5.5h-2.132c-.403.6-1.088.993-1.865.993h-3.506A2.244 2.244 0 0 1 8.382 5.5H6.25a.75.75 0 0 0-.743.648L5.5 6.25v13.505c0 .38.282.693.648.743l.204.013a.75.75 0 0 1-.102 1.494a2.25 2.25 0 0 1-2.245-2.096L4 19.755V6.25a2.25 2.25 0 0 1 2.096-2.245L6.25 4h1.763a2.247 2.247 0 0 1 2.234-2h3.506zm3.497 12.5h1a3.75 3.75 0 0 1 .202 7.495l-.199.005l-1 .005a.75.75 0 0 1-.108-1.493l.102-.007l1.003-.005a2.25 2.25 0 0 0 .154-4.495L18.25 16h-1a.75.75 0 0 1-.102-1.493l.102-.007h1h-1zm-5 0h1a.75.75 0 0 1 .102 1.493L13.25 16h-1a2.25 2.25 0 0 0-.154 4.495l.154.005h1a.75.75 0 0 1 .102 1.493L13.25 22h-1a3.75 3.75 0 0 1-.2-7.495l.2-.005h1h-1zm0 3h6a.75.75 0 0 1 .102 1.493L18.25 19h-6a.75.75 0 0 1-.102-1.493l.102-.007h6h-6zm1.503-14h-3.506a.747.747 0 0 0 0 1.493h3.506a.747.747 0 1 0 0-1.493z"/></svg>
+        <span data-i18n="copyAddress">复制地址</span>
+      </button>
+      <button type="button" class="quicklink-menu-item" data-action="edit" role="menuitem">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.952 3.048a3.58 3.58 0 0 0-5.06 0L3.94 15a3.1 3.1 0 0 0-.825 1.476L2.02 21.078a.75.75 0 0 0 .904.903l4.601-1.096a3.1 3.1 0 0 0 1.477-.825l11.95-11.95a3.58 3.58 0 0 0 0-5.06m-4 1.06a2.078 2.078 0 1 1 2.94 2.94L19 7.939L16.06 5zM15 6.062L17.94 9l-10 10c-.21.21-.474.357-.763.426l-3.416.814l.813-3.416c.069-.29.217-.554.427-.764z"/></svg>
+        <span data-i18n="edit">编辑</span>
+      </button>
     </div>
 
     <!-- 自定义搜索引擎配置 Modal 对话框 -->
@@ -2629,6 +3006,22 @@
       </div>
     </div>
 
+    <!-- 恢复配置前的风险确认：点「继续」才真正打开文件选择器 -->
+    <div id="modal-restore-warn" class="modal-overlay">
+      <div class="modal-dialog">
+        <div class="modal-header" data-i18n="restoreWarnTitle">请谨慎导入陌生来源的配置文件</div>
+        <div style="padding: 8px 0 16px 0; color: var(--neutral-foreground-rest); font-size: 14px; line-height: 1.7;">
+          <p style="margin: 0;" data-i18n="restoreWarnDesc">陌生来源的配置文件可能会在 快速链接、搜索引擎、壁纸链接 中包含危险的脚本。</p>
+        </div>
+        <div class="modal-footer">
+          <div class="modal-footer-right">
+            <button type="button" id="btn-restore-warn-cancel" class="btn btn-secondary" data-i18n="cancel">取消</button>
+            <button type="button" id="btn-restore-warn-continue" class="btn btn-primary" data-i18n="continueAction">继续</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- 恢复完成提示弹窗 -->
     <div id="modal-restore-done" class="modal-overlay">
       <div class="modal-dialog">
@@ -2644,6 +3037,11 @@
       </div>
     </div>
 
+
+    <!-- 「预置」图标的二级宫格面板：5 列 × 7 行，内容由脚本填充。
+         必须挂在 body 下：它是 position:fixed 的浮层，若留在 .modal-overlay 里，
+         会被该 overlay 的层叠上下文限制，压不过挂在 body 上的自定义下拉浮层。 -->
+    <div class="icon-preset-panel" id="icon-preset-panel" role="listbox" aria-label="预置图标"></div>
 
 <script src="script.js"></script>
 </body>
