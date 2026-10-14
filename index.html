@@ -779,7 +779,8 @@
     .switch {
       position: relative;
       display: inline-block;
-      width: 36px;
+      /* 整体比原来短一点 */
+      width: 32px;
       height: 18px;
     }
 
@@ -807,13 +808,26 @@
     .slider:before {
       position: absolute;
       content: "";
-      height: 12px;
-      width: 12px;
-      left: 2px;
-      bottom: 2px;
-      background-color: var(--settings-text-secondary);
-      transition: background-color 0.08s ease, transform 0.08s ease, filter 0.08s ease;
+      /* 固定在中央：它是状态指示（O / I），不参与左右滑动，
+         所以无需像手柄那样按尺寸重算位移 */
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      margin: auto;
+      width: 10px;
+      height: 10px;
+      /* 关闭态 O：空心圆环。
+         环用内阴影画（inset spread 2px），不用 border ——
+         border 会参与布局，在竖条那种极窄宽度下把元素撑宽。 */
+      box-shadow: inset 0 0 0 2px var(--settings-text-secondary);
       border-radius: 50%;
+      background-color: transparent;
+      /* 整体弱一半：指示器与轨道之间只保留一半的对比度 */
+      opacity: 0.5;
+      transition: width 0.2s ease, height 0.2s ease,
+                  border-radius 0.2s ease, background-color 0.2s ease,
+                  box-shadow 0.2s ease, opacity 0.2s ease, filter 0.08s ease;
     }
 
     .slider:hover:before {
@@ -833,13 +847,18 @@
 
     /*这是开关滑块！*/
     input:checked + .slider:before {
-      transform: translateX(18px);
+      /* 打开态 I：收窄成实心竖条。
+         宽度与环粗一致(2px)；内阴影的 spread 收到 0、颜色换成填充色，
+         环壁与中心一起收敛，不会出现"环突然消失"的顿挫。
+         用 box-shadow 画环，所以这里的 width 就是实际渲染宽度，不会被撑开。
+         端点保持直角，不做圆头 */
+      width: 2px;
+      height: 8px;                    /* 比圆环(10px)略短一点 */
+      /* 打开态单独提到 0.7：让竖条比圆环更清晰一些（圆环仍是 0.5） */
+      opacity: 0.7;
+      border-radius: 0;
+      box-shadow: inset 0 0 0 0 var(--accent-foreground-invert);
       background-color: var(--accent-foreground-invert);
-    }
-
-    input:checked + .slider:hover:before {
-      transform: translateX(18px);
-      filter: brightness(0.75);
     }
 
     /* 卡片视图选择器 */
