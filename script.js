@@ -2685,11 +2685,9 @@ document.addEventListener('DOMContentLoaded', () => {
       if (bgOverlay) {
         bgOverlay.classList.remove('loaded');
       }
-      if (enhancedVisibility) {
-        enhancedVisibility = false;
-        Storage.set('ntp_enhanced_visibility', false);
-        if (toggleEnhancedVisibility) toggleEnhancedVisibility.checked = false;
-      }
+      // 这里刻意不复位「增强元素可见性」：它的效果由 applyEnhancedVisibility
+      // 结合 bgEnabled 判断，背景关闭期间自然不生效，但开关状态保留，
+      // 重新开启背景后会自动恢复；该卡片也会随背景依赖组一起置灰。
     }
 
     applyEnhancedVisibility();
@@ -2826,7 +2824,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const wpKey = customWallpaperData
       ? (customWallpaperData.type || 'image') + '|' + (customWallpaperData.url || '')
       : 'default';
-    const alreadyRendered = (wpKey === renderedWallpaperKey);
+    // 元素当前是否真的显示着壁纸：关闭背景时会被 display:none，
+    // 但壁纸标识不变，只比对 key 会把"重新开启背景"误判成重复渲染而跳过。
+    const wallpaperShown =
+      !!(bgImage && bgImage.style.display !== 'none' && bgImage.classList.contains('loaded')) ||
+      !!(bgVideo && bgVideo.style.display !== 'none' && bgVideo.classList.contains('loaded'));
+    const alreadyRendered = (wpKey === renderedWallpaperKey) && wallpaperShown;
     const isFirstRender = (renderedWallpaperKey === null);
     renderedWallpaperKey = wpKey;
 
