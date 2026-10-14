@@ -44,7 +44,6 @@
 
       /* 下拉浮层的阴影与描边（深色主题下单独加强） */
       --dropdown-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
-      --dropdown-border: #d4d4d4;
 
       /* 6. 模态框与弹窗样式 */
       --modal-bg: #ffffff;
@@ -61,6 +60,8 @@
       --settings-text-secondary: #707070;
       --settings-thumb-bg: #d5d9de;
       --settings-thumb-border: #d4d4d4;
+      /* 输入框描边：比 --modal-border 再淡一档，只用于 .input */
+      --input-border: #e8e8e8;
 
       --enhanced-visibility-bg: rgba(255, 255, 255, 0.45);
       --enhanced-visibility-bg-hover: rgba(255, 255, 255, 0.65);
@@ -94,10 +95,9 @@
 
         /* 深色下黑色阴影几乎不可见，靠"加深的阴影 + 更亮的描边"把浮层托起来（别调太狠，会发脏） */
         --dropdown-shadow: 0 4px 14px rgba(0, 0, 0, 0.4), 0 1px 4px rgba(0, 0, 0, 0.22);
-        --dropdown-border: #4c4c4c;
 
         --modal-bg: #242424;
-        --modal-border: #333333;
+        --modal-border: #454545;                 /* 按钮悬停底色，需比 --btn-secondary-bg 更亮 */
         --modal-mask: rgba(0, 0, 0, 0.65);
         --input-bg: #202020;
         --btn-danger-color: #ff6b6b;
@@ -106,7 +106,7 @@
         --accent-foreground-rest: #ffffff;       /* 强调色 */
         --accent-foreground-hover: #E0E0E0;      /* 第二强调色 */
         --accent-foreground-invert: #000000;   /* 反色强调色！！！ */
-        --btn-secondary-bg: #2D2D2D;             /* 次级按钮背景 */
+        --btn-secondary-bg: #3a3a3a;             /* 次级按钮背景（比卡片 #2b2b2b 亮一档，看得出是按钮） */
 
         --settings-panel-bg: #242424;
         --settings-card-bg: #2b2b2b;
@@ -116,6 +116,8 @@
         --settings-text-secondary: #9e9e9e;
         --settings-thumb-bg: #212121;
         --settings-thumb-border: #3d3d3d;
+        /* 深色下外框要比填充(#282828)亮，否则看着像内凹阴影；浅色下则相反(外框更深) */
+        --input-border: #333333;
 
         --enhanced-visibility-bg: rgba(0, 0, 0, 0.45);
         --enhanced-visibility-bg-hover: rgba(0, 0, 0, 0.65);
@@ -533,7 +535,8 @@
     /* 设置卡片样式 */
     .settings-card {
       background-color: var(--settings-card-bg);
-      border: 1px solid var(--settings-card-border);
+      /* 纯平风格：去掉描边，靠卡片底色与面板底色的差异区分 */
+      border: none;
       border-radius: 8px;
       padding: 12px;
       box-sizing: border-box;
@@ -609,8 +612,9 @@
       width: 100%;
       height: 32px;
       border-radius: 6px;
-      border: 1px solid var(--settings-card-border);
-      background-color: var(--settings-card-bg);
+      /* 纯平风格：用透明描边保留 1px 几何，避免尺寸与原来不一致 */
+      border: 1px solid transparent;
+      background-color: var(--btn-secondary-bg);
       color: var(--settings-text-primary);
       padding: 0 12px 0 10px;
       font-size: 13px;
@@ -624,11 +628,12 @@
     }
 
     .custom-select-display:hover {
-      background-color: var(--neutral-fill-rest);
+      background-color: var(--modal-border);
     }
 
+    /* 没有描边可用了，展开状态改用底色加深来表示 */
     .custom-select-display.active {
-      border-color: var(--accent-foreground-rest);
+      background-color: var(--modal-border);
     }
 
     /* 自定义下拉里不可选的项（例如"底部"模式下的"多行"）
@@ -679,7 +684,9 @@
     .custom-select-dropdown {
       position: fixed;
       background-color: var(--fill-popup-color);
-      border: 1px solid var(--dropdown-border);
+      /* 纯平风格：去掉描边，靠 box-shadow 与背景色区分层次；
+         保留 1px 透明边框是为了维持尺寸（该元素是 content-box） */
+      border: 1px solid transparent;
       border-radius: 6px;
       box-shadow: var(--dropdown-shadow);
       z-index: 2000;
@@ -788,8 +795,10 @@
       left: 0;
       right: 0;
       bottom: 0;
-      border: 1px solid var(--settings-text-secondary);
-      background-color: var(--settings-card-bg);
+      /* 关闭态用填充代替原来的描边，底色与次级按钮（选择文件 / 下拉框等）一致；
+         保留 1px 透明边框是为了维持内部几何（滑块定位依赖它）不变 */
+      border: 1px solid transparent;
+      background-color: var(--btn-secondary-bg);
       transition: background-color 0.08s ease, border-color 0.08s ease, left 0.2s ease;
       border-radius: 20px;
     }
@@ -832,23 +841,26 @@
       position: relative;
       display: flex;
       gap: 2px;
-      padding: 2px;
-      border: 1px solid var(--settings-card-border);
+      padding: 3px;                              /* 选中块与凹槽之间的缝隙 */
+      /* 纯平风格：不要描边，靠凹槽底色与卡片底色区分。
+         仍用透明描边占位，保证内部尺寸（滑块定位依赖它）不变 */
+      border: 1px solid transparent;
       border-radius: 6px;
       background-color: var(--input-bg);        /* 凹槽底色 */
     }
 
-    /* 滑块：由 idx-N 类驱动位移，切换时平滑滑动（宽度 = (100% − 2×2 padding − 2×2 gap) / 3） */
+    /* 滑块：由 idx-N 类驱动位移，切换时平滑滑动
+       （宽度 = (100% − 2×3 padding − 2×2 gap) / 3） */
     .theme-switch::before {
       content: '';
       position: absolute;
-      top: 2px;
-      left: 2px;
-      width: calc((100% - 8px) / 3);
-      height: calc(100% - 4px);
-      border-radius: 4px;
+      top: 3px;
+      left: 3px;
+      width: calc((100% - 10px) / 3);
+      height: calc(100% - 6px);
+      border-radius: 3px;                        /* 容器 6px − padding 3px */
+      /* 纯平风格：靠滑块自身的浅色底与凹槽区分，不用投影 */
       background-color: var(--settings-card-bg);
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
       transform: translateX(0);
       transition: transform 0.1s ease;
       pointer-events: none;
@@ -860,10 +872,6 @@
 
     .theme-switch.idx-2::before {
       transform: translateX(calc(200% + 4px));
-    }
-
-    :root[data-theme="dark"] .theme-switch::before {
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -884,7 +892,7 @@
       height: 30px;          /* 30 + 2×2(padding) + 2×1(边框) = 36px，整控件高度 */
       padding: 0 3px;
       border: none;
-      border-radius: 4px;     /* 外层 6px − padding 2px */
+      border-radius: 3px;     /* 外层 6px − padding 3px */
       background-color: transparent;
       color: var(--settings-text-primary);
       font-family: inherit;
@@ -944,24 +952,25 @@
       position: relative;
       display: flex;
       gap: 2px;
-      padding: 2px;
-      border: 1px solid var(--settings-card-border);
+      padding: 3px;                              /* 与主题模式一致的缝隙 */
+      /* 纯平风格：与主题模式同一套处理，透明描边只为占位 */
+      border: 1px solid transparent;
       border-radius: 6px;
       background-color: var(--input-bg);
       margin-top: 10px;
     }
 
-    /* 预设的滑块：与主题模式同一套，圆角同样取 4px（容器 6px − padding 2px） */
+    /* 预设的滑块：与主题模式同一套（容器 6px − padding 3px = 3px 圆角） */
     .layout-presets::before {
       content: '';
       position: absolute;
-      top: 2px;
-      left: 2px;
-      width: calc((100% - 8px) / 3);
-      height: calc(100% - 4px);
-      border-radius: 4px;     /* 容器 6px − padding 2px，与主题滑块一致 */
+      top: 3px;
+      left: 3px;
+      width: calc((100% - 10px) / 3);
+      height: calc(100% - 6px);
+      border-radius: 3px;
+      /* 纯平风格：不用投影 */
       background-color: var(--settings-card-bg);
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
       transform: translateX(0);
       transition: transform 0.1s ease, opacity 0.15s ease;
       pointer-events: none;
@@ -980,10 +989,6 @@
       opacity: 0;
     }
 
-    :root[data-theme="dark"] .layout-presets::before {
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
-    }
-
     @media (prefers-reduced-motion: reduce) {
       .layout-presets::before {
         transition: none;
@@ -997,7 +1002,7 @@
       min-width: 0;
       border: none;
       background-color: transparent;
-      border-radius: 4px;     /* 外层 6px − padding 2px */
+      border-radius: 3px;     /* 外层 6px − padding 3px */
       padding: 6px;              /* 上/左/右等宽：图案到边框的留白一致且稍大 */
       display: flex;
       flex-direction: column;
@@ -1102,8 +1107,9 @@
       gap: 6px;
       width: 100%;
       height: 32px;
-      border: 1px solid var(--settings-card-border);
-      background-color: var(--settings-card-bg);
+      /* 纯平风格：与"选择文件""恢复默认"等次级按钮同款灰底，无描边 */
+      border: 1px solid transparent;
+      background-color: var(--btn-secondary-bg);
       color: var(--settings-text-primary);
       border-radius: 6px;
       font-size: 13px;
@@ -1113,7 +1119,7 @@
     }
 
     .icon-btn-text:hover {
-      background-color: var(--settings-card-hover);
+      background-color: var(--modal-border);
     }
 
     /* 底部链接样式 */
@@ -1494,7 +1500,8 @@
       display: none;
       min-width: 152px;
       padding: 4px;
-      border: 1px solid var(--dropdown-border);
+      /* 纯平风格：与自定义下拉浮层统一，去掉描边，层次交给 box-shadow */
+      border: 1px solid transparent;
       border-radius: 6px;
       background-color: var(--fill-popup-color);
       box-shadow: var(--dropdown-shadow);
@@ -1660,7 +1667,8 @@
       display: none;
       gap: 12px;                       /* 左侧实心组 / 右侧描边组之间的间距 */
       padding: 8px;
-      border: 1px solid var(--dropdown-border);       /* 与自定义下拉浮层同款 */
+      /* 与自定义下拉浮层同款：去掉描边，靠 box-shadow 区分层次 */
+      border: 1px solid transparent;
       border-radius: 6px;
       background-color: var(--fill-popup-color);      /* 与自定义下拉浮层同底色 */
       box-shadow: var(--dropdown-shadow);
@@ -1716,8 +1724,8 @@
     }
 
     .input-container {
-      border-radius: 4px;
-      overflow: hidden;    /*裁切超出部分*/
+      border-radius: 6px;        /* 与按钮 / 下拉框一致的圆角 */
+      overflow: hidden;    /*兜底：子元素不越出圆角*/
       position: relative;
       width: 100%;
     }
@@ -1725,9 +1733,10 @@
     .input {
       width: 100%;
       height: 36px;
-      border-radius: 4px;
-      border: 1.5px solid var(--settings-card-border);
-      background-color: var(--input-bg);
+      border-radius: 6px;
+      /* 描边比其它控件略粗，颜色用最淡的一档（比 --modal-border 还浅） */
+      border: 2px solid var(--input-border);
+      background-color: var(--settings-card-hover);
       color: var(--neutral-foreground-rest);
       padding: 0 10px;
       font-size: 14px;
@@ -1738,35 +1747,32 @@
 
     /* 悬停变色(选中时不生效)：:hover 特异性本就更高，不需要 !important */
     .input:hover:not(:focus) {
-      background-color: var(--neutral-fill-rest);
+      background-color: var(--input-bg);
     }
 
     .input:focus {
       border-color: var(--settings-card-border);
     }
 
-    .input-container::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 2px;
-      background-color: var(--accent-foreground-rest);
-      opacity: 0;
+    /* ===== 深色主题下的输入框配色 =====
+       浅色主题是"填充比按钮亮、hover 变暗"，深色主题要镜像过来才有一致的观感：
+       常规填充比按钮(#2D2D2D)更淡（深色下更淡 = 更深）、hover 变亮到按钮色、
+       聚焦（选中）落到原 hover 的那一档。只覆盖输入框，不动其它控件与变量。 */
+    :root[data-theme="dark"] .input {
+      background-color: #282828;
     }
 
-    .input-container:focus-within::after {
-      opacity: 1;
+    :root[data-theme="dark"] .input:hover:not(:focus) {
+      background-color: var(--btn-secondary-bg);
     }
 
+    :root[data-theme="dark"] .input:focus {
+      background-color: var(--input-bg);
+    }
+
+    /* 错误态：整圈描边换成警示色（原来靠底部变色 + 红色下划线，下划线已去掉） */
     .input-container.error .input {
-      border-bottom-color: var(--btn-danger-color);
-    }
-
-    .input-container.error::after {
-      background-color: var(--btn-danger-color);
-      opacity: 1;
+      border-color: var(--btn-danger-color);
     }
 
     .error-tip {
@@ -1839,8 +1845,8 @@
     }
 
     :root[data-theme="dark"] .btn-secondary {
-      background-color: #474747;
-
+      /* 不再单独指定底色：与下拉框 / 编辑按钮等共用 --btn-secondary-bg，
+         否则弹窗里的按钮会比设置面板里的深一档 */
       padding: 0 20px 1px 20px;
     }
 
@@ -2080,13 +2086,15 @@
       transition: background-color 0.08s ease, border-color 0.08s ease;
     }
 
+    /* 悬停用较淡的一档 */
     .manage-option:hover {
-      background-color: var(--neutral-fill-hover);
+      background-color: var(--neutral-fill-rest);
     }
 
-    /* 选中态 */
+    /* 选中态：用更明显的一档，保证"当前选择"比临时划过更突出（深浅主题都成立）；
+       这条写在 :hover 之后且特异性相同，所以选中项被划过时仍保持选中色 */
     .manage-option[aria-selected="true"] {
-      background-color: var(--neutral-fill-rest);
+      background-color: var(--neutral-fill-hover);
     }
 
     /* 左侧选中指示条 */
