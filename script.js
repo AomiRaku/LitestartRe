@@ -2587,11 +2587,12 @@ document.addEventListener('DOMContentLoaded', () => {
   let bgEnabled = Storage.get('ntp_bg_enabled', false);
   let customWallpaperData = null;
   let enhancedVisibility = Storage.get('ntp_enhanced_visibility', false);
-  let enhancedBlur = Storage.get('ntp_enhanced_blur', false);
+  // 默认开启
+  let enhancedBlur = Storage.get('ntp_enhanced_blur', true);
   // 背景边角晕影默认开启，所以缺省值是 true
   let bgVignette = Storage.get('ntp_bg_vignette', true);
-  // 背景渐显模糊默认关闭
-  let bgFadeBlur = Storage.get('ntp_bg_fade_blur', false);
+  // 背景渐显模糊默认开启（用默认壁纸时会自动关掉，见 renderWallpaper）
+  let bgFadeBlur = Storage.get('ntp_bg_fade_blur', true);
   let searchVisible = Storage.get('ntp_search_visible', true);
   let showLogo = Storage.get('ntp_show_logo', true);
   // 快速链接区"添加"按钮的显隐（默认关闭）
@@ -2706,23 +2707,17 @@ document.addEventListener('DOMContentLoaded', () => {
       document.body.removeAttribute('data-enhanced-visibility');
     }
 
-    // 「启用模糊」依附于增强可见性：不生效时复位成关闭并隐藏该行。
-    // 复位集中在这里，保证所有关闭路径（手动关、背景关闭时自动关）行为一致。
-    if (!active) {
-      if (enhancedBlur) {
-        enhancedBlur = false;
-        Storage.set('ntp_enhanced_blur', false);
-      }
-      if (toggleEnhancedBlur) toggleEnhancedBlur.checked = false;
-      document.body.removeAttribute('data-enhanced-blur');
-    } else if (enhancedBlur) {
+    // 「衬底启用模糊」保留自己的状态：增强可见性开关不再复位它，
+    // 所以关掉增强可见性再打开，模糊还是原来的设置。
+    // 它的效果只作用在"增强可见性产生的衬底"上，因此增强可见性关闭期间不可见——
+    // CSS 选择器同时要求 data-enhanced-visibility="true" 和 data-enhanced-blur="true"。
+    if (enhancedBlur) {
       document.body.setAttribute('data-enhanced-blur', 'true');
     } else {
       document.body.removeAttribute('data-enhanced-blur');
     }
 
-    // 状态文案在这里同步（而不只靠 applyLanguage）：本函数会把 checkbox 复位，
-    // 文案必须跟着走，否则导入数据这类加载路径会出现"开关关闭、文案打开"
+    // 状态文案与勾选框同源
     const statusBlur = document.getElementById('status-enhanced-blur');
     if (statusBlur) {
       const d = currentDict();
@@ -2832,7 +2827,22 @@ document.addEventListener('DOMContentLoaded', () => {
       ? (customWallpaperData.type || 'image') + '|' + (customWallpaperData.url || '')
       : 'default';
     const alreadyRendered = (wpKey === renderedWallpaperKey);
+    const isFirstRender = (renderedWallpaperKey === null);
     renderedWallpaperKey = wpKey;
+
+    // 壁纸换了时同步「背景渐显模糊」：
+    //   默认壁纸 → 关闭；本地文件 / 必应每日 / 自定义链接 → 打开。
+    // 首次渲染只在存储里还没有用户选择时才套用，避免覆盖用户手动关掉的结果。
+    const hasStoredChoice = localStorage.getItem('ntp_bg_fade_blur') !== null;
+    if (!alreadyRendered && (!isFirstRender || !hasStoredChoice)) {
+      const wantFadeBlur = !!customWallpaperData;
+      if (bgFadeBlur !== wantFadeBlur) {
+        bgFadeBlur = wantFadeBlur;
+        Storage.set('ntp_bg_fade_blur', wantFadeBlur);
+        if (toggleBgFadeBlur) toggleBgFadeBlur.checked = wantFadeBlur;
+      }
+      applyBgFadeBlur();
+    }
 
     if (!customWallpaperData) {
       if (!alreadyRendered) {
