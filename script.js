@@ -3380,6 +3380,13 @@ document.addEventListener('DOMContentLoaded', () => {
         bgEnabled = true;
         Storage.set('ntp_bg_enabled', true);
       }
+      // 必应每日壁纸的明暗不可控，自动开启「增强元素可见性」以保证元素可读。
+      // 必须在 applyBackgroundState() 之前设置，它内部才来得及应用到 body。
+      if (!enhancedVisibility) {
+        enhancedVisibility = true;
+        Storage.set('ntp_enhanced_visibility', true);
+        if (toggleEnhancedVisibility) toggleEnhancedVisibility.checked = true;
+      }
       resetBgVignette();
       applyBackgroundState();
       if (toggleBgSwitch) toggleBgSwitch.checked = true;
