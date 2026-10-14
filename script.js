@@ -2819,24 +2819,38 @@ document.addEventListener('DOMContentLoaded', () => {
     wallpaperSourceLabel.textContent = key ? (d[key] || '') : '';
   }
 
+  // 当前已经渲染到页面上的壁纸标识（类型 + 地址）。
+  // 用它判断"这次渲染是否只是重复渲染同一张壁纸"，避免重播加载动画。
+  let renderedWallpaperKey = null;
+
   // 根据自定义壁纸数据，渲染视频/图片背景到页面和预览容器
   // 渐入逻辑：先移除 .loaded 让元素透明 → 设置 src → 监听加载事件 → 加载完成后加 .loaded 触发 transition
   function renderWallpaper() {
+    // 每次进入背景设置页都会调用本函数。若壁纸没变，重设 src 会让浏览器重新加载
+    // 并再播一遍"渐入 + 模糊"，所以要能识别出"还是同一张"并跳过重设。
+    const wpKey = customWallpaperData
+      ? (customWallpaperData.type || 'image') + '|' + (customWallpaperData.url || '')
+      : 'default';
+    const alreadyRendered = (wpKey === renderedWallpaperKey);
+    renderedWallpaperKey = wpKey;
+
     if (!customWallpaperData) {
-      if (bgVideo) {
-        bgVideo.style.display = 'none';
-        bgVideo.classList.remove('loaded');
-      }
-      if (bgImage) {
-        bgImage.classList.remove('loaded');
-        bgImage.style.display = 'block';
-        bgImage.src = 'img/background.webp';
-        // 默认背景加载完成后渐入
-        bgImage.addEventListener('load', function onDefLoad() {
-          bgImage.classList.add('loaded');
-          bgOverlay?.classList.add('loaded');
-          bgImage.removeEventListener('load', onDefLoad);
-        });
+      if (!alreadyRendered) {
+        if (bgVideo) {
+          bgVideo.style.display = 'none';
+          bgVideo.classList.remove('loaded');
+        }
+        if (bgImage) {
+          bgImage.classList.remove('loaded');
+          bgImage.style.display = 'block';
+          bgImage.src = 'img/background.webp';
+          // 默认背景加载完成后渐入
+          bgImage.addEventListener('load', function onDefLoad() {
+            bgImage.classList.add('loaded');
+            bgOverlay?.classList.add('loaded');
+            bgImage.removeEventListener('load', onDefLoad);
+          });
+        }
       }
       setWallpaperTypeTitle('localImage');
       translateSourceLabel();
@@ -2857,22 +2871,24 @@ document.addEventListener('DOMContentLoaded', () => {
     translateSourceLabel();
 
     if (customWallpaperData.type === 'video') {
-      if (bgImage) {
-        bgImage.style.display = 'none';
-        bgImage.classList.remove('loaded');
-      }
-      if (bgVideo) {
-        bgVideo.classList.remove('loaded');
-        bgVideo.style.display = 'block';
-        bgVideo.src = customWallpaperData.url;
-        // 视频缓冲到可播放时再渐入
-        const onCanPlay = () => {
-          bgVideo.classList.add('loaded');
-          bgOverlay?.classList.add('loaded');
-          bgVideo.removeEventListener('canplay', onCanPlay);
-          bgVideo.play().catch(() => {});
-        };
-        bgVideo.addEventListener('canplay', onCanPlay);
+      if (!alreadyRendered) {
+        if (bgImage) {
+          bgImage.style.display = 'none';
+          bgImage.classList.remove('loaded');
+        }
+        if (bgVideo) {
+          bgVideo.classList.remove('loaded');
+          bgVideo.style.display = 'block';
+          bgVideo.src = customWallpaperData.url;
+          // 视频缓冲到可播放时再渐入
+          const onCanPlay = () => {
+            bgVideo.classList.add('loaded');
+            bgOverlay?.classList.add('loaded');
+            bgVideo.removeEventListener('canplay', onCanPlay);
+            bgVideo.play().catch(() => {});
+          };
+          bgVideo.addEventListener('canplay', onCanPlay);
+        }
       }
 
       if (wallpaperPreviewContainer) {
@@ -2887,29 +2903,31 @@ document.addEventListener('DOMContentLoaded', () => {
         wallpaperPreviewContainer.appendChild(previewVideo);
       }
     } else {
-      if (bgVideo) {
-        bgVideo.style.display = 'none';
-        bgVideo.classList.remove('loaded');
-      }
-      if (bgImage) {
-        bgImage.classList.remove('loaded');
-        bgImage.style.display = 'block';
-        bgImage.src = customWallpaperData.url;
-        // 图片加载完成后渐入；complete 为 true 表示浏览器缓存已命中，直接显示
-        const onLoad = () => {
-          bgImage.classList.add('loaded');
-          bgOverlay?.classList.add('loaded');
-          bgImage.removeEventListener('load', onLoad);
-        };
-        if (bgImage.complete && bgImage.naturalWidth > 0) {
-          requestAnimationFrame(() => {
+      if (!alreadyRendered) {
+        if (bgVideo) {
+          bgVideo.style.display = 'none';
+          bgVideo.classList.remove('loaded');
+        }
+        if (bgImage) {
+          bgImage.classList.remove('loaded');
+          bgImage.style.display = 'block';
+          bgImage.src = customWallpaperData.url;
+          // 图片加载完成后渐入；complete 为 true 表示浏览器缓存已命中，直接显示
+          const onLoad = () => {
+            bgImage.classList.add('loaded');
+            bgOverlay?.classList.add('loaded');
+            bgImage.removeEventListener('load', onLoad);
+          };
+          if (bgImage.complete && bgImage.naturalWidth > 0) {
             requestAnimationFrame(() => {
-              bgImage.classList.add('loaded');
-              bgOverlay?.classList.add('loaded');
+              requestAnimationFrame(() => {
+                bgImage.classList.add('loaded');
+                bgOverlay?.classList.add('loaded');
+              });
             });
-          });
-        } else {
-          bgImage.addEventListener('load', onLoad);
+          } else {
+            bgImage.addEventListener('load', onLoad);
+          }
         }
       }
 
