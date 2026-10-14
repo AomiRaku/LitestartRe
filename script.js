@@ -1,4 +1,4 @@
-const APP_VERSION = '1.8.2';           // 发行版本
+const APP_VERSION = '1.8.3-beta1';      // 发行版本（compareVersions 用 parseInt，后缀不影响比较）
 const GITHUB_REPO = 'XingYueFox/Litestart';
 
 const logos = {
@@ -66,7 +66,7 @@ const i18nData = {
     download: '下载',
     updateAvailable: '可用更新',
     aboutDesc: '一个简洁、快速的浏览器起始页。',
-    litever: '版本 1.8.2 | 更新时间：2026-10-13',
+    litever: '版本 1.8.3-beta1 | 更新时间：2026-10-14',
     versionInfo: '版本信息',
     and: '和',
     searchPlaceholder: '今天想用 {name} 搜索什么？',
@@ -160,6 +160,7 @@ const i18nData = {
     enhancedVisibility: '增强元素可见性',
     enhancedBlur: '衬底启用模糊',
     bgVignette: '背景边角晕影',
+    bgFadeBlur: '背景渐显模糊',
     enhancedBlurTip: '此选项可能会对设备功耗有轻微影响。',
     addlink: '添加',
     addQuicklink: '添加快速链接',
@@ -250,7 +251,7 @@ const i18nData = {
     download: '下載',
     updateAvailable: '可用更新',
     aboutDesc: '一個簡潔、快速的瀏覽器起始頁。',
-    litever: '版本 1.8.2 | 更新時間：2026-10-13',
+    litever: '版本 1.8.3-beta1 | 更新時間：2026-10-14',
     versionInfo: '版本資訊',
     and: '與',
     searchPlaceholder: '今天想用 {name} 搜尋什麼？',
@@ -344,6 +345,7 @@ const i18nData = {
     enhancedVisibility: '增強元素可見性',
     enhancedBlur: '襯底啟用模糊',
     bgVignette: '背景邊角暈影',
+    bgFadeBlur: '背景漸顯模糊',
     enhancedBlurTip: '此選項可能會對裝置耗電有輕微影響。',
     addlink: '新增',
     addQuicklink: '新增快速連結',
@@ -419,7 +421,7 @@ const i18nData = {
     download: 'Download',
     updateAvailable: 'Update available',
     aboutDesc: 'A simple and fast browser start page.',
-    litever: 'Version 1.8.2 | Updated: 2026-10-13',
+    litever: 'Version 1.8.3-beta1 | Updated: 2026-10-14',
     versionInfo: 'Version Info',
     and: '&',
     searchPlaceholder: 'What do you want to search with {name} today?',
@@ -513,6 +515,7 @@ const i18nData = {
     enhancedVisibility: 'Enhance Element Visibility',
     enhancedBlur: 'Enable backdrop blur',
     bgVignette: 'Background vignette',
+    bgFadeBlur: 'Blur-in on background load',
     enhancedBlurTip: 'This option may slightly increase power consumption.',
     addlink: 'Add',
     addQuicklink: 'Add quicklink',
@@ -589,7 +592,7 @@ const i18nData = {
     download: 'ダウンロード',
     updateAvailable: 'アップデートがあります',
     aboutDesc: 'シンプルで高速なブラウザスタートページです。',
-    litever: 'バージョン 1.8.2 | 更新日: 2026-10-13',
+    litever: 'バージョン 1.8.3-beta1 | 更新日: 2026-10-14',
     versionInfo: 'バージョン情報',
     and: 'と',
     searchPlaceholder: '今日は {name} で何を検索しますか？',
@@ -683,6 +686,7 @@ const i18nData = {
     enhancedVisibility: '要素の視認性を向上',
     enhancedBlur: '下地のぼかしを有効化',
     bgVignette: '背景のビネット',
+    bgFadeBlur: '背景読み込み時のぼかし',
     enhancedBlurTip: 'このオプションは消費電力にわずかな影響を与える可能性があります。',
     addlink: '追加',
     addQuicklink: 'クイックリンクを追加',
@@ -759,7 +763,7 @@ const i18nData = {
     download: 'Скачать',
     updateAvailable: 'Доступно обновление',
     aboutDesc: 'Простая и быстрая страница запуска браузера.',
-    litever: 'Версия 1.8.2 | Обновлено: 2026-10-13',
+    litever: 'Версия 1.8.3-beta1 | Обновлено: 2026-10-14',
     versionInfo: 'Информация о версии',
     and: 'и',
     searchPlaceholder: 'Что поищем сегодня через {name}?',
@@ -852,6 +856,7 @@ const i18nData = {
     enhancedVisibility: 'Повысить видимость элементов',
     enhancedBlur: 'Размытие подложки',
     bgVignette: 'Виньетка фона',
+    bgFadeBlur: 'Размытие при загрузке фона',
     enhancedBlurTip: 'Эта опция может незначительно увеличить энергопотребление.',
     addlink: 'Добавить',
     addQuicklink: 'Добавить быструю ссылку',
@@ -1047,6 +1052,12 @@ function applyLanguage(langConfig) {
   if (statusBgVignette) {
     const isChecked = document.getElementById('toggle-bg-vignette')?.checked ?? true;
     statusBgVignette.innerText = isChecked ? dict.on : dict.off;
+  }
+
+  const statusBgFadeBlur = document.getElementById('status-bg-fade-blur');
+  if (statusBgFadeBlur) {
+    const isChecked = document.getElementById('toggle-bg-fade-blur')?.checked || false;
+    statusBgFadeBlur.innerText = isChecked ? dict.on : dict.off;
   }
 
   // 11.刷新自定义下拉选项文本
@@ -2256,6 +2267,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const toggleEnhancedVisibility = document.getElementById('toggle-enhanced-visibility');
   const toggleEnhancedBlur = document.getElementById('toggle-enhanced-blur');
   const toggleBgVignette = document.getElementById('toggle-bg-vignette');
+  const toggleBgFadeBlur = document.getElementById('toggle-bg-fade-blur');
   
   const btnCloseWallpaperModal = document.getElementById('btn-close-wallpaper-modal');
   const toggleBgModalSwitch = document.getElementById('toggle-bg-modal-switch');
@@ -2575,9 +2587,12 @@ document.addEventListener('DOMContentLoaded', () => {
   let bgEnabled = Storage.get('ntp_bg_enabled', false);
   let customWallpaperData = null;
   let enhancedVisibility = Storage.get('ntp_enhanced_visibility', false);
-  let enhancedBlur = Storage.get('ntp_enhanced_blur', false);
+  // 默认开启
+  let enhancedBlur = Storage.get('ntp_enhanced_blur', true);
   // 背景边角晕影默认开启，所以缺省值是 true
   let bgVignette = Storage.get('ntp_bg_vignette', true);
+  // 背景渐显模糊默认开启（用默认壁纸时会自动关掉，见 renderWallpaper）
+  let bgFadeBlur = Storage.get('ntp_bg_fade_blur', true);
   let searchVisible = Storage.get('ntp_search_visible', true);
   let showLogo = Storage.get('ntp_show_logo', true);
   // 快速链接区"添加"按钮的显隐（默认关闭）
@@ -2639,6 +2654,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (toggleEnhancedVisibility) toggleEnhancedVisibility.checked = enhancedVisibility;
   if (toggleEnhancedBlur) toggleEnhancedBlur.checked = enhancedBlur;
   if (toggleBgVignette) toggleBgVignette.checked = bgVignette;
+  if (toggleBgFadeBlur) toggleBgFadeBlur.checked = bgFadeBlur;
 
   setLogo(savedEngine);
   updateEngineEditButton(savedEngine);
@@ -2678,6 +2694,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     applyEnhancedVisibility();
     applyBgVignette();
+    applyBgFadeBlur();
     applyBgDependentEnabled();
   }
 
@@ -2690,23 +2707,17 @@ document.addEventListener('DOMContentLoaded', () => {
       document.body.removeAttribute('data-enhanced-visibility');
     }
 
-    // 「启用模糊」依附于增强可见性：不生效时复位成关闭并隐藏该行。
-    // 复位集中在这里，保证所有关闭路径（手动关、背景关闭时自动关）行为一致。
-    if (!active) {
-      if (enhancedBlur) {
-        enhancedBlur = false;
-        Storage.set('ntp_enhanced_blur', false);
-      }
-      if (toggleEnhancedBlur) toggleEnhancedBlur.checked = false;
-      document.body.removeAttribute('data-enhanced-blur');
-    } else if (enhancedBlur) {
+    // 「衬底启用模糊」保留自己的状态：增强可见性开关不再复位它，
+    // 所以关掉增强可见性再打开，模糊还是原来的设置。
+    // 它的效果只作用在"增强可见性产生的衬底"上，因此增强可见性关闭期间不可见——
+    // CSS 选择器同时要求 data-enhanced-visibility="true" 和 data-enhanced-blur="true"。
+    if (enhancedBlur) {
       document.body.setAttribute('data-enhanced-blur', 'true');
     } else {
       document.body.removeAttribute('data-enhanced-blur');
     }
 
-    // 状态文案在这里同步（而不只靠 applyLanguage）：本函数会把 checkbox 复位，
-    // 文案必须跟着走，否则导入数据这类加载路径会出现"开关关闭、文案打开"
+    // 状态文案与勾选框同源
     const statusBlur = document.getElementById('status-enhanced-blur');
     if (statusBlur) {
       const d = currentDict();
@@ -2752,6 +2763,21 @@ document.addEventListener('DOMContentLoaded', () => {
     applyBgVignette();
   }
 
+  // 背景渐显模糊：只切换 body 上的标记，具体动画在 CSS 里
+  function applyBgFadeBlur() {
+    if (bgFadeBlur) {
+      document.body.setAttribute('data-bg-fade-blur', 'true');
+    } else {
+      document.body.removeAttribute('data-bg-fade-blur');
+    }
+    // 状态文案与开关同源，避免"开关关闭、文案打开"
+    const status = document.getElementById('status-bg-fade-blur');
+    if (status) {
+      const d = currentDict();
+      status.innerText = bgFadeBlur ? d.on : d.off;
+    }
+  }
+
   function applyBgDependentEnabled() {
     if (!bgDependentSettings) return;
     if (bgEnabled) {
@@ -2788,24 +2814,53 @@ document.addEventListener('DOMContentLoaded', () => {
     wallpaperSourceLabel.textContent = key ? (d[key] || '') : '';
   }
 
+  // 当前已经渲染到页面上的壁纸标识（类型 + 地址）。
+  // 用它判断"这次渲染是否只是重复渲染同一张壁纸"，避免重播加载动画。
+  let renderedWallpaperKey = null;
+
   // 根据自定义壁纸数据，渲染视频/图片背景到页面和预览容器
   // 渐入逻辑：先移除 .loaded 让元素透明 → 设置 src → 监听加载事件 → 加载完成后加 .loaded 触发 transition
   function renderWallpaper() {
-    if (!customWallpaperData) {
-      if (bgVideo) {
-        bgVideo.style.display = 'none';
-        bgVideo.classList.remove('loaded');
+    // 每次进入背景设置页都会调用本函数。若壁纸没变，重设 src 会让浏览器重新加载
+    // 并再播一遍"渐入 + 模糊"，所以要能识别出"还是同一张"并跳过重设。
+    const wpKey = customWallpaperData
+      ? (customWallpaperData.type || 'image') + '|' + (customWallpaperData.url || '')
+      : 'default';
+    const alreadyRendered = (wpKey === renderedWallpaperKey);
+    const isFirstRender = (renderedWallpaperKey === null);
+    renderedWallpaperKey = wpKey;
+
+    // 壁纸换了时同步「背景渐显模糊」：
+    //   默认壁纸 → 关闭；本地文件 / 必应每日 / 自定义链接 → 打开。
+    // 首次渲染只在存储里还没有用户选择时才套用，避免覆盖用户手动关掉的结果。
+    const hasStoredChoice = localStorage.getItem('ntp_bg_fade_blur') !== null;
+    if (!alreadyRendered && (!isFirstRender || !hasStoredChoice)) {
+      const wantFadeBlur = !!customWallpaperData;
+      if (bgFadeBlur !== wantFadeBlur) {
+        bgFadeBlur = wantFadeBlur;
+        Storage.set('ntp_bg_fade_blur', wantFadeBlur);
+        if (toggleBgFadeBlur) toggleBgFadeBlur.checked = wantFadeBlur;
       }
-      if (bgImage) {
-        bgImage.classList.remove('loaded');
-        bgImage.style.display = 'block';
-        bgImage.src = 'img/background.webp';
-        // 默认背景加载完成后渐入
-        bgImage.addEventListener('load', function onDefLoad() {
-          bgImage.classList.add('loaded');
-          bgOverlay?.classList.add('loaded');
-          bgImage.removeEventListener('load', onDefLoad);
-        });
+      applyBgFadeBlur();
+    }
+
+    if (!customWallpaperData) {
+      if (!alreadyRendered) {
+        if (bgVideo) {
+          bgVideo.style.display = 'none';
+          bgVideo.classList.remove('loaded');
+        }
+        if (bgImage) {
+          bgImage.classList.remove('loaded');
+          bgImage.style.display = 'block';
+          bgImage.src = 'img/background.webp';
+          // 默认背景加载完成后渐入
+          bgImage.addEventListener('load', function onDefLoad() {
+            bgImage.classList.add('loaded');
+            bgOverlay?.classList.add('loaded');
+            bgImage.removeEventListener('load', onDefLoad);
+          });
+        }
       }
       setWallpaperTypeTitle('localImage');
       translateSourceLabel();
@@ -2826,22 +2881,24 @@ document.addEventListener('DOMContentLoaded', () => {
     translateSourceLabel();
 
     if (customWallpaperData.type === 'video') {
-      if (bgImage) {
-        bgImage.style.display = 'none';
-        bgImage.classList.remove('loaded');
-      }
-      if (bgVideo) {
-        bgVideo.classList.remove('loaded');
-        bgVideo.style.display = 'block';
-        bgVideo.src = customWallpaperData.url;
-        // 视频缓冲到可播放时再渐入
-        const onCanPlay = () => {
-          bgVideo.classList.add('loaded');
-          bgOverlay?.classList.add('loaded');
-          bgVideo.removeEventListener('canplay', onCanPlay);
-          bgVideo.play().catch(() => {});
-        };
-        bgVideo.addEventListener('canplay', onCanPlay);
+      if (!alreadyRendered) {
+        if (bgImage) {
+          bgImage.style.display = 'none';
+          bgImage.classList.remove('loaded');
+        }
+        if (bgVideo) {
+          bgVideo.classList.remove('loaded');
+          bgVideo.style.display = 'block';
+          bgVideo.src = customWallpaperData.url;
+          // 视频缓冲到可播放时再渐入
+          const onCanPlay = () => {
+            bgVideo.classList.add('loaded');
+            bgOverlay?.classList.add('loaded');
+            bgVideo.removeEventListener('canplay', onCanPlay);
+            bgVideo.play().catch(() => {});
+          };
+          bgVideo.addEventListener('canplay', onCanPlay);
+        }
       }
 
       if (wallpaperPreviewContainer) {
@@ -2856,29 +2913,31 @@ document.addEventListener('DOMContentLoaded', () => {
         wallpaperPreviewContainer.appendChild(previewVideo);
       }
     } else {
-      if (bgVideo) {
-        bgVideo.style.display = 'none';
-        bgVideo.classList.remove('loaded');
-      }
-      if (bgImage) {
-        bgImage.classList.remove('loaded');
-        bgImage.style.display = 'block';
-        bgImage.src = customWallpaperData.url;
-        // 图片加载完成后渐入；complete 为 true 表示浏览器缓存已命中，直接显示
-        const onLoad = () => {
-          bgImage.classList.add('loaded');
-          bgOverlay?.classList.add('loaded');
-          bgImage.removeEventListener('load', onLoad);
-        };
-        if (bgImage.complete && bgImage.naturalWidth > 0) {
-          requestAnimationFrame(() => {
+      if (!alreadyRendered) {
+        if (bgVideo) {
+          bgVideo.style.display = 'none';
+          bgVideo.classList.remove('loaded');
+        }
+        if (bgImage) {
+          bgImage.classList.remove('loaded');
+          bgImage.style.display = 'block';
+          bgImage.src = customWallpaperData.url;
+          // 图片加载完成后渐入；complete 为 true 表示浏览器缓存已命中，直接显示
+          const onLoad = () => {
+            bgImage.classList.add('loaded');
+            bgOverlay?.classList.add('loaded');
+            bgImage.removeEventListener('load', onLoad);
+          };
+          if (bgImage.complete && bgImage.naturalWidth > 0) {
             requestAnimationFrame(() => {
-              bgImage.classList.add('loaded');
-              bgOverlay?.classList.add('loaded');
+              requestAnimationFrame(() => {
+                bgImage.classList.add('loaded');
+                bgOverlay?.classList.add('loaded');
+              });
             });
-          });
-        } else {
-          bgImage.addEventListener('load', onLoad);
+          } else {
+            bgImage.addEventListener('load', onLoad);
+          }
         }
       }
 
@@ -3003,6 +3062,7 @@ document.addEventListener('DOMContentLoaded', () => {
     'ntp_enhanced_visibility',
     'ntp_enhanced_blur',
     'ntp_bg_vignette',
+    'ntp_bg_fade_blur',
     'ntp_custom_engine_config',
     'ntp_custom_wallpaper'
   ];
@@ -3225,6 +3285,12 @@ document.addEventListener('DOMContentLoaded', () => {
     bgVignette = e.target.checked;
     Storage.set('ntp_bg_vignette', bgVignette);
     applyBgVignette();
+  });
+
+  toggleBgFadeBlur?.addEventListener('change', (e) => {
+    bgFadeBlur = e.target.checked;
+    Storage.set('ntp_bg_fade_blur', bgFadeBlur);
+    applyBgFadeBlur();
   });
 
   // 背景设置：在设置面板内切换到二级页（不再弹窗）
