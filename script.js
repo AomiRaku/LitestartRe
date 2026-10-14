@@ -160,6 +160,7 @@ const i18nData = {
     enhancedVisibility: '增强元素可见性',
     enhancedBlur: '衬底启用模糊',
     bgVignette: '背景边角晕影',
+    bgFadeBlur: '背景渐显模糊',
     enhancedBlurTip: '此选项可能会对设备功耗有轻微影响。',
     addlink: '添加',
     addQuicklink: '添加快速链接',
@@ -344,6 +345,7 @@ const i18nData = {
     enhancedVisibility: '增強元素可見性',
     enhancedBlur: '襯底啟用模糊',
     bgVignette: '背景邊角暈影',
+    bgFadeBlur: '背景漸顯模糊',
     enhancedBlurTip: '此選項可能會對裝置耗電有輕微影響。',
     addlink: '新增',
     addQuicklink: '新增快速連結',
@@ -513,6 +515,7 @@ const i18nData = {
     enhancedVisibility: 'Enhance Element Visibility',
     enhancedBlur: 'Enable backdrop blur',
     bgVignette: 'Background vignette',
+    bgFadeBlur: 'Blur-in on background load',
     enhancedBlurTip: 'This option may slightly increase power consumption.',
     addlink: 'Add',
     addQuicklink: 'Add quicklink',
@@ -683,6 +686,7 @@ const i18nData = {
     enhancedVisibility: '要素の視認性を向上',
     enhancedBlur: '下地のぼかしを有効化',
     bgVignette: '背景のビネット',
+    bgFadeBlur: '背景読み込み時のぼかし',
     enhancedBlurTip: 'このオプションは消費電力にわずかな影響を与える可能性があります。',
     addlink: '追加',
     addQuicklink: 'クイックリンクを追加',
@@ -852,6 +856,7 @@ const i18nData = {
     enhancedVisibility: 'Повысить видимость элементов',
     enhancedBlur: 'Размытие подложки',
     bgVignette: 'Виньетка фона',
+    bgFadeBlur: 'Размытие при загрузке фона',
     enhancedBlurTip: 'Эта опция может незначительно увеличить энергопотребление.',
     addlink: 'Добавить',
     addQuicklink: 'Добавить быструю ссылку',
@@ -1047,6 +1052,12 @@ function applyLanguage(langConfig) {
   if (statusBgVignette) {
     const isChecked = document.getElementById('toggle-bg-vignette')?.checked ?? true;
     statusBgVignette.innerText = isChecked ? dict.on : dict.off;
+  }
+
+  const statusBgFadeBlur = document.getElementById('status-bg-fade-blur');
+  if (statusBgFadeBlur) {
+    const isChecked = document.getElementById('toggle-bg-fade-blur')?.checked || false;
+    statusBgFadeBlur.innerText = isChecked ? dict.on : dict.off;
   }
 
   // 11.刷新自定义下拉选项文本
@@ -2256,6 +2267,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const toggleEnhancedVisibility = document.getElementById('toggle-enhanced-visibility');
   const toggleEnhancedBlur = document.getElementById('toggle-enhanced-blur');
   const toggleBgVignette = document.getElementById('toggle-bg-vignette');
+  const toggleBgFadeBlur = document.getElementById('toggle-bg-fade-blur');
   
   const btnCloseWallpaperModal = document.getElementById('btn-close-wallpaper-modal');
   const toggleBgModalSwitch = document.getElementById('toggle-bg-modal-switch');
@@ -2578,6 +2590,8 @@ document.addEventListener('DOMContentLoaded', () => {
   let enhancedBlur = Storage.get('ntp_enhanced_blur', false);
   // 背景边角晕影默认开启，所以缺省值是 true
   let bgVignette = Storage.get('ntp_bg_vignette', true);
+  // 背景渐显模糊默认关闭
+  let bgFadeBlur = Storage.get('ntp_bg_fade_blur', false);
   let searchVisible = Storage.get('ntp_search_visible', true);
   let showLogo = Storage.get('ntp_show_logo', true);
   // 快速链接区"添加"按钮的显隐（默认关闭）
@@ -2639,6 +2653,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (toggleEnhancedVisibility) toggleEnhancedVisibility.checked = enhancedVisibility;
   if (toggleEnhancedBlur) toggleEnhancedBlur.checked = enhancedBlur;
   if (toggleBgVignette) toggleBgVignette.checked = bgVignette;
+  if (toggleBgFadeBlur) toggleBgFadeBlur.checked = bgFadeBlur;
 
   setLogo(savedEngine);
   updateEngineEditButton(savedEngine);
@@ -2678,6 +2693,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     applyEnhancedVisibility();
     applyBgVignette();
+    applyBgFadeBlur();
     applyBgDependentEnabled();
   }
 
@@ -2750,6 +2766,21 @@ document.addEventListener('DOMContentLoaded', () => {
     Storage.set('ntp_bg_vignette', true);
     if (toggleBgVignette) toggleBgVignette.checked = true;
     applyBgVignette();
+  }
+
+  // 背景渐显模糊：只切换 body 上的标记，具体动画在 CSS 里
+  function applyBgFadeBlur() {
+    if (bgFadeBlur) {
+      document.body.setAttribute('data-bg-fade-blur', 'true');
+    } else {
+      document.body.removeAttribute('data-bg-fade-blur');
+    }
+    // 状态文案与开关同源，避免"开关关闭、文案打开"
+    const status = document.getElementById('status-bg-fade-blur');
+    if (status) {
+      const d = currentDict();
+      status.innerText = bgFadeBlur ? d.on : d.off;
+    }
   }
 
   function applyBgDependentEnabled() {
@@ -3003,6 +3034,7 @@ document.addEventListener('DOMContentLoaded', () => {
     'ntp_enhanced_visibility',
     'ntp_enhanced_blur',
     'ntp_bg_vignette',
+    'ntp_bg_fade_blur',
     'ntp_custom_engine_config',
     'ntp_custom_wallpaper'
   ];
@@ -3225,6 +3257,12 @@ document.addEventListener('DOMContentLoaded', () => {
     bgVignette = e.target.checked;
     Storage.set('ntp_bg_vignette', bgVignette);
     applyBgVignette();
+  });
+
+  toggleBgFadeBlur?.addEventListener('change', (e) => {
+    bgFadeBlur = e.target.checked;
+    Storage.set('ntp_bg_fade_blur', bgFadeBlur);
+    applyBgFadeBlur();
   });
 
   // 背景设置：在设置面板内切换到二级页（不再弹窗）

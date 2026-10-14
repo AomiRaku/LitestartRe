@@ -154,7 +154,10 @@
       pointer-events: none;
     }
 
-    /* 背景图/视频 —— 默认透明，加载完成后通过 .loaded 触发渐入 */
+    /* 背景图/视频 —— 默认透明，加载完成后通过 .loaded 触发渐入（0.2s）。
+       「背景渐显模糊」开启时再追加一层"由糊到清"（见下面的 body[data-bg-fade-blur] 规则）。
+       过渡只定义在 .loaded 上：这样只有"加载完成"会播动画，
+       移除 .loaded（换壁纸、关背景）时属性瞬间归位，不会反过来再糊一次。 */
     #bg-video, #bg-image {
       position: absolute;
       top: 0;
@@ -164,11 +167,40 @@
       object-fit: cover;
       display: none;
       opacity: 0;
-      transition: opacity 0.2s ease-in;
     }
 
     #bg-video.loaded, #bg-image.loaded {
       opacity: 1;
+      transition: opacity 0.2s ease-in;
+    }
+
+    /* 开启「背景渐显模糊」：在渐入的同时叠加模糊与轻微回缩。
+       放大一点是为了盖住 blur 向边界外糊开的部分，否则四周会出现虚边。 */
+    body[data-bg-fade-blur="true"] #bg-video,
+    body[data-bg-fade-blur="true"] #bg-image {
+      filter: blur(24px);
+      transform: scale(1.06);
+    }
+
+    body[data-bg-fade-blur="true"] #bg-video.loaded,
+    body[data-bg-fade-blur="true"] #bg-image.loaded {
+      opacity: 1;
+      filter: blur(0);
+      transform: scale(1);
+      transition: opacity 0.2s ease-in, filter 0.5s ease-out, transform 0.5s ease-out;
+    }
+
+    /* 系统开启"减少动态效果"时不做模糊动画，只保留最基础的渐入 */
+    @media (prefers-reduced-motion: reduce) {
+      body[data-bg-fade-blur="true"] #bg-video,
+      body[data-bg-fade-blur="true"] #bg-image {
+        filter: none;
+        transform: none;
+      }
+      body[data-bg-fade-blur="true"] #bg-video.loaded,
+      body[data-bg-fade-blur="true"] #bg-image.loaded {
+        transition: opacity 0.2s ease-in;
+      }
     }
 
     /* 浅色模式下遮罩 */
@@ -2557,11 +2589,31 @@
                     </div>
                   </div>
 
-                  <!-- 背景边角晕影：控制壁纸上那层暗角/亮角遮罩，默认开启。
-                       独立成组：它只跟"背景"开关走，与上面的增强可见性无关。
-                       位置仍在 #bg-dependent-settings 内，背景关闭时同样会置灰。 -->
-                  <div class="settings-card" id="bg-vignette-card">
+                  <!-- 背景效果：两者都作用在壁纸上，合成同一组。
+                       位于 #bg-dependent-settings 内，背景关闭时会一起置灰。 -->
+                  <div class="settings-card" id="bg-effects-card">
+                    <!-- 背景渐显模糊：加载完成时在渐入之外叠加"由糊到清"，默认关闭 -->
                     <div class="setting-row">
+                      <div class="setting-label-group">
+                        <span data-i18n="bgFadeBlur">背景渐显模糊</span>
+                        <span class="tooltip-icon" tabindex="0">
+                          <svg width="18" height="18" viewBox="0 0 1024 1024" fill="currentColor" aria-hidden="true" style="margin-top: 3px; margin-left: -2px;">
+                            <path d="M509.92 795.84c157.904 0 285.92-128.016 285.92-285.92C795.84 352 667.808 224 509.92 224 352 224 224 352 224 509.92c0 157.904 128 285.92 285.92 285.92z m0 48C325.504 843.84 176 694.32 176 509.92 176 325.504 325.504 176 509.92 176c184.416 0 333.92 149.504 333.92 333.92 0 184.416-149.504 333.92-333.92 333.92z m-2.448-400.704h16a16 16 0 0 1 16 16v201.728a16 16 0 0 1-16 16h-16a16 16 0 0 1-16-16V459.136a16 16 0 0 1 16-16z m0-100.176h16a16 16 0 0 1 16 16v23.648a16 16 0 0 1-16 16h-16a16 16 0 0 1-16-16v-23.648a16 16 0 0 1 16-16z"/>
+                          </svg>
+                          <span class="tooltip-content" data-i18n="enhancedBlurTip">此选项可能会对设备功耗有轻微影响。</span>
+                        </span>
+                      </div>
+                      <div class="switch-container">
+                        <span class="setting-status-text" id="status-bg-fade-blur" data-i18n="off">关闭</span>
+                        <label class="switch">
+                          <input type="checkbox" id="toggle-bg-fade-blur">
+                          <span class="slider"></span>
+                        </label>
+                      </div>
+                    </div>
+
+                    <!-- 背景边角晕影：控制壁纸上那层暗角/亮角遮罩，默认开启 -->
+                    <div class="setting-row" style="margin-top: 8px;">
                       <div class="setting-label-group" data-i18n="bgVignette">背景边角晕影</div>
                       <div class="switch-container">
                         <span class="setting-status-text" id="status-bg-vignette" data-i18n="on">打开</span>
