@@ -187,7 +187,7 @@
       opacity: 1;
       filter: blur(0);
       transform: scale(1);
-      transition: opacity 0.2s ease-in, filter 0.5s ease-out, transform 0.5s ease-out;
+      transition: opacity 0.2s ease-in, filter 0.4s ease-out, transform 0.4s ease-out;
     }
 
     /* 系统开启"减少动态效果"时不做模糊动画，只保留最基础的渐入 */
@@ -1548,19 +1548,19 @@
     }
 
     /* 展望模式布局排布 */
-    body[data-layout="inspirational"] #inner {
+    :is(html, body)[data-layout="inspirational"] #inner {
       grid-template-rows: minmax(78px, 15%) 46px 32px 1fr auto 12%;
     }
 
-    body[data-layout="inspirational"] #logo {
+    :is(html, body)[data-layout="inspirational"] #logo {
       display: none;
     }
 
-    body[data-layout="inspirational"] #search-container {
+    :is(html, body)[data-layout="inspirational"] #search-container {
       grid-row: 2;
     }
 
-    body[data-layout="inspirational"] ntp-quicklinks {
+    :is(html, body)[data-layout="inspirational"] ntp-quicklinks {
       grid-row: 4;
     }
 
@@ -2501,7 +2501,7 @@
                 
               </div>
               <div class="settings-footer-links">
-                <a href="#" id="btn-footer-version">LiteStart 1.8.3-beta1</a>| <span data-i18n="presentedBy">由</span> <a href="https://xingyuefox.pages.dev" target="_blank" data-i18n="xingyuefox">星月Fox</a> <span data-i18n="forYou">为您呈现</span>
+                <a href="#" id="btn-footer-version">LiteStart 1.8.3-beta2</a>| <span data-i18n="presentedBy">由</span> <a href="https://xingyuefox.pages.dev" target="_blank" data-i18n="xingyuefox">星月Fox</a> <span data-i18n="forYou">为您呈现</span>
               </div>
               <div class="settings-footer-text" style="opacity: 0.8;" data-i18n="disclaimer">
                 请注意，此网页与 Microsoft 无关。
@@ -2950,7 +2950,7 @@
     <div id="modal-about" class="modal-overlay">
       <div class="modal-dialog">
         <div class="modal-header" data-i18n="aboutTitle">关于 Litestart</div>
-        <p style="margin: 0; opacity: 0.7; font-size: 13px;" data-i18n="litever">版本 1.8.3-beta1 | 更新时间：2026-10-14</p><br>
+        <p style="margin: 0; opacity: 0.7; font-size: 13px;" data-i18n="litever">版本 1.8.3-beta2 | 更新时间：2026-10-14</p><br>
         
         <!-- 可用更新提示框 -->
         <div id="update-notice" class="update-notice" style="display: none;">

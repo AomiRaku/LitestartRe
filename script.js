@@ -1,4 +1,4 @@
-const APP_VERSION = '1.8.3-beta1';      // 发行版本（compareVersions 用 parseInt，后缀不影响比较）
+const APP_VERSION = '1.8.3-beta2';      // 发行版本（compareVersions 用 parseInt，后缀不影响比较）
 const GITHUB_REPO = 'XingYueFox/Litestart';
 
 const logos = {
@@ -66,7 +66,7 @@ const i18nData = {
     download: '下载',
     updateAvailable: '可用更新',
     aboutDesc: '一个简洁、快速的浏览器起始页。',
-    litever: '版本 1.8.3-beta1 | 更新时间：2026-10-14',
+    litever: '版本 1.8.3-beta2 | 更新时间：2026-10-14',
     versionInfo: '版本信息',
     and: '和',
     searchPlaceholder: '今天想用 {name} 搜索什么？',
@@ -251,7 +251,7 @@ const i18nData = {
     download: '下載',
     updateAvailable: '可用更新',
     aboutDesc: '一個簡潔、快速的瀏覽器起始頁。',
-    litever: '版本 1.8.3-beta1 | 更新時間：2026-10-14',
+    litever: '版本 1.8.3-beta2 | 更新時間：2026-10-14',
     versionInfo: '版本資訊',
     and: '與',
     searchPlaceholder: '今天想用 {name} 搜尋什麼？',
@@ -421,7 +421,7 @@ const i18nData = {
     download: 'Download',
     updateAvailable: 'Update available',
     aboutDesc: 'A simple and fast browser start page.',
-    litever: 'Version 1.8.3-beta1 | Updated: 2026-10-14',
+    litever: 'Version 1.8.3-beta2 | Updated: 2026-10-14',
     versionInfo: 'Version Info',
     and: '&',
     searchPlaceholder: 'What do you want to search with {name} today?',
@@ -592,7 +592,7 @@ const i18nData = {
     download: 'ダウンロード',
     updateAvailable: 'アップデートがあります',
     aboutDesc: 'シンプルで高速なブラウザスタートページです。',
-    litever: 'バージョン 1.8.3-beta1 | 更新日: 2026-10-14',
+    litever: 'バージョン 1.8.3-beta2 | 更新日: 2026-10-14',
     versionInfo: 'バージョン情報',
     and: 'と',
     searchPlaceholder: '今日は {name} で何を検索しますか？',
@@ -763,7 +763,7 @@ const i18nData = {
     download: 'Скачать',
     updateAvailable: 'Доступно обновление',
     aboutDesc: 'Простая и быстрая страница запуска браузера.',
-    litever: 'Версия 1.8.3-beta1 | Обновлено: 2026-10-14',
+    litever: 'Версия 1.8.3-beta2 | Обновлено: 2026-10-14',
     versionInfo: 'Информация о версии',
     and: 'и',
     searchPlaceholder: 'Что поищем сегодня через {name}?',
@@ -2659,7 +2659,15 @@ document.addEventListener('DOMContentLoaded', () => {
   setLogo(savedEngine);
   updateEngineEditButton(savedEngine);
   updateForceBingCNRow(savedEngine);
-  document.body.setAttribute('data-layout', savedLayout === 'hidden' ? 'focused' : savedLayout);
+  // data-layout 同时写在 <html> 和 <body> 上：
+  // <html> 上的值由 early.js 在首帧之前设置（避免悬挂布局下搜索框先出现在页面中部），
+  // 这里必须保持一致，否则切换布局后 <html> 上的旧值会让 CSS 选择器继续命中悬挂布局。
+  function setLayoutAttr(value) {
+    document.documentElement.setAttribute('data-layout', value);
+    document.body.setAttribute('data-layout', value);
+  }
+
+  setLayoutAttr(savedLayout === 'hidden' ? 'focused' : savedLayout);
   // 应用快速链接位置（"底部"模式会强制一行并锁定数量下拉）
   applyQuicklinkPosition();
 
@@ -3493,7 +3501,7 @@ inputOnlineUrl?.addEventListener('input', () => {
     if (!layoutVal || layoutVal === 'hidden') return;
 
     // 切换布局时顺手把搜索栏恢复显示
-    document.body.setAttribute('data-layout', layoutVal);
+    setLayoutAttr(layoutVal);
     Storage.set('ntp_layout', layoutVal);
 
     if (!searchVisible) {

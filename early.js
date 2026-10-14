@@ -28,7 +28,20 @@
   } catch (e) {
     /* 读不到或格式异常时按默认（显示）处理，交给主脚本修正 */
   }
-  // 3) 主题模式：把最终生效的主题提前写到 <html> 上，避免首帧闪成另一种配色。
+  // 3) 布局模式：提前写到 <html> 上。
+  //    "悬挂"布局会改 #inner 的网格行与搜索框所在行，而主脚本要等 DOMContentLoaded
+  //    才把它写到 <body>，首帧因此先按默认网格排布——搜索框会出现在页面中部再跳到顶部。
+  //    这里先同步读一次存储；CSS 用 :is(html, body)[data-layout=...] 同时认这两个位置。
+  try {
+    var layout = JSON.parse(localStorage.getItem('ntp_layout') || '"centered"');
+    if (layout === 'inspirational') {
+      document.documentElement.setAttribute('data-layout', 'inspirational');
+    }
+  } catch (e) {
+    /* 读不到时按默认布局处理，交给主脚本修正 */
+  }
+
+  // 4) 主题模式：把最终生效的主题提前写到 <html> 上，避免首帧闪成另一种配色。
   //    存储值是 'auto' / 'light' / 'dark'，auto 时按系统偏好解析。
   try {
     var pref = JSON.parse(localStorage.getItem('ntp_theme') || '"auto"');
