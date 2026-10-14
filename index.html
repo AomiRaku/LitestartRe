@@ -31,9 +31,9 @@
       --neutral-fill-hover: rgba(0, 0, 0, 0.08);/* 按钮 Hover 填充 */
 
       /* 4. 强调色 */
-      --accent-foreground-rest: #000000;       /* 强调色 */
-      --accent-foreground-hover: #1b1b1b;      /* 第二强调色 */
-      --accent-foreground-invert: #ffffff;   /* 反色强调色 */
+      --accent-foreground-rest: #262320;       /* 强调色（原纯黑 #000000） */
+      --accent-foreground-hover: #3a3733;      /* 第二强调色：需比 rest 更亮，随 rest 一起上调 */
+      --accent-foreground-invert: #f0f0f0;   /* 反色强调色（原纯白 #ffffff） */
       --btn-secondary-bg: #EEEEEE;             /* 次级按钮背景 */
       --btn-danger-color: #d13438;             /* 危险/删除操作文字色 */
       --btn-danger-hover: #fde8e8;             /* 危险按钮 Hover 背景 */
@@ -48,7 +48,7 @@
       /* 6. 模态框与弹窗样式 */
       --modal-bg: #ffffff;
       --modal-border: #e0e0e0;
-      --modal-mask: rgba(0, 0, 0, 0.4);
+      --modal-mask: rgba(0, 0, 0, 0.52);
       --input-bg: #F2F2F2;
 
       /* 7. 设置面板专用颜色 */
@@ -98,14 +98,14 @@
 
         --modal-bg: #242424;
         --modal-border: #454545;                 /* 按钮悬停底色，需比 --btn-secondary-bg 更亮 */
-        --modal-mask: rgba(0, 0, 0, 0.65);
+        --modal-mask: rgba(0, 0, 0, 0.78);
         --input-bg: #202020;
         --btn-danger-color: #ff6b6b;
         --btn-danger-hover: #3d1a1a;
 
-        --accent-foreground-rest: #ffffff;       /* 强调色 */
-        --accent-foreground-hover: #E0E0E0;      /* 第二强调色 */
-        --accent-foreground-invert: #000000;   /* 反色强调色！！！ */
+        --accent-foreground-rest: #f0f0f0;       /* 强调色（原纯白 #ffffff） */
+        --accent-foreground-hover: #E0E0E0;      /* 第二强调色（本就比 rest 暗，无需调整） */
+        --accent-foreground-invert: #262320;   /* 反色强调色（原纯黑 #000000） */
         --btn-secondary-bg: #3a3a3a;             /* 次级按钮背景（比卡片 #2b2b2b 亮一档，看得出是按钮） */
 
         --settings-panel-bg: #242424;
@@ -250,7 +250,7 @@
 
     /* 暗色模式 + 有壁纸时，Logo 保持白色 */
     :root[data-theme="dark"] body.bg-enabled {
-      --logo-color: #ffffff;
+      --logo-color: #f0f0f0;
     }
 
     /* ===== 按钮、窗口、搜索框等元素的过渡动画 =====
@@ -462,7 +462,8 @@
       width: 320px;
       padding: 0;
       background-color: var(--settings-panel-bg);
-      border: 1px solid var(--settings-card-border);
+      /* 纯平风格：去掉描边，层次由 .popover-panel 的 box-shadow 承担 */
+      border: 1px solid transparent;
       border-radius: 12px;
       max-height: 85vh;
       overflow-y: auto;
@@ -819,6 +820,12 @@
       filter: brightness(0.75);
     }
 
+    /* 关闭态悬停：胶囊底色与按钮悬停保持一致（--modal-border）。
+       用 input:not(:checked) 限定，打开态仍是强调色，不受影响 */
+    input:not(:checked) + .slider:hover {
+      background-color: var(--modal-border);
+    }
+
     input:checked + .slider {
       background-color: var(--accent-foreground-rest);
       border-color: var(--accent-foreground-rest);
@@ -1124,7 +1131,9 @@
 
     /* 底部链接样式 */
     .settings-footer {
-      padding: 8px 16px 16px 16px;
+      /* 上内边距留 0：上方留白由 .settings-content 的 padding-bottom(12px) 提供，
+         正好与版本行下方的间距(12px)一致；原来是 8px + 12px = 20px */
+      padding: 0 16px 16px 16px;
       font-size: 11px;
       color: var(--settings-text-secondary);
       line-height: 1.6;
@@ -1134,7 +1143,7 @@
       display: flex;
       flex-wrap: wrap;
       gap: 4px 6px;
-      margin-bottom: 8px;
+      margin-bottom: 12px;     /* 版本/署名行与链接行之间的间距 */
     }
 
     .settings-footer-links a {
@@ -1146,9 +1155,22 @@
       text-decoration: underline;
     }
 
+    /* 页脚下面两行（链接行 + 免责声明）统一成次要色并整体调淡。
+       相邻兄弟选择器只命中第二个 .settings-footer-links，也就是链接行，
+       第一行的版本 / 署名行不受影响。
+       链接行的下边距由 8px 收到 4px，让这两行靠紧一些
+       （相邻块级元素的 margin 会折叠，实际间距取两者中的较大值）。 */
+    .settings-footer-links + .settings-footer-links {
+      color: var(--settings-text-secondary);
+      opacity: 0.7;
+      margin-bottom: 2px;
+    }
+
     .settings-footer-text {
       color: var(--settings-text-secondary);
-      margin: 4px 0;
+      opacity: 0.7;
+      /* 上边距与链接行的下边距一起决定折叠结果（取较大值），所以必须同步收到 2px */
+      margin: 2px 0;
     }
 
     #inner {
@@ -1611,7 +1633,8 @@
 
     .modal-dialog {
       background-color: var(--modal-bg);
-      border: 1px solid var(--modal-border);
+      /* 纯平风格：去掉描边，层次由 box-shadow: var(--shadow16) 承担 */
+      border: 1px solid transparent;
       border-radius: 8px;
       width: 420px;
       max-width: 90vw;
@@ -2027,7 +2050,8 @@
     width: 340px;
     padding: 0;
     background-color: var(--settings-panel-bg);
-    border: 1px solid var(--settings-card-border);
+    /* 纯平风格：去掉描边，层次由 .popover-panel 的 box-shadow 承担 */
+    border: 1px solid transparent;
     border-radius: 12px;
     }
 
@@ -2502,16 +2526,16 @@
             <!-- 底部版权/链接区域 -->
             <div class="settings-footer">
               <div class="settings-footer-links">
+                <a href="#" id="btn-footer-version">LiteStart 1.8.3-beta2</a>| <span data-i18n="presentedBy">由</span> <a href="https://xingyuefox.pages.dev" target="_blank" data-i18n="xingyuefox">星月Fox</a> <span data-i18n="forYou">为您呈现</span>
+              </div>
+              <div class="settings-footer-links">
                 <a href="https://github.com/XingYueFox/Litestart/blob/main/PRIVACY_POLICY.md" data-i18n="cookieNotice">隐私政策</a> · 
                 <a href="https://github.com/XingYueFox/Litestart/blob/main/LICENSE" data-i18n="license">开源协议</a> ·  
                 <a href="https://github.com/XingYueFox/Litestart/graphs/contributors?from=2026%2F5%2F23" data-i18n="contributor">贡献名单</a> · 
                 <a href="https://github.com/XingYueFox/Litestart/issues" data-i18n="helpFeedback">帮助&反馈</a>
                 
               </div>
-              <div class="settings-footer-links">
-                <a href="#" id="btn-footer-version">LiteStart 1.8.3-beta2</a>| <span data-i18n="presentedBy">由</span> <a href="https://xingyuefox.pages.dev" target="_blank" data-i18n="xingyuefox">星月Fox</a> <span data-i18n="forYou">为您呈现</span>
-              </div>
-              <div class="settings-footer-text" style="opacity: 0.8;" data-i18n="disclaimer">
+              <div class="settings-footer-text" data-i18n="disclaimer">
                 请注意，此网页与 Microsoft 无关。
               </div>
             </div>
