@@ -61,4 +61,4 @@ Or use file import
 
 ## License
 
-MIT License
+Apache 2.0 License
