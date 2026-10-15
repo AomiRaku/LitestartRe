@@ -2825,7 +2825,15 @@ document.addEventListener('DOMContentLoaded', () => {
   let renderedWallpaperKey = null;
 
   // 根据自定义壁纸数据，渲染视频/图片背景到页面和预览容器
-  // 渐入逻辑：先移除 .loaded 让元素透明 → 设置 src → 监听加载事件 → 加载完成后加 .loaded 触发 transition
+  // 渐入逻辑：先移除 .loaded 让元素透明 → 设置 src → 等就绪 → 加上 .loaded 触发 transition
+  //
+  // 渲染令牌：decode() 绑定的是调用时的图片，若连续切换壁纸，
+  // 上一张图的回调可能先跑完并提前加上 .loaded（新图尚未就绪就显形、动画也被消耗）。
+  // 每次渲染递增，过期回调直接丢弃。
+  let wallpaperRenderToken = 0;
+  // 就绪兜底：decode() / canplay 可能因网络问题长时间挂起，
+  // 超时后强制显示，避免背景一直停在透明状态（此时不会有渐入动画，但至少可见）。
+  const WALLPAPER_READY_TIMEOUT = 8000;
   function renderWallpaper() {
     // 每次进入背景设置页都会调用本函数。若壁纸没变，重设 src 会让浏览器重新加载
     // 并再播一遍"渐入 + 模糊"，所以要能识别出"还是同一张"并跳过重设。
@@ -2865,12 +2873,20 @@ document.addEventListener('DOMContentLoaded', () => {
           bgImage.classList.remove('loaded');
           bgImage.style.display = 'block';
           bgImage.src = 'img/background.webp';
-          // 默认背景加载完成后渐入
-          bgImage.addEventListener('load', function onDefLoad() {
+          // 默认背景就绪后渐入（decode 保证已解码且异步完成，见文件内说明）
+          const token = ++wallpaperRenderToken;
+          // settled 保证就绪回调与超时回调只生效一次
+          let settled = false;
+          const showDefaultBg = () => {
+            if (settled) return;
+            settled = true;
+            if (token !== wallpaperRenderToken) return;   // 期间又渲染过别的，丢弃
+            void bgImage.offsetWidth;   // 强制样式计算，确保上面的 remove('loaded') 已生效
             bgImage.classList.add('loaded');
             bgOverlay?.classList.add('loaded');
-            bgImage.removeEventListener('load', onDefLoad);
-          });
+          };
+          setTimeout(showDefaultBg, WALLPAPER_READY_TIMEOUT);
+          bgImage.decode().then(showDefaultBg).catch(showDefaultBg);
         }
       }
       setWallpaperTypeTitle('localImage');
@@ -2902,12 +2918,20 @@ document.addEventListener('DOMContentLoaded', () => {
           bgVideo.style.display = 'block';
           bgVideo.src = customWallpaperData.url;
           // 视频缓冲到可播放时再渐入
+          const token = ++wallpaperRenderToken;
+          // settled 保证就绪回调与超时回调只生效一次
+          let settled = false;
           const onCanPlay = () => {
+            if (settled) return;
+            settled = true;
+            if (token !== wallpaperRenderToken) return;   // 期间又渲染过别的，丢弃
+            void bgVideo.offsetWidth;   // 强制样式计算，确保上面的 remove('loaded') 已生效
             bgVideo.classList.add('loaded');
             bgOverlay?.classList.add('loaded');
             bgVideo.removeEventListener('canplay', onCanPlay);
             bgVideo.play().catch(() => {});
           };
+          setTimeout(onCanPlay, WALLPAPER_READY_TIMEOUT);
           bgVideo.addEventListener('canplay', onCanPlay);
         }
       }
@@ -2933,22 +2957,24 @@ document.addEventListener('DOMContentLoaded', () => {
           bgImage.classList.remove('loaded');
           bgImage.style.display = 'block';
           bgImage.src = customWallpaperData.url;
-          // 图片加载完成后渐入；complete 为 true 表示浏览器缓存已命中，直接显示
-          const onLoad = () => {
+          // 图片就绪后渐入。
+          // 用 decode() 取代原来的 load 事件 + complete 判断：
+          //   · decode() 必定异步完成，不会与上面的 remove('loaded') 落在同一帧
+          //   · src 与当前值相同时浏览器不会派发 load，decode() 仍能正常 resolve
+          //   · 也避免 complete / naturalWidth 读到上一张图的状态而走错分支
+          const token = ++wallpaperRenderToken;
+          // settled 保证就绪回调与超时回调只生效一次
+          let settled = false;
+          const showWallpaper = () => {
+            if (settled) return;
+            settled = true;
+            if (token !== wallpaperRenderToken) return;   // 期间又渲染过别的，丢弃
+            void bgImage.offsetWidth;   // 强制样式计算，确保上面的 remove('loaded') 已生效
             bgImage.classList.add('loaded');
             bgOverlay?.classList.add('loaded');
-            bgImage.removeEventListener('load', onLoad);
           };
-          if (bgImage.complete && bgImage.naturalWidth > 0) {
-            requestAnimationFrame(() => {
-              requestAnimationFrame(() => {
-                bgImage.classList.add('loaded');
-                bgOverlay?.classList.add('loaded');
-              });
-            });
-          } else {
-            bgImage.addEventListener('load', onLoad);
-          }
+          setTimeout(showWallpaper, WALLPAPER_READY_TIMEOUT);
+          bgImage.decode().then(showWallpaper).catch(showWallpaper);
         }
       }
 
