@@ -1636,7 +1636,10 @@
       border-radius: 4px;
       background-color: transparent;
       color: var(--settings-text-primary);
-      font-family: inherit;
+      /* 显式取全局字体：本菜单挂在 <body> 下，而全局字体只设在 ntp-shell 上，
+         inherit 拿不到它，会退回浏览器给按钮的默认字体（中文下是微软雅黑）。
+         这里与其它浮层保持一致的写法 */
+      font-family: var(--font-family);
       font-size: 13px;
       text-align: left;
       white-space: nowrap;
