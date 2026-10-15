@@ -787,15 +787,19 @@
       /* 进度值驱动一切。下面两个位置/宽度由它算出，
          所以过渡中任何一帧的间隙都精确等于 2px */
       --p: 0;
-      /* 打开态手柄：左边缘 25px、宽 5px → 右边缘正好 30px（贴住控件右边，不被裁） */
-      --thumb-left: calc(var(--p) * 25px);
-      --thumb-w: calc(16px - var(--p) * 11px);
+      /* 打开态手柄：左边缘 21px、宽 5px → 右边缘正好 26px（贴住控件右边，不被裁） */
+      --thumb-left: calc(var(--p) * 21px);
+      /* 手柄是固定的圆头竖线，宽度不再随状态变化 */
+      --thumb-w: 5px;
       /* 左半边宽度：右边界 = 手柄左边缘 − 2，可见期间间隙恒为 2px */
       --lw: max(0px, calc(var(--thumb-left) - 2px));
       /* 右半边宽度：左边界 = 手柄右边缘 + 2，间隙同样恒为 2px */
-      --rw: max(0px, calc(28px - var(--thumb-left) - var(--thumb-w)));
-      width: 30px;                 /* 28 → 30：让半胶囊放得下"半圆 + 小圆角" */
+      --rw: max(0px, calc(24px - var(--thumb-left) - var(--thumb-w)));
+      width: 26px;                 /* 再缩短一档，竖线粗细不变 */
       height: 16px;                /* 高度略降（原 18px） */
+      /* 光标提在这里：两个半边胶囊是伪元素，会继承宿主的光标；
+         否则它们盖在 .slider 之上，鼠标扫到胶囊上就变成默认箭头了 */
+      cursor: pointer;
       transition: --p 0.2s ease;
       /* 兜底：任何元素都不越出控件范围 */
       overflow: hidden;
@@ -816,7 +820,7 @@
     @property --thumb-w {
       syntax: '<length>';
       inherits: true;
-      initial-value: 16px;
+      initial-value: 5px;
     }
     /* 统一进度值：0 = 完全关闭，1 = 完全打开。位置、宽度、渐隐全由它推导 */
     @property --p {
@@ -846,19 +850,21 @@
     .switch::before {
       content: "";
       position: absolute;
-      top: 0;
-      bottom: 0;
+      /* 胶囊比控件矮一点（竖线仍是 16px），所以垂直居中而不是撑满 */
+      top: 50%;
+      transform: translateY(-50%);
+      height: 13px;
       background-color: var(--accent-foreground-rest);
       /* 斜杠前是水平半径、后是垂直半径。
          垂直半径固定 8px / 3px（与原来的单值写法一致），所以宽度足够时外观不变；
          水平半径随宽度收窄，使两端之和始终不超过宽度 ——
          这样只有横向被压缩，圆端的纵向弧度不会被压扁、不会坍缩成一条线 */
       border-radius:
-        min(8px, var(--lw)) min(3px, max(0px, var(--lw) - 8px))
-        min(3px, max(0px, var(--lw) - 8px)) min(8px, var(--lw))
-        / 8px 3px 3px 8px;
+        min(6.5px, var(--lw)) min(3px, max(0px, var(--lw) - 6.5px))
+        min(3px, max(0px, var(--lw) - 6.5px)) min(6.5px, var(--lw))
+        / 6.5px 3px 3px 6.5px;
       /* 左端固定，只让右端随宽度伸缩 —— 大端不会被推出裁掉。
-         最小 11px 是两端半径之和（8+3），再小圆角就会被等比缩小 */
+         最小 9.5px 是两端半径之和（6.5+3），再小圆角就会被等比缩小 */
       left: 0;
       /* 右边界 = 手柄左边缘 − 2，于是间隙恒为 2px。
          关闭时算出 −2px，被 max() 取 0 → 宽度归零，不残留像素 */
@@ -875,8 +881,10 @@
     .switch::after {
       content: "";
       position: absolute;
-      top: 0;
-      bottom: 0;
+      /* 与左半边一致：比控件矮、垂直居中 */
+      top: 50%;
+      transform: translateY(-50%);
+      height: 13px;
       /* 右端固定，宽度伸缩 —— 与左半边对称，大端不会被推出裁掉。
          宽度 = 12px − p×14，恰好使左边界 = 手柄右边缘 + 2，间隙恒为 2px */
       right: 0;
@@ -887,15 +895,15 @@
          水平半径随宽度收窄，两端之和始终不超过宽度 ——
          这样只压横向，圆端的纵向弧度不会被压扁、不会坍缩成线 */
       border-radius:
-        min(3px, max(0px, var(--rw) - 8px)) min(8px, var(--rw))
-        min(8px, var(--rw)) min(3px, max(0px, var(--rw) - 8px))
-        / 3px 8px 8px 3px;
+        min(3px, max(0px, var(--rw) - 6.5px)) min(6.5px, var(--rw))
+        min(6.5px, var(--rw)) min(3px, max(0px, var(--rw) - 6.5px))
+        / 3px 6.5px 6.5px 3px;
       /* 与左半边镜像对称的末段渐隐 */
       opacity: clamp(0, (0.625 - var(--p)) * 8, 1);
       transition: background-color 0.2s ease;
     }
 
-    /* 手柄：关闭态＝空心圆环，位于左端 */
+    /* 手柄：一根圆头竖线，只左右移动（颜色随状态切换） */
     .slider::before {
       content: "";
       position: absolute;
@@ -903,34 +911,47 @@
       left: var(--thumb-left);
       width: var(--thumb-w);
       height: 16px;
-      /* 环用内阴影画：border 会参与布局，在竖线那种极窄宽度下把元素撑宽。
-         环心保持透明（真正镂空）：悬停时的 filter: brightness() 只影响有色像素，
-         所以环心不会跟着变色；下面也没有任何需要遮挡的底色 */
-      background-color: transparent;
-      /* 环壁 4px，与打开态竖线的宽度一致；16px 外径 → 内径 8px */
-      box-shadow: inset 0 0 0 4px var(--settings-card-border);
-      border-radius: 50%;
+      /* 关闭态与两侧胶囊同色；打开态在下面的 :checked 规则里换成强调色 */
+      background-color: var(--settings-card-border);
+      border-radius: 999px;          /* 竖线两端是圆的 */
+      /* 伪元素不拦截指针：拖拽事件统一由铺满控件的 .slider 接收 */
+      pointer-events: none;
       /* left / width 由 --thumb-left / --thumb-w 驱动，已在 .switch 上插值，
          这里不能再加过渡，否则同一个变化会被叠加两次 */
-      transition: box-shadow 0.2s ease, background-color 0.2s ease, border-radius 0.2s ease;
+      transition: background-color 0.2s ease;
     }
 
-    /* 悬停时整个开关一起变色（三个形状都在 .switch 内，filter 会作用于全部） */
+    /* 悬停时整个开关一起变淡。
+       用 opacity 而不是 brightness：brightness 按比例缩放通道绝对值，
+       对近黑（浅色打开态）和近白（深色打开态）几乎看不出变化，
+       也无法同时适配"浅色该变亮、深色该变暗"这两个相反方向。
+       opacity 是线性混合，与颜色亮度无关，四种组合都有成比例的可见变化。 */
     .switch:hover {
-      filter: brightness(0.94);
+      opacity: 0.7;
+    }
+
+    /* 拖动手柄时临时关掉过渡：--p 由脚本逐帧写入，若还带 0.2s 过渡会明显滞后 */
+    .switch.dragging,
+    .switch.dragging .slider::before {
+      transition: none;
+    }
+
+    /* 拖动中换成"抓取"光标（.slider 自己写了 pointer，这里特异性更高才盖得住） */
+    .switch.dragging,
+    .switch.dragging .slider {
+      cursor: grabbing;
     }
 
     /* ===== 打开态 ===== */
     .switch:has(input:checked) {
-      /* 打开：进度推到 1，手柄位置/宽度、两半胶囊宽度随之全部到位 */
+      /* 打开：进度推到 1，手柄位置、两半胶囊的露出宽度随之全部到位 */
       --p: 1;
     }
 
+
     .switch:has(input:checked) .slider::before {
-      /* 位置与宽度已由变量驱动，这里只负责"圆环 → 圆头竖线"的形状变化 */
-      box-shadow: inset 0 0 0 0 var(--accent-foreground-rest);
+      /* 位置已由变量驱动，形状固定，这里只把颜色换成强调色 */
       background-color: var(--accent-foreground-rest);
-      border-radius: 999px;
     }
 
     /* 卡片视图选择器 */
@@ -1860,6 +1881,12 @@
       outline: none;
       box-sizing: border-box;
       transition: background-color 0.08s, border-color 0.08s, box-shadow 0.08s;
+    }
+
+    /* 占位符弱化一档：默认值是浏览器给的偏深灰，这里改用专门的占位符色再压透明 */
+    .input::placeholder {
+      color: var(--placeholder-color);
+      opacity: 0.75;
     }
 
     /* 悬停变色(选中时不生效)：:hover 特异性本就更高，不需要 !important */

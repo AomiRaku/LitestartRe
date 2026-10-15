@@ -5036,6 +5036,9 @@ searchInput?.addEventListener('input', () => {
 
   initCustomSelects();
 
+  // 开关手柄可拖拽
+  initSwitchDrag();
+
   // 首次使用引导：只在没点过九点菜单时出现
   setupGuideTip(guideTipWaffle, btnWaffle, 'ntp_guide_waffle_done');
   window.addEventListener('resize', () => {
@@ -5048,6 +5051,143 @@ searchInput?.addEventListener('input', () => {
   // 初始化悬浮滚动条
   updateSettingsScrollbar();
 });
+
+// ===== 开关手柄拖拽 =====
+// 手柄是 .slider::before 伪元素，没法直接绑事件，所以指针事件由铺满控件的 .slider 接收，
+// 再用坐标判断指针是否落在手柄上 —— 只有按到手柄才进入拖动；
+// 按在两侧胶囊上则完全不接管，交给 <label> 的默认行为完成普通点击切换。
+//
+// 起步有阈值（DRAG_THRESHOLD）：pointerdown 时只记下候选，不立刻改状态也不加类，
+// 位移超过阈值才真正开始拖。这样手抖、误触、想点击却略微移动一下都不会误拖。
+//
+// 拖动时把进度写进内联的 --p（样式里用 @property 注册过，是真正可插值的数值），
+// 两侧胶囊宽度跟着手柄走，间隙仍恒为 2px；松手移除内联值，交回 CSS 的 0 / 1。
+function initSwitchDrag() {
+  const root = document.documentElement;
+  if (root.dataset.switchDragReady) return;
+  root.dataset.switchDragReady = '1';
+
+  // 位移超过这个像素数才算拖动，否则按点击处理
+  const DRAG_THRESHOLD = 5;
+  // 手柄命中范围的左右容差：手柄只有 5px 宽，太窄不好按
+  const HIT_TOLERANCE = 5;
+
+  // 拖动上下文；未按下时为 null。dragging 为 true 才算真正进入拖动
+  let ctx = null;
+
+  const thumbWidthOf = sw =>
+    parseFloat(getComputedStyle(sw).getPropertyValue('--thumb-w')) || 5;
+
+  const scaleOf = (sw, rect) => rect.width / (sw.offsetWidth || rect.width || 1);
+
+  // 当前进度：优先读内联值（拖动中），否则是 CSS 算出来的 0 / 1
+  const progressOf = sw => {
+    const v = parseFloat(getComputedStyle(sw).getPropertyValue('--p'));
+    return Number.isFinite(v) ? v : 0;
+  };
+
+  // 手柄在视口坐标下的水平范围（带容差）
+  const thumbHitRange = sw => {
+    const rect = sw.getBoundingClientRect();
+    const scale = scaleOf(sw, rect);
+    const thumbPx = thumbWidthOf(sw) * scale;
+    const travelPx = Math.max(1, rect.width - thumbPx);
+    const left = rect.left + progressOf(sw) * travelPx;
+    const tol = HIT_TOLERANCE * scale;
+    return { left: left - tol, right: left + thumbPx + tol };
+  };
+
+  // 由指针位置反推进度（0~1），让手柄中心跟着指针走
+  const progressAt = (sw, clientX) => {
+    const rect = sw.getBoundingClientRect();
+    // 元素可能被 transform: scale() 缩放过：rect 是视口坐标下的尺寸，
+    // 而 --thumb-w 读到的是原始像素。求出缩放比统一坐标系后再算，避免缩放时偏掉。
+    const scale = scaleOf(sw, rect);
+    const thumbPx = thumbWidthOf(sw) * scale;
+    const travelPx = Math.max(1, rect.width - thumbPx);
+    const p = (clientX - rect.left - thumbPx / 2) / travelPx;
+    return p < 0 ? 0 : p > 1 ? 1 : p;
+  };
+
+  const clearCtx = () => {
+    if (ctx) {
+      ctx.sw.classList.remove('dragging');
+      ctx.sw.style.removeProperty('--p');
+    }
+    ctx = null;
+  };
+
+  document.addEventListener('pointerdown', e => {
+    const sw = e.target.closest && e.target.closest('.switch');
+    if (!sw) return;
+    const input = sw.querySelector('input[type="checkbox"]');
+    const slider = sw.querySelector('.slider');
+    if (!input || !slider || input.disabled || sw.classList.contains('disabled')) return;
+    if (!slider.contains(e.target) && e.target !== slider) return;
+    // 只有按在手柄上才接管；按到两侧胶囊则完全不管，让 label 正常切换
+    const hit = thumbHitRange(sw);
+    if (e.clientX < hit.left || e.clientX > hit.right) return;
+
+    // 阻止 label 的默认行为，改为松手时自行决定是否切换
+    e.preventDefault();
+    // 只记候选，先不改状态、不加类 —— 要等位移超过阈值才真正进入拖动
+    ctx = { sw, input, slider, moved: false, dragging: false, startX: e.clientX };
+    // 捕获指针，拖出控件也能继续跟手；个别环境会抛错，忽略即可
+    try { slider.setPointerCapture(e.pointerId); } catch (_) { /* 忽略 */ }
+  });
+
+  document.addEventListener('pointermove', e => {
+    if (!ctx) return;
+    if (!ctx.dragging) {
+      // 还没进入拖动：位移不够就当什么都没发生（防抖）
+      if (Math.abs(e.clientX - ctx.startX) <= DRAG_THRESHOLD) return;
+      ctx.dragging = true;
+      ctx.moved = true;
+      ctx.sw.classList.add('dragging');
+    }
+    ctx.sw.style.setProperty('--p', String(progressAt(ctx.sw, e.clientX)));
+  });
+
+  document.addEventListener('pointerup', e => {
+    if (!ctx) return;
+    const { sw, input, dragging, moved } = ctx;
+
+    if (dragging) {
+      // 按最终位置提交
+      const p = progressAt(sw, e.clientX);
+      clearCtx();
+      const next = p >= 0.5;
+      if (next !== input.checked) {
+        input.checked = next;
+        // 程序改 checked 不会派发 change，这里补上，设置项的保存逻辑才收得到
+        input.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+    } else {
+      // 按下后位移没超过阈值：当作点击，取反当前状态
+      clearCtx();
+      input.checked = !input.checked;
+      input.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+    // 标记这次指针交互已处理状态，供后面拦掉 label 补发的 click
+    root.dataset.switchDragHandled = '1';
+  });
+
+  document.addEventListener('pointercancel', () => {
+    // checkbox 没被改过，清掉内联值即回到 CSS 的 0 / 1
+    clearCtx();
+  });
+
+  // 指针交互后浏览器还会补一个 click，而 .slider 在 <label> 内，
+  // label 的默认行为会再切换一次（等于把刚设好的状态切回去），这里拦下。
+  // 只拦"指针处理过的"那一次：按在胶囊上时我们没接管（不会走上面那条路径），
+  // 键盘（Tab + 空格）也不产生 pointer 事件，它们的 label 默认行为都照常生效。
+  document.addEventListener('click', e => {
+    if (!root.dataset.switchDragHandled) return;
+    delete root.dataset.switchDragHandled;
+    e.preventDefault();
+    e.stopPropagation();
+  }, true);
+}
 
 // ===== 搜索框提示与「自定义」选项的引擎名同步 =====
 // 必须和 applyLanguage / refreshCustomSelects 同级（即在 DOMContentLoaded 回调之外）：
