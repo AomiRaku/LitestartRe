@@ -790,6 +790,10 @@
       /* 打开态手柄：左边缘 25px、宽 5px → 右边缘正好 30px（贴住控件右边，不被裁） */
       --thumb-left: calc(var(--p) * 25px);
       --thumb-w: calc(16px - var(--p) * 11px);
+      /* 左半边宽度：右边界 = 手柄左边缘 − 2，可见期间间隙恒为 2px */
+      --lw: max(0px, calc(var(--thumb-left) - 2px));
+      /* 右半边宽度：左边界 = 手柄右边缘 + 2，间隙同样恒为 2px */
+      --rw: max(0px, calc(28px - var(--thumb-left) - var(--thumb-w)));
       width: 30px;                 /* 28 → 30：让半胶囊放得下"半圆 + 小圆角" */
       height: 16px;                /* 高度略降（原 18px） */
       transition: --p 0.2s ease;
@@ -845,14 +849,20 @@
       top: 0;
       bottom: 0;
       background-color: var(--accent-foreground-rest);
-      /* 左端 8px＝半高（完美半圆），右端（平直端）保留 3px 小圆角 */
-      border-radius: 8px 3px 3px 8px;
+      /* 斜杠前是水平半径、后是垂直半径。
+         垂直半径固定 8px / 3px（与原来的单值写法一致），所以宽度足够时外观不变；
+         水平半径随宽度收窄，使两端之和始终不超过宽度 ——
+         这样只有横向被压缩，圆端的纵向弧度不会被压扁、不会坍缩成一条线 */
+      border-radius:
+        min(8px, var(--lw)) min(3px, max(0px, var(--lw) - 8px))
+        min(3px, max(0px, var(--lw) - 8px)) min(8px, var(--lw))
+        / 8px 3px 3px 8px;
       /* 左端固定，只让右端随宽度伸缩 —— 大端不会被推出裁掉。
          最小 11px 是两端半径之和（8+3），再小圆角就会被等比缩小 */
       left: 0;
       /* 右边界 = 手柄左边缘 − 2，于是间隙恒为 2px。
          关闭时算出 −2px，被 max() 取 0 → 宽度归零，不残留像素 */
-      width: max(0px, calc(var(--thumb-left) - 2px));
+      width: var(--lw);
       /* 只在"圆角与圆端相接"（宽度 11px）之后渐隐：
            p ≥ 0.5        （宽度 ≥ 11px）→ 1，完整显示
            p 0.375 ~ 0.5  （宽度 7.75 ~ 11px）→ 1 → 0，渐隐
@@ -870,10 +880,16 @@
       /* 右端固定，宽度伸缩 —— 与左半边对称，大端不会被推出裁掉。
          宽度 = 12px − p×14，恰好使左边界 = 手柄右边缘 + 2，间隙恒为 2px */
       right: 0;
-      width: max(0px, calc(28px - var(--thumb-left) - var(--thumb-w)));
+      width: var(--rw);
       background-color: var(--settings-card-border);
-      /* 左端（平直端）3px 小圆角，右端 8px＝半高（完美半圆） */
-      border-radius: 3px 8px 8px 3px;
+      /* 斜杠前是水平半径、后是垂直半径。
+         垂直半径固定 3px / 8px（与原来的单值写法一致），宽度足够时外观不变；
+         水平半径随宽度收窄，两端之和始终不超过宽度 ——
+         这样只压横向，圆端的纵向弧度不会被压扁、不会坍缩成线 */
+      border-radius:
+        min(3px, max(0px, var(--rw) - 8px)) min(8px, var(--rw))
+        min(8px, var(--rw)) min(3px, max(0px, var(--rw) - 8px))
+        / 3px 8px 8px 3px;
       /* 与左半边镜像对称的末段渐隐 */
       opacity: clamp(0, (0.625 - var(--p)) * 8, 1);
       transition: background-color 0.2s ease;
