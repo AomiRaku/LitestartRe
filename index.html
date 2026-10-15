@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="referrer" content="strict-origin">
-    <!-- 必须同步加载：在首帧之前设置主题图标与"隐藏搜索框"状态 -->
+    <!-- 首帧加载渲染设置 -->
     <script src="early.js"></script>
     <title data-i18n="pageTitle">新标签页</title>
     <meta name="description" content="可定制的浏览器类原生起始页-简洁无需多言" />
@@ -92,7 +92,6 @@
         --shadow2: 0 0 2px rgba(0, 0, 0, 0.24), 0 1px 2px rgba(0, 0, 0, 0.28);
         --shadow16: 0 0 2px rgba(0, 0, 0, 0.24), 0 8px 16px rgba(0, 0, 0, 0.28);
 
-        /* 深色下黑色阴影几乎不可见，靠"加深的阴影 + 更亮的描边"把浮层托起来（别调太狠，会发脏） */
         --dropdown-shadow: 0 4px 14px rgba(0, 0, 0, 0.4), 0 1px 4px rgba(0, 0, 0, 0.22);
         --dropdown-border: #4c4c4c;
 
@@ -174,8 +173,7 @@
       transition: opacity 0.2s ease-in;
     }
 
-    /* 开启「背景渐显模糊」：在渐入的同时叠加模糊与轻微回缩。
-       放大一点是为了盖住 blur 向边界外糊开的部分，否则四周会出现虚边。 */
+    /* 背景渐显模糊实现 */
     body[data-bg-fade-blur="true"] #bg-video,
     body[data-bg-fade-blur="true"] #bg-image {
       filter: blur(24px);
@@ -190,7 +188,7 @@
       transition: opacity 0.2s ease-in, filter 0.5s ease-out, transform 0.5s ease-out;
     }
 
-    /* 系统开启"减少动态效果"时不做模糊动画，只保留最基础的渐入 */
+    /* 开启"减少动态效果"时不做模糊动画，只保留最基础的渐入 */
     @media (prefers-reduced-motion: reduce) {
       body[data-bg-fade-blur="true"] #bg-video,
       body[data-bg-fade-blur="true"] #bg-image {
@@ -251,11 +249,7 @@
       --logo-color: #ffffff;
     }
 
-    /* ===== 按钮、窗口、搜索框等元素的过渡动画 =====
-   统一使用 0.06s-0.1s 的短时长，配合 ease-out/ease 缓动函数，
-   提供快速而不突兀的交互反馈。
-   transition 涵盖：background-color、border-color、box-shadow、
-   border-radius、opacity、transform 等属性。 */
+    /* ===== 按钮、窗口、搜索框等元素的过渡动画 ===== */
 
     body.bg-enabled[data-enhanced-visibility="true"] .header-button {
       background-color: var(--enhanced-visibility-bg);
@@ -291,7 +285,7 @@
       padding: 3px 5px;
     }
 
-    /* 「启用模糊」：给增强可见性产生的那些衬底加背景模糊 */
+    /* 启用衬底模糊 */
     body.bg-enabled[data-enhanced-visibility="true"][data-enhanced-blur="true"] .header-button,
     body.bg-enabled[data-enhanced-visibility="true"][data-enhanced-blur="true"] #logo,
     body.bg-enabled[data-enhanced-visibility="true"][data-enhanced-blur="true"] #time-display,
@@ -1736,7 +1730,7 @@
       transition: background-color 0.08s, border-color 0.08s, box-shadow 0.08s;
     }
 
-    /* 悬停变色(选中时不生效)：:hover 特异性本就更高，不需要 !important */
+    /* 悬停变色(选中时不生效) */
     .input:hover:not(:focus) {
       background-color: var(--neutral-fill-rest);
     }
@@ -2230,14 +2224,14 @@
       background-color: var(--neutral-fill-hover);
     }
 
-    /* 背景设置二级页：预览框撑满面板宽度，与设置项纵向排布 */
+    /* 背景设置二级页 */
     #settings-page-bg .wallpaper-preview-box {
       width: 100%;
       height: 150px;
       margin-top: 10px;
     }
 
-    /* 依赖背景开启的设置：背景关闭时整体置灰且不可交互 */
+    /* 依赖背景开启的设置 */
     #bg-dependent-settings {
       display: flex;
       flex-direction: column;
@@ -2627,7 +2621,7 @@
               </div>
             </div>
 
-            <!-- ===== 二级页：布局设置（内联在设置面板内，不再弹窗） ===== -->
+            <!-- ===== 二级页：布局设置 ===== -->
             <div id="settings-page-layout" class="settings-page">
               <div class="settings-header">
                 <button class="settings-back-btn" id="btn-close-layout-modal" type="button" title="返回" data-i18n-title="back">
@@ -2781,7 +2775,7 @@
       </div>
     </ntp-shell>
 
-    <!-- 自定义在线壁纸URL弹窗（独立弹窗，从背景设置二级页打开） -->
+    <!-- 自定义在线壁纸URL弹窗 -->
     <div id="modal-online-wallpaper" class="modal-overlay">
       <div class="modal-dialog">
         <div class="modal-header" data-i18n="customOnlineWallpaper">自定义在线壁纸</div>
