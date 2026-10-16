@@ -1,4 +1,4 @@
-const APP_VERSION = '1.8.3-beta1';      // 发行版本（compareVersions 用 parseInt，后缀不影响比较）
+const APP_VERSION = '1.8.5';      // 发行版本
 const GITHUB_REPO = 'XingYueFox/Litestart';
 
 const logos = {
@@ -66,7 +66,7 @@ const i18nData = {
     download: '下载',
     updateAvailable: '可用更新',
     aboutDesc: '一个简洁、快速的浏览器起始页。',
-    litever: '版本 1.8.3-beta1 | 更新时间：2026-10-14',
+    litever: '版本 1.8.5 | 更新时间：2026-10-16',
     versionInfo: '版本信息',
     and: '和',
     searchPlaceholder: '今天想用 {name} 搜索什么？',
@@ -251,7 +251,7 @@ const i18nData = {
     download: '下載',
     updateAvailable: '可用更新',
     aboutDesc: '一個簡潔、快速的瀏覽器起始頁。',
-    litever: '版本 1.8.3-beta1 | 更新時間：2026-10-14',
+    litever: '版本 1.8.5 | 更新時間：2026-10-16',
     versionInfo: '版本資訊',
     and: '與',
     searchPlaceholder: '今天想用 {name} 搜尋什麼？',
@@ -421,7 +421,7 @@ const i18nData = {
     download: 'Download',
     updateAvailable: 'Update available',
     aboutDesc: 'A simple and fast browser start page.',
-    litever: 'Version 1.8.3-beta1 | Updated: 2026-10-14',
+    litever: 'Version 1.8.5 | Updated: 2026-10-16',
     versionInfo: 'Version Info',
     and: '&',
     searchPlaceholder: 'What do you want to search with {name} today?',
@@ -592,7 +592,7 @@ const i18nData = {
     download: 'ダウンロード',
     updateAvailable: 'アップデートがあります',
     aboutDesc: 'シンプルで高速なブラウザスタートページです。',
-    litever: 'バージョン 1.8.3-beta1 | 更新日: 2026-10-14',
+    litever: 'バージョン 1.8.5 | 更新日: 2026-10-16',
     versionInfo: 'バージョン情報',
     and: 'と',
     searchPlaceholder: '今日は {name} で何を検索しますか？',
@@ -739,7 +739,6 @@ const i18nData = {
     custom: 'Пользовательская',
     editCustomEngine: 'Изменить поисковую систему',
     saveHistory: 'Сохранять историю поиска',
-    layout: 'Макет',
     inspirational: 'Вдохновение',
     focused: 'Фокус',
     appreciate: 'Созерцание',
@@ -763,7 +762,7 @@ const i18nData = {
     download: 'Скачать',
     updateAvailable: 'Доступно обновление',
     aboutDesc: 'Простая и быстрая страница запуска браузера.',
-    litever: 'Версия 1.8.3-beta1 | Обновлено: 2026-10-14',
+    litever: 'Версия 1.8.5 | Обновлено: 2026-10-16',
     versionInfo: 'Информация о версии',
     and: 'и',
     searchPlaceholder: 'Что поищем сегодня через {name}?',
@@ -1960,7 +1959,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnOpenLayoutModal = document.getElementById('btn-open-layout-modal');
   const btnCloseLayoutModal = document.getElementById('btn-close-layout-modal');
 
-  // 设置面板内的二级页面（背景 / 布局），取代原来的模态弹窗
+  // 设置面板内的二级页面（背景 / 布局）
   const settingsPageBg = document.getElementById('settings-page-bg');
   const settingsPageLayout = document.getElementById('settings-page-layout');
 
@@ -2659,7 +2658,15 @@ document.addEventListener('DOMContentLoaded', () => {
   setLogo(savedEngine);
   updateEngineEditButton(savedEngine);
   updateForceBingCNRow(savedEngine);
-  document.body.setAttribute('data-layout', savedLayout === 'hidden' ? 'focused' : savedLayout);
+  // data-layout 同时写在 <html> 和 <body> 上，两处必须一致：
+  // <html> 上的值由 early.js 在首帧前设置（避免悬挂布局下搜索框先出现在页面中部），
+  // 不一致会让 CSS 选择器继续命中旧的布局。
+  function setLayoutAttr(value) {
+    document.documentElement.setAttribute('data-layout', value);
+    document.body.setAttribute('data-layout', value);
+  }
+
+  setLayoutAttr(savedLayout === 'hidden' ? 'focused' : savedLayout);
   // 应用快速链接位置（"底部"模式会强制一行并锁定数量下拉）
   applyQuicklinkPosition();
 
@@ -2685,11 +2692,9 @@ document.addEventListener('DOMContentLoaded', () => {
       if (bgOverlay) {
         bgOverlay.classList.remove('loaded');
       }
-      if (enhancedVisibility) {
-        enhancedVisibility = false;
-        Storage.set('ntp_enhanced_visibility', false);
-        if (toggleEnhancedVisibility) toggleEnhancedVisibility.checked = false;
-      }
+      // 这里刻意不复位「增强元素可见性」：它的效果由 applyEnhancedVisibility
+      // 结合 bgEnabled 判断，背景关闭期间自然不生效，但开关状态保留，
+      // 重新开启背景后会自动恢复；该卡片也会随背景依赖组一起置灰。
     }
 
     applyEnhancedVisibility();
@@ -2707,10 +2712,9 @@ document.addEventListener('DOMContentLoaded', () => {
       document.body.removeAttribute('data-enhanced-visibility');
     }
 
-    // 「衬底启用模糊」保留自己的状态：增强可见性开关不再复位它，
-    // 所以关掉增强可见性再打开，模糊还是原来的设置。
-    // 它的效果只作用在"增强可见性产生的衬底"上，因此增强可见性关闭期间不可见——
-    // CSS 选择器同时要求 data-enhanced-visibility="true" 和 data-enhanced-blur="true"。
+    // 「衬底启用模糊」独立于增强可见性开关，后者不会复位它。
+    // 其效果只作用于增强可见性产生的衬底，故后者关闭期间不可见：
+    // CSS 选择器同时要求 data-enhanced-visibility="true" 与 data-enhanced-blur="true"。
     if (enhancedBlur) {
       document.body.setAttribute('data-enhanced-blur', 'true');
     } else {
@@ -2799,7 +2803,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return '';
   }
 
-  // 用当前语言的翻译表设置壁纸类型标题（替代原先写死的中文）
+  // 用当前语言的翻译表设置壁纸类型标题
   function setWallpaperTypeTitle(key) {
     if (!wallpaperTypeTitle) return;
     const d = window._i18nDict || {};
@@ -2819,14 +2823,27 @@ document.addEventListener('DOMContentLoaded', () => {
   let renderedWallpaperKey = null;
 
   // 根据自定义壁纸数据，渲染视频/图片背景到页面和预览容器
-  // 渐入逻辑：先移除 .loaded 让元素透明 → 设置 src → 监听加载事件 → 加载完成后加 .loaded 触发 transition
+  // 渐入逻辑：先移除 .loaded 让元素透明 → 设置 src → 等就绪 → 加上 .loaded 触发 transition
+  //
+  // 渲染令牌：decode() 绑定的是调用时的图片，若连续切换壁纸，
+  // 上一张图的回调可能先跑完并提前加上 .loaded（新图尚未就绪就显形、动画也被消耗）。
+  // 每次渲染递增，过期回调直接丢弃。
+  let wallpaperRenderToken = 0;
+  // 就绪兜底：decode() / canplay 可能因网络问题长时间挂起，
+  // 超时后强制显示，避免背景一直停在透明状态（此时不会有渐入动画，但至少可见）。
+  const WALLPAPER_READY_TIMEOUT = 8000;
   function renderWallpaper() {
     // 每次进入背景设置页都会调用本函数。若壁纸没变，重设 src 会让浏览器重新加载
     // 并再播一遍"渐入 + 模糊"，所以要能识别出"还是同一张"并跳过重设。
     const wpKey = customWallpaperData
       ? (customWallpaperData.type || 'image') + '|' + (customWallpaperData.url || '')
       : 'default';
-    const alreadyRendered = (wpKey === renderedWallpaperKey);
+    // 元素当前是否真的显示着壁纸：关闭背景时会被 display:none，
+    // 但壁纸标识不变，只比对 key 会把"重新开启背景"误判成重复渲染而跳过。
+    const wallpaperShown =
+      !!(bgImage && bgImage.style.display !== 'none' && bgImage.classList.contains('loaded')) ||
+      !!(bgVideo && bgVideo.style.display !== 'none' && bgVideo.classList.contains('loaded'));
+    const alreadyRendered = (wpKey === renderedWallpaperKey) && wallpaperShown;
     const isFirstRender = (renderedWallpaperKey === null);
     renderedWallpaperKey = wpKey;
 
@@ -2854,12 +2871,20 @@ document.addEventListener('DOMContentLoaded', () => {
           bgImage.classList.remove('loaded');
           bgImage.style.display = 'block';
           bgImage.src = 'img/background.webp';
-          // 默认背景加载完成后渐入
-          bgImage.addEventListener('load', function onDefLoad() {
+          // 默认背景就绪后渐入（decode 保证已解码且异步完成，见文件内说明）
+          const token = ++wallpaperRenderToken;
+          // settled 保证就绪回调与超时回调只生效一次
+          let settled = false;
+          const showDefaultBg = () => {
+            if (settled) return;
+            settled = true;
+            if (token !== wallpaperRenderToken) return;   // 期间又渲染过别的，丢弃
+            void bgImage.offsetWidth;   // 强制样式计算，确保上面的 remove('loaded') 已生效
             bgImage.classList.add('loaded');
             bgOverlay?.classList.add('loaded');
-            bgImage.removeEventListener('load', onDefLoad);
-          });
+          };
+          setTimeout(showDefaultBg, WALLPAPER_READY_TIMEOUT);
+          bgImage.decode().then(showDefaultBg).catch(showDefaultBg);
         }
       }
       setWallpaperTypeTitle('localImage');
@@ -2891,12 +2916,20 @@ document.addEventListener('DOMContentLoaded', () => {
           bgVideo.style.display = 'block';
           bgVideo.src = customWallpaperData.url;
           // 视频缓冲到可播放时再渐入
+          const token = ++wallpaperRenderToken;
+          // settled 保证就绪回调与超时回调只生效一次
+          let settled = false;
           const onCanPlay = () => {
+            if (settled) return;
+            settled = true;
+            if (token !== wallpaperRenderToken) return;   // 期间又渲染过别的，丢弃
+            void bgVideo.offsetWidth;   // 强制样式计算，确保上面的 remove('loaded') 已生效
             bgVideo.classList.add('loaded');
             bgOverlay?.classList.add('loaded');
             bgVideo.removeEventListener('canplay', onCanPlay);
             bgVideo.play().catch(() => {});
           };
+          setTimeout(onCanPlay, WALLPAPER_READY_TIMEOUT);
           bgVideo.addEventListener('canplay', onCanPlay);
         }
       }
@@ -2922,22 +2955,24 @@ document.addEventListener('DOMContentLoaded', () => {
           bgImage.classList.remove('loaded');
           bgImage.style.display = 'block';
           bgImage.src = customWallpaperData.url;
-          // 图片加载完成后渐入；complete 为 true 表示浏览器缓存已命中，直接显示
-          const onLoad = () => {
+          // 图片就绪后渐入。
+          // 用 decode() 而非 load + complete 判断：
+          //   · 必定异步完成，不会与上面的 remove('loaded') 落在同一帧
+          //   · src 未变时浏览器不派发 load，decode() 仍会 resolve
+          //   · 避免 complete / naturalWidth 读到上一张图的状态
+          const token = ++wallpaperRenderToken;
+          // settled 保证就绪回调与超时回调只生效一次
+          let settled = false;
+          const showWallpaper = () => {
+            if (settled) return;
+            settled = true;
+            if (token !== wallpaperRenderToken) return;   // 期间又渲染过别的，丢弃
+            void bgImage.offsetWidth;   // 强制样式计算，确保上面的 remove('loaded') 已生效
             bgImage.classList.add('loaded');
             bgOverlay?.classList.add('loaded');
-            bgImage.removeEventListener('load', onLoad);
           };
-          if (bgImage.complete && bgImage.naturalWidth > 0) {
-            requestAnimationFrame(() => {
-              requestAnimationFrame(() => {
-                bgImage.classList.add('loaded');
-                bgOverlay?.classList.add('loaded');
-              });
-            });
-          } else {
-            bgImage.addEventListener('load', onLoad);
-          }
+          setTimeout(showWallpaper, WALLPAPER_READY_TIMEOUT);
+          bgImage.decode().then(showWallpaper).catch(showWallpaper);
         }
       }
 
@@ -3377,6 +3412,13 @@ document.addEventListener('DOMContentLoaded', () => {
         bgEnabled = true;
         Storage.set('ntp_bg_enabled', true);
       }
+      // 必应每日壁纸的明暗不可控，自动开启「增强元素可见性」以保证元素可读。
+      // 必须在 applyBackgroundState() 之前设置，它内部才来得及应用到 body。
+      if (!enhancedVisibility) {
+        enhancedVisibility = true;
+        Storage.set('ntp_enhanced_visibility', true);
+        if (toggleEnhancedVisibility) toggleEnhancedVisibility.checked = true;
+      }
       resetBgVignette();
       applyBackgroundState();
       if (toggleBgSwitch) toggleBgSwitch.checked = true;
@@ -3482,8 +3524,8 @@ inputOnlineUrl?.addEventListener('input', () => {
   function applyLayout(layoutVal) {
     if (!layoutVal || layoutVal === 'hidden') return;
 
-    // 切换布局时顺手把搜索栏恢复显示
-    document.body.setAttribute('data-layout', layoutVal);
+    // 切换布局时恢复搜索栏显示
+    setLayoutAttr(layoutVal);
     Storage.set('ntp_layout', layoutVal);
 
     if (!searchVisible) {
@@ -3501,7 +3543,7 @@ inputOnlineUrl?.addEventListener('input', () => {
     const display = document.querySelector('.custom-select-display[data-for="' + selectId + '"]');
     if (display) display.classList.toggle('disabled', disabled);
     if (!disabled) return;
-    // 顺手收起已展开的面板，避免留下一个点了也没用的浮层
+    // 收起已展开的面板，避免留下无效浮层
     display?.classList.remove('active');
     document.querySelector('.custom-select-dropdown[data-for-select="' + selectId + '"]')?.remove();
   }
@@ -3738,13 +3780,13 @@ inputOnlineUrl?.addEventListener('input', () => {
 
   btnCloseLayoutModal?.addEventListener('click', closeLayoutModal);
 
-  // 背景/布局设置已改为设置面板内的二级页，不再需要遮罩点击关闭
+  // 背景/布局是设置面板内的二级页，不需要遮罩点击关闭
 
 
   // 设置面板切换监听
   selectEngine?.addEventListener('change', (e) => {
     const val = e.target.value;
-    // 切换前的选择（下面马上会写存储，所以要在这之前读）
+    // 切换前的选择。下面马上会写存储，须在此之前读取
     const previousEngine = Storage.get('ntp_engine', 'bing');
     setLogo(val);
     updateEngineEditButton(val);
@@ -3752,7 +3794,7 @@ inputOnlineUrl?.addEventListener('input', () => {
     Storage.set('ntp_engine', val);
     applySearchPlaceholder();
     if (val === 'custom' && (!customEngineConfig.url || customEngineConfig.url === 'https://duckduckgo.com/?q=%s')) {
-      // 自定义配置还没填好，弹窗会拦住；先记住原来的选择，取消时好回退
+      // 配置未填好时弹窗会拦住；先记住当前选择，取消时回退
       engineBeforeCustom = previousEngine === 'custom' ? 'bing' : previousEngine;
       openCustomEngineModal();
     }
@@ -4361,7 +4403,7 @@ function onDrop(e) {
   }
 
   const [draggedItem] = quicklinksList.splice(draggedIndex, 1);
-  // 取走自己后，原本位于它后面的目标整体前移一位
+  // 取走后，其后的目标整体前移一位
   if (draggedIndex < targetIndex) {
     targetIndex -= 1;
   }
@@ -4968,7 +5010,7 @@ searchInput?.addEventListener('input', () => {
 
   // 语言选择与应用初始化
   const savedLang = localStorage.getItem('liteStart_language') || 'auto';
-  // 若存的是已下架的语言（例如曾经的 zh-WY），回落到"跟随设备"
+  // 若存的是已下架的语言（例如 zh-WY），回落到"跟随设备"
   const initialLang = (savedLang === 'auto' || i18nData[savedLang]) ? savedLang : 'auto';
   if (selectLanguage) {
     selectLanguage.value = initialLang;
@@ -4992,6 +5034,9 @@ searchInput?.addEventListener('input', () => {
 
   initCustomSelects();
 
+  // 开关手柄可拖拽
+  initSwitchDrag();
+
   // 首次使用引导：只在没点过九点菜单时出现
   setupGuideTip(guideTipWaffle, btnWaffle, 'ntp_guide_waffle_done');
   window.addEventListener('resize', () => {
@@ -5004,6 +5049,157 @@ searchInput?.addEventListener('input', () => {
   // 初始化悬浮滚动条
   updateSettingsScrollbar();
 });
+
+// ===== 开关手柄拖拽 =====
+// 手柄是 .slider::before 伪元素，没法直接绑事件，所以指针事件由铺满控件的 .slider 接收，
+// 再用坐标判断指针是否落在手柄上 —— 只有按到手柄才进入拖动；
+// 按在两侧胶囊上则完全不接管，交给 <label> 的默认行为完成普通点击切换。
+//
+// 起步有阈值（DRAG_THRESHOLD）：pointerdown 时只记下候选，不立刻改状态也不加类，
+// 位移超过阈值才真正开始拖。这样手抖、误触、想点击却略微移动一下都不会误拖。
+//
+// 拖动时把进度写进内联的 --p（样式里用 @property 注册过，是真正可插值的数值），
+// 两侧胶囊宽度跟着手柄走，间隙仍恒为 2px；松手移除内联值，交回 CSS 的 0 / 1。
+function initSwitchDrag() {
+  const root = document.documentElement;
+  if (root.dataset.switchDragReady) return;
+  root.dataset.switchDragReady = '1';
+
+  // 位移超过这个像素数才算拖动，否则按点击处理
+  const DRAG_THRESHOLD = 5;
+  // 手柄命中范围的左右容差：手柄只有 5px 宽，太窄不好按
+  const HIT_TOLERANCE = 5;
+
+  // 拖动上下文；未按下时为 null。dragging 为 true 才算真正进入拖动
+  let ctx = null;
+
+  // 手柄直径。--thumb-w 是字面量，未注册也能被 getComputedStyle 读到
+  // （若值是 calc() 表达式，读取会得到原始表达式串而无法解析）。
+  const thumbWidthOf = sw =>
+    parseFloat(getComputedStyle(sw).getPropertyValue('--thumb-w')) || 11;
+
+  // 手柄在两端的位置，和样式里的 --thumb-start / --thumb-end 同源。
+  // 分开读是因为左右两端可以不同（关闭态向内收、打开态贴边）。
+  const thumbStartOf = sw =>
+    parseFloat(getComputedStyle(sw).getPropertyValue('--thumb-start')) || 0;
+  const thumbEndOf = sw =>
+    parseFloat(getComputedStyle(sw).getPropertyValue('--thumb-end')) || 0;
+
+  const scaleOf = (sw, rect) => rect.width / (sw.offsetWidth || rect.width || 1);
+
+  // 当前进度：优先读内联值（拖动中），否则是 CSS 算出来的 0 / 1
+  const progressOf = sw => {
+    const v = parseFloat(getComputedStyle(sw).getPropertyValue('--p'));
+    return Number.isFinite(v) ? v : 0;
+  };
+
+
+  // 手柄在视口坐标下的水平范围（带容差）
+  const thumbHitRange = sw => {
+    const rect = sw.getBoundingClientRect();
+    const scale = scaleOf(sw, rect);
+    const thumbPx = thumbWidthOf(sw) * scale;
+    const startPx = thumbStartOf(sw) * scale;
+    const endPx = thumbEndOf(sw) * scale;
+    const travelPx = Math.max(1, rect.width - thumbPx - startPx - endPx);
+    const left = rect.left + startPx + progressOf(sw) * travelPx;
+    const tol = HIT_TOLERANCE * scale;
+    return { left: left - tol, right: left + thumbPx + tol };
+  };
+
+  // 由指针位置反推进度（0~1），让手柄中心跟着指针走
+  const progressAt = (sw, clientX) => {
+    const rect = sw.getBoundingClientRect();
+    // 元素可能被 transform: scale() 缩放过：rect 是视口坐标下的尺寸，
+    // 而 --thumb-w / --thumb-start / --thumb-end 读到的是原始像素。求出缩放比统一坐标系后再算。
+    const scale = scaleOf(sw, rect);
+    const thumbPx = thumbWidthOf(sw) * scale;
+    const startPx = thumbStartOf(sw) * scale;
+    const endPx = thumbEndOf(sw) * scale;
+    const travelPx = Math.max(1, rect.width - thumbPx - startPx - endPx);
+    const p = (clientX - rect.left - startPx - thumbPx / 2) / travelPx;
+    return p < 0 ? 0 : p > 1 ? 1 : p;
+  };
+
+  const clearCtx = () => {
+    if (ctx) {
+      ctx.sw.classList.remove('dragging');
+      ctx.sw.style.removeProperty('--p');
+    }
+    ctx = null;
+  };
+
+  document.addEventListener('pointerdown', e => {
+    const sw = e.target.closest && e.target.closest('.switch');
+    if (!sw) return;
+    const input = sw.querySelector('input[type="checkbox"]');
+    const slider = sw.querySelector('.slider');
+    if (!input || !slider || input.disabled || sw.classList.contains('disabled')) return;
+    if (!slider.contains(e.target) && e.target !== slider) return;
+    // 只有按在手柄上才接管；按到两侧胶囊则完全不管，让 label 正常切换
+    const hit = thumbHitRange(sw);
+    if (e.clientX < hit.left || e.clientX > hit.right) return;
+
+    // 阻止 label 默认行为，松手时自行决定是否切换
+    e.preventDefault();
+    // 只记候选，先不改状态、不加类 —— 要等位移超过阈值才真正进入拖动
+    ctx = { sw, input, slider, moved: false, dragging: false, startX: e.clientX };
+    // 捕获指针，拖出控件也能继续跟手；个别环境会抛错，忽略即可
+    try { slider.setPointerCapture(e.pointerId); } catch (_) { /* 忽略 */ }
+  });
+
+  document.addEventListener('pointermove', e => {
+    if (!ctx) return;
+    if (!ctx.dragging) {
+      // 还没进入拖动：位移不够就当什么都没发生（防抖）
+      if (Math.abs(e.clientX - ctx.startX) <= DRAG_THRESHOLD) return;
+      ctx.dragging = true;
+      ctx.moved = true;
+      ctx.sw.classList.add('dragging');
+    }
+    ctx.sw.style.setProperty('--p', String(progressAt(ctx.sw, e.clientX)));
+  });
+
+  document.addEventListener('pointerup', e => {
+    if (!ctx) return;
+    const { sw, input, dragging, moved } = ctx;
+
+    if (dragging) {
+      // 按最终位置提交
+      const p = progressAt(sw, e.clientX);
+      clearCtx();
+      const next = p >= 0.5;
+      if (next !== input.checked) {
+        input.checked = next;
+        // 程序改 checked 不会派发 change，这里补上，设置项的保存逻辑才收得到
+        input.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+    } else {
+      // 按下后位移没超过阈值：当作点击，取反当前状态
+      clearCtx();
+      input.checked = !input.checked;
+      input.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+    // 标记这次指针交互已处理状态，供后面拦掉 label 补发的 click
+    root.dataset.switchDragHandled = '1';
+  });
+
+  document.addEventListener('pointercancel', () => {
+    // checkbox 没被改过，清掉内联值即回到 CSS 的 0 / 1
+    clearCtx();
+  });
+
+  // 指针交互后浏览器还会补一个 click，而 .slider 在 <label> 内，
+  // label 的默认行为会再切换一次（等于把刚设好的状态切回去），这里拦下。
+  // 只拦"指针处理过的"那一次：按在胶囊上时我们没接管（不会走上面那条路径），
+  // 键盘（Tab + 空格）也不产生 pointer 事件，它们的 label 默认行为都照常生效。
+  document.addEventListener('click', e => {
+    if (!root.dataset.switchDragHandled) return;
+    delete root.dataset.switchDragHandled;
+    e.preventDefault();
+    e.stopPropagation();
+  }, true);
+}
 
 // ===== 搜索框提示与「自定义」选项的引擎名同步 =====
 // 必须和 applyLanguage / refreshCustomSelects 同级（即在 DOMContentLoaded 回调之外）：

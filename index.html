@@ -11,68 +11,66 @@
     <style>
     /* 配色系统与全局 CSS 变量 */
     :root {
-      /* 布局尺寸与字体 */
-      --header-height: 50px;
+      /* ===== 字体与尺寸 ===== */
       --font-family: 'Segoe UI', Segoe UI Midlevel, Segoe WP, Arial, sans-serif;
+      --header-height: 50px;
 
-      /* 1. 基础页面与背景色 */
-      --fill-color: #f7f7f7;                   /* 页面主背景色 */
-      --fill-popup-color: #ffffff;             /* 下拉菜单/弹窗主背景色 */
-      --neutral-layer-floating: #ffffff;       /* 浮动层背景色 (搜索框/图标) */
-      
-      /* 2. 前景与文字色 */
-      --neutral-foreground-rest: #262626;      /* 主文本颜色 (深灰色) */
-      --neutral-foreground-secondary: #616161; /* 次要文本颜色 */
-      --logo-color: #737373;                   /* Bing/系统 Logo 主色 */
-      --placeholder-color: #9b9b9b;            /* 输入框占位符颜色（淡一些） */
-
-      /* 3. 互动与填充色  */
-      --neutral-fill-rest: rgba(0, 0, 0, 0.04);/* 按钮常规浅灰填充 */
-      --neutral-fill-hover: rgba(0, 0, 0, 0.08);/* 按钮 Hover 填充 */
-
-      /* 4. 强调色 */
-      --accent-foreground-rest: #000000;       /* 强调色 */
-      --accent-foreground-hover: #1b1b1b;      /* 第二强调色 */
-      --accent-foreground-invert: #ffffff;   /* 反色强调色 */
-      --btn-secondary-bg: #EEEEEE;             /* 次级按钮背景 */
-      --btn-danger-color: #d13438;             /* 危险/删除操作文字色 */
-      --btn-danger-hover: #fde8e8;             /* 危险按钮 Hover 背景 */
-
-      /* 5. 阴影系统 */
-      --shadow2: 0 0 2px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.14);
-      --shadow16: 0 0 2px rgba(0, 0, 0, 0.12), 0 8px 16px rgba(0, 0, 0, 0.14);
-
-      /* 下拉浮层的阴影与描边（深色主题下单独加强） */
-      --dropdown-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
-      --dropdown-border: #d4d4d4;
-
-      /* 6. 模态框与弹窗样式 */
-      --modal-bg: #ffffff;
-      --modal-border: #e0e0e0;
-      --modal-mask: rgba(0, 0, 0, 0.4);
-      --input-bg: #F2F2F2;
-
-      /* 7. 设置面板专用颜色 */
-      --settings-panel-bg: #EEEEEE;
-      --settings-card-bg: #ffffff;
-      --settings-card-border: #d4d4d4;
+      /* ===== 表面／背景层（从页面底色到浮层，由低到高） ===== */
+      --fill-color: #f7f7f7;   /* 页面主背景色 */
+      --fill-popup-color: #ffffff;   /* 下拉菜单/弹窗主背景色；※ 与 --neutral-layer-floating 同值（浅色/深色均是） */
+      --neutral-layer-floating: #ffffff;   /* 浮动层背景色 (搜索框/图标) */
+      --modal-bg: #ffffff;   /* ※ 深色下比卡片更暗一档，与上面几个不同值 */
+      --settings-panel-bg: #EEEEEE;   /* ※ 与 --btn-secondary-bg 同值（浅色 #EEEEEE / 深色不同） */
+      --settings-card-bg: #ffffff;   /* ※ 与 --neutral-layer-floating 同值（浅色/深色均是） */
       --settings-card-hover: #f9f9f9;
+      --suggestion-bg: #ffffff;   /* ※ 与 --neutral-layer-floating 同值（浅色/深色均是） */
+      --suggestion-hover: #f0f0f0;   /* ※ 与 --accent-foreground-invert 同值（仅浅色） */
+      --input-bg: #F2F2F2;
+      --settings-thumb-bg: #d5d9de;
+
+      /* ===== 边框与描边 ===== */
+      --modal-border: #e0e0e0;
+      --settings-card-border: #d4d4d4;
+      --settings-thumb-border: #d4d4d4;   /* ※ 与 --settings-card-border 同值（浅色/深色均是） */
+      --input-border: #e8e8e8;
+      --input-border-focus: #808080;
+
+      /* ===== 文字 ===== */
+      --neutral-foreground-rest: #262626;   /* 主文本颜色 (深灰色) */
+      --neutral-foreground-secondary: #616161;   /* 次要文本颜色 */
       --settings-text-primary: #1b1b1b;
       --settings-text-secondary: #707070;
-      --settings-thumb-bg: #d5d9de;
-      --settings-thumb-border: #d4d4d4;
+      --placeholder-color: #9b9b9b;   /* 输入框占位符颜色（淡一些） */
+      --logo-color: #737373;   /* Bing/系统 Logo 主色 */
 
-      --enhanced-visibility-bg: rgba(255, 255, 255, 0.45);
-      --enhanced-visibility-bg-hover: rgba(255, 255, 255, 0.65);
-      --enhanced-visibility-logo-bg: rgba(255, 255, 255, 0.6);
+      /* ===== 强调色 ===== */
+      --accent-foreground-rest: #262320;    /* 强调色 */
+      --accent-foreground-hover: #3a3733;   /* 第二强调色 */
+      --accent-foreground-invert: #f0f0f0;  /* 反色强调色 */
 
-      /* 8. 搜索建议面板颜色 */
-      --suggestion-bg: #ffffff;
-      --suggestion-hover: #f0f0f0;
+      /* ===== 按钮与交互填充 ===== */
+      --btn-secondary-bg: #EEEEEE;   /* 次级按钮背景 */
+      --btn-danger-color: #d13438;   /* 危险/删除操作文字色 */
+      --btn-danger-hover: #fde8e8;   /* 危险按钮 Hover 背景 */
+      --neutral-fill-rest: rgba(0, 0, 0, 0.04);   /* 按钮常规浅灰填充 */
+      --neutral-fill-hover: rgba(0, 0, 0, 0.08);   /* 按钮 Hover 填充 */
+
+      /* ===== 建议列表语义色 ===== */
       --suggestion-history-color: #5c2d91;
       --suggestion-footer-color: #0078d4;
 
+      /* ===== 阴影与遮罩 ===== */
+      --shadow2: 0 0 2px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.14);
+      --shadow16: 0 0 2px rgba(0, 0, 0, 0.12), 0 8px 16px rgba(0, 0, 0, 0.14);
+      --dropdown-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
       --search-box-hover-shadow: 0 0 2px rgba(0, 0, 0, 0.16), 0 2px 7px rgba(0, 0, 0, 0.22);
+      --modal-mask: rgba(0, 0, 0, 0.52);
+
+      /* ===== 背景图上的半透明层 ===== */
+      --enhanced-visibility-bg: rgba(255, 255, 255, 0.45);
+      --enhanced-visibility-bg-hover: rgba(255, 255, 255, 0.65);
+      --enhanced-visibility-logo-bg: rgba(255, 255, 255, 0.6);
+    
     }
 
     /* 暗色主题颜色库（由 <html data-theme> 驱动，见设置里的「主题模式」） */
@@ -153,10 +151,9 @@
       pointer-events: none;
     }
 
-    /* 背景图/视频 —— 默认透明，加载完成后通过 .loaded 触发渐入（0.2s）。
-       「背景渐显模糊」开启时再追加一层"由糊到清"（见下面的 body[data-bg-fade-blur] 规则）。
-       过渡只定义在 .loaded 上：这样只有"加载完成"会播动画，
-       移除 .loaded（换壁纸、关背景）时属性瞬间归位，不会反过来再糊一次。 */
+    /* 背景图/视频 —— 默认透明，加载完成后加 .loaded 渐入（0.2s）；
+       开启「背景渐显模糊」时再叠一层"由糊到清"。
+       过渡只定义在 .loaded 上，移除时不播反向动画。 */
     #bg-video, #bg-image {
       position: absolute;
       top: 0;
@@ -185,7 +182,7 @@
       opacity: 1;
       filter: blur(0);
       transform: scale(1);
-      transition: opacity 0.2s ease-in, filter 0.5s ease-out, transform 0.5s ease-out;
+      transition: opacity 0.2s ease-in, filter 0.4s ease-out, transform 0.4s ease-out;
     }
 
     /* 开启"减少动态效果"时不做模糊动画，只保留最基础的渐入 */
@@ -233,7 +230,7 @@
         var(--bg-vignette, radial-gradient(circle at center, rgba(0,0,0,0) 40%, rgba(0,0,0,0.5) 100%));
     }
 
-    /* 仅在开启壁纸(body.bg-enabled)时，才显示壁纸容器和遮罩 */
+    /* 开启壁纸时显示壁纸容器与遮罩 */
     body.bg-enabled #background-container,
     body.bg-enabled #bg-overlay {
       display: block;
@@ -246,7 +243,7 @@
 
     /* 暗色模式 + 有壁纸时，Logo 保持白色 */
     :root[data-theme="dark"] body.bg-enabled {
-      --logo-color: #ffffff;
+      --logo-color: #f0f0f0;
     }
 
     /* ===== 按钮、窗口、搜索框等元素的过渡动画 ===== */
@@ -278,7 +275,7 @@
       background-color: var(--enhanced-visibility-bg-hover);
     }
 
-    /* 增强可见性：只给链接名称垫底（与 Logo 同一档底色） */
+    /* 增强可见性：链接名称垫底，与 Logo 同档 */
     body.bg-enabled[data-enhanced-visibility="true"] .quicklink-title {
       background-color: var(--enhanced-visibility-logo-bg);
       border-radius: 4px;
@@ -298,7 +295,7 @@
       box-shadow: 0 0 0 3px var(--enhanced-visibility-bg-hover);
     }
 
-    /* 开启背景时将外层容器背景设为透明，避免遮挡背景壁纸 */
+    /* 开启背景时外层容器透明，露出壁纸 */
     body.bg-enabled ntp-shell {
       background-color: transparent;
     }
@@ -315,7 +312,7 @@
       align-items: center;
       background-color: var(--fill-color);
       overflow: auto;
-      /* 到边界后不再产生弹性/链式滚动，避免"滚一下又弹回来" */
+      /* 抑制边界弹性与链式滚动 */
       overscroll-behavior: none;
       z-index: 2;
     }
@@ -331,7 +328,8 @@
       box-shadow: none;
       outline: none;
       cursor: pointer;
-      border-radius: 4px;
+      /* 与输入框 / 下拉框统一为 6px；未加 .btn 等类的按钮也落到这个值 */
+      border-radius: 6px;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -384,7 +382,7 @@
       background-color: var(--neutral-fill-rest);
     }
 
-    /* 开启"增强元素可见性"时，用悬停档的半透明底 */
+    /* 增强可见性：使用悬停档半透明底 */
     body.bg-enabled[data-enhanced-visibility="true"] .header-button.active {
       background-color: var(--enhanced-visibility-bg-hover);
     }
@@ -454,7 +452,8 @@
       width: 320px;
       padding: 0;
       background-color: var(--settings-panel-bg);
-      border: 1px solid var(--settings-card-border);
+      /* 纯平风格：去掉描边，层次由 .popover-panel 的 box-shadow 承担 */
+      border: 1px solid transparent;
       border-radius: 12px;
       max-height: 85vh;
       overflow-y: auto;
@@ -527,7 +526,8 @@
     /* 设置卡片样式 */
     .settings-card {
       background-color: var(--settings-card-bg);
-      border: 1px solid var(--settings-card-border);
+      /* 纯平风格：去掉描边，靠卡片底色与面板底色的差异区分 */
+      border: none;
       border-radius: 8px;
       padding: 12px;
       box-sizing: border-box;
@@ -603,8 +603,9 @@
       width: 100%;
       height: 32px;
       border-radius: 6px;
-      border: 1px solid var(--settings-card-border);
-      background-color: var(--settings-card-bg);
+      /* 纯平风格：用透明描边保留 1px 几何 */
+      border: 1px solid transparent;
+      background-color: var(--btn-secondary-bg);
       color: var(--settings-text-primary);
       padding: 0 12px 0 10px;
       font-size: 13px;
@@ -618,11 +619,12 @@
     }
 
     .custom-select-display:hover {
-      background-color: var(--neutral-fill-rest);
+      background-color: var(--modal-border);
     }
 
+    /* 没有描边可用了，展开状态改用底色加深来表示 */
     .custom-select-display.active {
-      border-color: var(--accent-foreground-rest);
+      background-color: var(--modal-border);
     }
 
     /* 自定义下拉里不可选的项（例如"底部"模式下的"多行"）
@@ -666,14 +668,13 @@
       transform: rotate(180deg);
     }
 
-    /* 下拉面板 —— position:fixed 用于脱离父容器 overflow 裁剪
-       - 初始状态：opacity:0, visibility:hidden, transform 上移 4px
-       - .active 状态：opacity:1, visibility:visible, transform 归零
-       - 展开方向由 JS 根据空间动态决定（上/下），通过 translateY 初始方向实现动画 */
+    /* 下拉面板：position:fixed 脱离父容器 overflow 裁剪。
+       展开方向由 JS 按可用空间决定（上/下） */
     .custom-select-dropdown {
       position: fixed;
       background-color: var(--fill-popup-color);
-      border: 1px solid var(--dropdown-border);
+      /* 纯平风格：无描边，1px 透明边框占位以维持尺寸（content-box） */
+      border: 1px solid transparent;
       border-radius: 6px;
       box-shadow: var(--dropdown-shadow);
       z-index: 2000;
@@ -720,8 +721,7 @@
       gap: 8px;
     }
 
-    /* 与下拉触发器用同一个 chevron 路径（圆头），旋转 90° 表示"进入子级"；
-       用 mask 而不是背景图，颜色才能跟随 currentColor */
+    /* 与下拉触发器同一 chevron 路径，旋转 90° 表示进入子级；用 mask 以跟随 currentColor */
     .custom-select-option[data-value="preset"]::after {
       content: '';
       width: 12px;
@@ -761,12 +761,26 @@
       align-items: center;
     }
 
-    /* 滑块开关样式 */
+    /* 开关：胶囊轨道 + 圆形手柄 */
     .switch {
       position: relative;
       display: inline-block;
-      width: 36px;
-      height: 18px;
+      /* 进度值：0 = 关闭，1 = 打开。手柄位移与拖拽都靠它 */
+      --p: 0;
+      /* 手柄直径（字面量，供脚本读取） */
+      --thumb-w: 13px;
+      /* 手柄在两端的位置，左右独立可调 */
+      --thumb-start: 2px;   /* 关闭态：圆距左边缘 */
+      --thumb-end: 2px;     /* 打开态：圆距右边缘（与左端对称） */
+      /* 手柄行程。100% 相对 .slider（铺满控件） */
+      --thumb-travel: calc(100% - var(--thumb-w) - var(--thumb-start) - var(--thumb-end));
+      width: 30px;
+      /* 17px 使垂直留白为整数 3px */
+      height: 17px;                /* 轨道与控件同高 */
+      cursor: pointer;
+      transition: --p 0.2s ease;
+      /* 兜底：不越出控件范围 */
+      overflow: hidden;
     }
 
     .switch input {
@@ -775,49 +789,89 @@
       height: 0;
     }
 
+    /* 注册为 <number> 以便过渡 */
+    @property --p {
+      syntax: '<number>';
+      inherits: true;
+      initial-value: 0;
+    }
+
+    /* 悬停缩放系数，注册为 <number> 以便过渡 */
+    @property --hover-factor {
+      syntax: '<number>';
+      inherits: false;
+      initial-value: 1;
+    }
+
+
+    /* 轨道：铺满控件、全圆角胶囊，与控件同高 */
     .slider {
       position: absolute;
-      cursor: pointer;
       top: 0;
       left: 0;
       right: 0;
       bottom: 0;
-      border: 1px solid var(--settings-text-secondary);
-      background-color: var(--settings-card-bg);
-      transition: background-color 0.08s ease, border-color 0.08s ease, left 0.2s ease;
-      border-radius: 20px;
+      border-radius: 999px;
+      /* 关闭态底色 */
+      background-color: var(--modal-border);
+      cursor: pointer;
+      transition: background-color 0.2s ease;
     }
 
-    .slider:before {
-      position: absolute;
+    /* 手柄：一个圆，在轨道内左右移动 */
+    .slider::before {
       content: "";
-      height: 12px;
-      width: 12px;
-      left: 2px;
-      bottom: 2px;
-      background-color: var(--settings-text-secondary);
-      transition: background-color 0.08s ease, transform 0.08s ease, filter 0.08s ease;
+      position: absolute;
+      /* 垂直居中。top 为整数 3px，不受亚像素圆整影响 */
+      top: calc((100% - var(--thumb-w)) / 2);
+      left: calc(var(--thumb-start) + var(--p) * var(--thumb-travel));
+      width: var(--thumb-w);
+      height: var(--thumb-w);
+      /* 基准缩放：0.5（关闭）→ 0.85（打开），再乘 --hover-factor */
+      --hover-factor: 1;
+      transform: scale(calc((0.5 + var(--p) * 0.35) * var(--hover-factor)));
+      /* 过渡悬停系数 */
+      transition: --hover-factor 0.2s ease;
       border-radius: 50%;
+      /* 卡片底色，浅色 #ffffff / 深色 #2b2b2b */
+      background-color: var(--settings-card-bg);
+      /* 不拦截指针：拖拽由 .slider 接收 */
+      pointer-events: none;
     }
 
-    .slider:hover:before {
-      filter: brightness(0.75);
+    /* 悬停时的轨道底色 */
+    .switch:hover .slider {
+      background-color: var(--settings-card-border);
     }
 
-    input:checked + .slider {
+    .switch:has(input:checked):hover .slider {
+      background-color: var(--accent-foreground-hover);
+    }
+
+    /* 悬停时手柄缩放微调 */
+    .switch:hover .slider::before {
+      --hover-factor: 1.25;
+    }
+
+    /* 打开态悬停：把 0.85 放回满尺寸，系数 = 1 / 0.85 */
+    .switch:has(input:checked):hover .slider::before {
+      --hover-factor: 1.1765;
+    }
+
+    /* 拖动时关闭过渡并切换光标 */
+    .switch.dragging,
+    .switch.dragging .slider {
+      transition: none;
+      cursor: grabbing;
+    }
+
+    /* ===== 打开态 ===== */
+    .switch:has(input:checked) {
+      --p: 1;
+    }
+
+    .switch:has(input:checked) .slider {
       background-color: var(--accent-foreground-rest);
-      border-color: var(--accent-foreground-rest);
-    }
-
-    /*这是开关滑块！*/
-    input:checked + .slider:before {
-      transform: translateX(18px);
-      background-color: var(--accent-foreground-invert);
-    }
-
-    input:checked + .slider:hover:before {
-      transform: translateX(18px);
-      filter: brightness(0.75);
     }
 
     /* 卡片视图选择器 */
@@ -826,23 +880,26 @@
       position: relative;
       display: flex;
       gap: 2px;
-      padding: 2px;
-      border: 1px solid var(--settings-card-border);
+      padding: 3px;                              /* 选中块与凹槽之间的缝隙 */
+      /* 纯平风格：不要描边，靠凹槽底色与卡片底色区分。
+         仍用透明描边占位，保证内部尺寸（滑块定位依赖它）不变 */
+      border: 1px solid transparent;
       border-radius: 6px;
       background-color: var(--input-bg);        /* 凹槽底色 */
     }
 
-    /* 滑块：由 idx-N 类驱动位移，切换时平滑滑动（宽度 = (100% − 2×2 padding − 2×2 gap) / 3） */
+    /* 滑块：由 idx-N 类驱动位移，切换时平滑滑动
+       （宽度 = (100% − 2×3 padding − 2×2 gap) / 3） */
     .theme-switch::before {
       content: '';
       position: absolute;
-      top: 2px;
-      left: 2px;
-      width: calc((100% - 8px) / 3);
-      height: calc(100% - 4px);
-      border-radius: 4px;
+      top: 3px;
+      left: 3px;
+      width: calc((100% - 10px) / 3);
+      height: calc(100% - 6px);
+      border-radius: 3px;                        /* 容器 6px − padding 3px */
+      /* 纯平风格：滑块以浅色底与凹槽区分 */
       background-color: var(--settings-card-bg);
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
       transform: translateX(0);
       transition: transform 0.1s ease;
       pointer-events: none;
@@ -854,10 +911,6 @@
 
     .theme-switch.idx-2::before {
       transform: translateX(calc(200% + 4px));
-    }
-
-    :root[data-theme="dark"] .theme-switch::before {
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -878,7 +931,7 @@
       height: 30px;          /* 30 + 2×2(padding) + 2×1(边框) = 36px，整控件高度 */
       padding: 0 3px;
       border: none;
-      border-radius: 4px;     /* 外层 6px − padding 2px */
+      border-radius: 3px;     /* 外层 6px − padding 3px */
       background-color: transparent;
       color: var(--settings-text-primary);
       font-family: inherit;
@@ -938,24 +991,25 @@
       position: relative;
       display: flex;
       gap: 2px;
-      padding: 2px;
-      border: 1px solid var(--settings-card-border);
+      padding: 3px;                              /* 与主题模式一致的缝隙 */
+      /* 纯平风格：与主题模式同一套处理，透明描边只为占位 */
+      border: 1px solid transparent;
       border-radius: 6px;
       background-color: var(--input-bg);
       margin-top: 10px;
     }
 
-    /* 预设的滑块：与主题模式同一套，圆角同样取 4px（容器 6px − padding 2px） */
+    /* 预设的滑块：与主题模式同一套（容器 6px − padding 3px = 3px 圆角） */
     .layout-presets::before {
       content: '';
       position: absolute;
-      top: 2px;
-      left: 2px;
-      width: calc((100% - 8px) / 3);
-      height: calc(100% - 4px);
-      border-radius: 4px;     /* 容器 6px − padding 2px，与主题滑块一致 */
+      top: 3px;
+      left: 3px;
+      width: calc((100% - 10px) / 3);
+      height: calc(100% - 6px);
+      border-radius: 3px;
+      /* 纯平风格 */
       background-color: var(--settings-card-bg);
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
       transform: translateX(0);
       transition: transform 0.1s ease, opacity 0.15s ease;
       pointer-events: none;
@@ -974,10 +1028,6 @@
       opacity: 0;
     }
 
-    :root[data-theme="dark"] .layout-presets::before {
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
-    }
-
     @media (prefers-reduced-motion: reduce) {
       .layout-presets::before {
         transition: none;
@@ -991,7 +1041,7 @@
       min-width: 0;
       border: none;
       background-color: transparent;
-      border-radius: 4px;     /* 外层 6px − padding 2px */
+      border-radius: 3px;     /* 外层 6px − padding 3px */
       padding: 6px;              /* 上/左/右等宽：图案到边框的留白一致且稍大 */
       display: flex;
       flex-direction: column;
@@ -1007,7 +1057,7 @@
       background-color: rgba(0, 0, 0, 0.04);
     }
 
-    /* 深色主题底色本就暗，比例给大些才看得出 */
+    /* 深色主题下比例更大 */
     :root[data-theme="dark"] .theme-option:hover,
     :root[data-theme="dark"] .preset-card:hover {
       background-color: rgba(0, 0, 0, 0.14);
@@ -1096,8 +1146,9 @@
       gap: 6px;
       width: 100%;
       height: 32px;
-      border: 1px solid var(--settings-card-border);
-      background-color: var(--settings-card-bg);
+      /* 纯平风格：与"选择文件""恢复默认"等次级按钮同款灰底，无描边 */
+      border: 1px solid transparent;
+      background-color: var(--btn-secondary-bg);
       color: var(--settings-text-primary);
       border-radius: 6px;
       font-size: 13px;
@@ -1107,12 +1158,14 @@
     }
 
     .icon-btn-text:hover {
-      background-color: var(--settings-card-hover);
+      background-color: var(--modal-border);
     }
 
     /* 底部链接样式 */
     .settings-footer {
-      padding: 8px 16px 16px 16px;
+      /* 上内边距 0：上方留白由 .settings-content 的 padding-bottom(12px) 提供，
+         与版本行下方间距一致 */
+      padding: 0 16px 16px 16px;
       font-size: 11px;
       color: var(--settings-text-secondary);
       line-height: 1.6;
@@ -1122,7 +1175,7 @@
       display: flex;
       flex-wrap: wrap;
       gap: 4px 6px;
-      margin-bottom: 8px;
+      margin-bottom: 12px;     /* 版本/署名行与链接行之间的间距 */
     }
 
     .settings-footer-links a {
@@ -1134,9 +1187,19 @@
       text-decoration: underline;
     }
 
+    /* 页脚两行（链接行 + 免责声明）统一成次要色并调淡。
+       相邻兄弟选择器只命中第二个 .settings-footer-links，即链接行 */
+    .settings-footer-links + .settings-footer-links {
+      color: var(--settings-text-secondary);
+      opacity: 0.7;
+      margin-bottom: 2px;
+    }
+
     .settings-footer-text {
       color: var(--settings-text-secondary);
-      margin: 4px 0;
+      opacity: 0.7;
+      /* 上边距与链接行的下边距一起决定折叠结果（取较大值），所以必须同步收到 2px */
+      margin: 2px 0;
     }
 
     #inner {
@@ -1170,7 +1233,7 @@
       object-fit: contain;
     }
 
-    /* 内置引擎的 Logo 各有深浅两套：跟随 <html data-theme>，而不是系统偏好 */
+    /* 内置引擎 Logo 分深浅两套，跟随 <html data-theme> */
     .logo-for-dark {
       display: none;
     }
@@ -1277,10 +1340,8 @@
       box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
     }
 
-    /* 搜索框展开联想下拉词条面板动画
-       - 初始状态：opacity:0, visibility:hidden, transform 上移 4px
-       - .suggestions-open 状态：opacity:1, visibility:visible, transform 归零
-       - visibility 延迟 0.08s 切换，确保过渡完成后再隐藏 */
+    /* 搜索框联想面板：初始隐藏并上移 4px，.suggestions-open 时归位。
+       visibility 延迟 0.08s 切换，保证过渡播完再隐藏 */
     #suggestions-box {
       display: block;
       position: absolute;
@@ -1381,8 +1442,7 @@
       flex-wrap: wrap;             /* 多行模式靠换行实现，每行 9 项 */
       justify-content: center;
       align-items: center;
-      /* 容器比内容高时（"悬挂"布局里它占满 1fr 行），多行行高不能被拉伸，
-         否则行间距会被撑开；这里让多行贴着容器顶部、间距恒为 gap */
+      /* 多行贴容器顶部，间距恒为 gap，行高不被拉伸 */
       align-content: flex-start;
       gap: 10px;
       overflow: visible;
@@ -1411,7 +1471,7 @@
     }
 
     .quicklink-item:hover {
-      /* 用悬停档而不是静止档：原来 0.04/0.06 太淡，看不清落点 */
+      /* 悬停使用较明显的填充档 */
       background-color: var(--neutral-fill-hover);
     }
 
@@ -1464,7 +1524,7 @@
       justify-content: center;
       opacity: 0;
       transition: opacity 0.08s ease-in-out, background-color 0.08s;
-      background-color: transparent;    /* 不再垫圆形底色 */
+      /* 无圆形底色 */
       fill: var(--neutral-foreground-rest);
       z-index: 2;
     }
@@ -1488,7 +1548,8 @@
       display: none;
       min-width: 152px;
       padding: 4px;
-      border: 1px solid var(--dropdown-border);
+      /* 纯平风格：与自定义下拉浮层统一，去掉描边，层次交给 box-shadow */
+      border: 1px solid transparent;
       border-radius: 6px;
       background-color: var(--fill-popup-color);
       box-shadow: var(--dropdown-shadow);
@@ -1510,7 +1571,8 @@
       border-radius: 4px;
       background-color: transparent;
       color: var(--settings-text-primary);
-      font-family: inherit;
+      /* 显式取全局字体：本菜单挂在 <body> 下，而全局字体只设在 ntp-shell 上，inherit 拿不到 */
+      font-family: var(--font-family);
       font-size: 13px;
       text-align: left;
       white-space: nowrap;
@@ -1525,8 +1587,7 @@
       display: block;
     }
 
-    /* 铅笔图标的图形占位比另两个更满，视觉上偏大；
-       整体尺寸调大后它仍保留一点收敛，使三项视觉重量一致 */
+    /* 铅笔图标占位更满，尺寸略收敛以平衡视觉重量 */
     .quicklink-menu-item[data-action="edit"] svg {
       transform: scale(0.9);
     }
@@ -1542,26 +1603,26 @@
     }
 
     /* 展望模式布局排布 */
-    body[data-layout="inspirational"] #inner {
+    :is(html, body)[data-layout="inspirational"] #inner {
       grid-template-rows: minmax(78px, 15%) 46px 32px 1fr auto 12%;
     }
 
-    body[data-layout="inspirational"] #logo {
+    :is(html, body)[data-layout="inspirational"] #logo {
       display: none;
     }
 
-    body[data-layout="inspirational"] #search-container {
+    :is(html, body)[data-layout="inspirational"] #search-container {
       grid-row: 2;
     }
 
-    body[data-layout="inspirational"] ntp-quicklinks {
+    :is(html, body)[data-layout="inspirational"] ntp-quicklinks {
       grid-row: 4;
     }
 
-    /* 快速链接固定到页面底部（该模式下由脚本强制一行） */
+    /* 快速链接固定到页面底部（脚本强制一行） */
     body[data-quicklink-position="bottom"] ntp-quicklinks {
       position: absolute;
-      grid-row: auto;      /* 脱离网格定位，包含块回到 #inner，bottom 才指向整页底部 */
+      /* 脱离网格定位，包含块回到 #inner，bottom 指向整页底部 */
       left: 20px;
       right: 20px;
       bottom: 20px;
@@ -1598,7 +1659,8 @@
 
     .modal-dialog {
       background-color: var(--modal-bg);
-      border: 1px solid var(--modal-border);
+      /* 纯平风格：去掉描边，层次由 box-shadow: var(--shadow16) 承担 */
+      border: 1px solid transparent;
       border-radius: 8px;
       width: 420px;
       max-width: 90vw;
@@ -1641,10 +1703,10 @@
       flex: 0 0 34%;
     }
 
-    /* 弹窗里的下拉要与输入框同高（.input 是 36px / 4px 圆角） */
+    /* 弹窗里的下拉要与输入框同高、同圆角（.input 是 36px / 6px 圆角） */
     .form-row .custom-select-display {
       height: 36px;
-      border-radius: 4px;
+      border-radius: 6px;
     }
 
     /* ===== 「预置」图标：二级宫格面板（5 列 × 7 行 = 35 个） ===== */
@@ -1654,7 +1716,8 @@
       display: none;
       gap: 12px;                       /* 左侧实心组 / 右侧描边组之间的间距 */
       padding: 8px;
-      border: 1px solid var(--dropdown-border);       /* 与自定义下拉浮层同款 */
+      /* 与自定义下拉浮层同款：去掉描边，靠 box-shadow 区分层次 */
+      border: 1px solid transparent;
       border-radius: 6px;
       background-color: var(--fill-popup-color);      /* 与自定义下拉浮层同底色 */
       box-shadow: var(--dropdown-shadow);
@@ -1710,8 +1773,8 @@
     }
 
     .input-container {
-      border-radius: 4px;
-      overflow: hidden;    /*裁切超出部分*/
+      border-radius: 6px;        /* 与按钮 / 下拉框一致的圆角 */
+      overflow: hidden;    /*兜底：子元素不越出圆角*/
       position: relative;
       width: 100%;
     }
@@ -1719,9 +1782,10 @@
     .input {
       width: 100%;
       height: 36px;
-      border-radius: 4px;
-      border: 1.5px solid var(--settings-card-border);
-      background-color: var(--input-bg);
+      border-radius: 6px;
+      /* 描边比其它控件略粗（3px），颜色用最淡的一档（比 --modal-border 还浅） */
+      border: 3px solid var(--input-border);
+      background-color: var(--settings-card-hover);
       color: var(--neutral-foreground-rest);
       padding: 0 10px;
       font-size: 14px;
@@ -1732,35 +1796,32 @@
 
     /* 悬停变色(选中时不生效) */
     .input:hover:not(:focus) {
-      background-color: var(--neutral-fill-rest);
+      background-color: var(--input-bg);
     }
 
     .input:focus {
-      border-color: var(--settings-card-border);
+      /* 聚焦只换描边色，粗细由常规态决定；用专用变量以免抬高特异性 */
+      border-color: var(--input-border-focus);
     }
 
-    .input-container::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 2px;
-      background-color: var(--accent-foreground-rest);
-      opacity: 0;
+    /* ===== 深色主题下的输入框配色 =====
+       与浅色镜像：常规比按钮更暗、hover 变亮到按钮色、聚焦落到原 hover 档。
+       只覆盖输入框，不动其它控件与变量 */
+    :root[data-theme="dark"] .input {
+      background-color: #282828;
     }
 
-    .input-container:focus-within::after {
-      opacity: 1;
+    :root[data-theme="dark"] .input:hover:not(:focus) {
+      background-color: var(--btn-secondary-bg);
     }
 
+    :root[data-theme="dark"] .input:focus {
+      background-color: var(--input-bg);
+    }
+
+    /* 错误态：整圈描边换成警示色 */
     .input-container.error .input {
-      border-bottom-color: var(--btn-danger-color);
-    }
-
-    .input-container.error::after {
-      background-color: var(--btn-danger-color);
-      opacity: 1;
+      border-color: var(--btn-danger-color);
     }
 
     .error-tip {
@@ -1833,8 +1894,7 @@
     }
 
     :root[data-theme="dark"] .btn-secondary {
-      background-color: #474747;
-
+      /* 与下拉框、编辑按钮共用 --btn-secondary-bg */
       padding: 0 20px 1px 20px;
     }
 
@@ -1872,9 +1932,7 @@
       display: none;
     }
 
-    /* 响应式适配
-       注：ntp-quicklinks 的宽度已交由脚本按列数计算，这里不再写死，
-       避免媒体查询档位与「实际放得下的项数」不一致而留下空档。 */
+    /* 响应式适配：ntp-quicklinks 宽度由脚本按列数计算 */
     @media (max-width: 1267px) {
       #search-container { width: 528px; }
     }
@@ -1984,10 +2042,7 @@
       color: var(--settings-text-primary);
     }
 
-    /* 提示内容面板 —— position:fixed 用于脱离父容器
-       - 由 JS 动态定位到 document.body，避免被 overflow:hidden 裁剪
-       - 支持上下两种方向显示（通过 JS 添加/移除 .tooltip-below 类）
-       - 淡入淡出过渡 */
+    /* 提示面板：position:fixed，由 JS 定位到 document.body；支持上下两向 */
     .tooltip-content {
       visibility: hidden;
       opacity: 0;
@@ -2015,7 +2070,8 @@
     width: 340px;
     padding: 0;
     background-color: var(--settings-panel-bg);
-    border: 1px solid var(--settings-card-border);
+    /* 纯平风格：去掉描边，层次由 .popover-panel 的 box-shadow 承担 */
+    border: 1px solid transparent;
     border-radius: 12px;
     }
 
@@ -2074,13 +2130,15 @@
       transition: background-color 0.08s ease, border-color 0.08s ease;
     }
 
+    /* 悬停用较淡的一档 */
     .manage-option:hover {
-      background-color: var(--neutral-fill-hover);
+      background-color: var(--neutral-fill-rest);
     }
 
-    /* 选中态 */
+    /* 选中态：用更明显的一档，保证"当前选择"比临时划过更突出（深浅主题都成立）；
+       这条写在 :hover 之后且特异性相同，所以选中项被划过时仍保持选中色 */
     .manage-option[aria-selected="true"] {
-      background-color: var(--neutral-fill-rest);
+      background-color: var(--neutral-fill-hover);
     }
 
     /* 左侧选中指示条 */
@@ -2118,7 +2176,7 @@
       line-height: 1.25;
     }
 
-    /* 关闭搜索栏时，隐藏搜索框但保留其在网格中的占位，但同时避免其他元素发生位移（ */
+    /* 关闭搜索栏时隐藏搜索框，保留网格占位且不引起位移 */
     html[data-search-hidden="true"] #search-container {
       visibility: hidden;
       pointer-events: none;
@@ -2261,7 +2319,7 @@
     <ntp-shell elementtiming="wallpaper">
       <!-- 顶部导航栏 -->
       <div id="header">
-        <div id="header-left">
+        <div>
           <button id="waffle" class="header-button" type="button" aria-label="Litestart~" title="Litestart~">
             <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path d="M12 17a2 2 0 110 4 2 2 0 010-4zm7 0a2 2 0 110 4 2 2 0 010-4zM5 17a2 2 0 110 4 2 2 0 010-4zm7-7a2 2 0 110 4 2 2 0 010-4zm7 0a2 2 0 110 4 2 2 0 010-4zM5 10a2 2 0 110 4 2 2 0 010-4zm7-7a2 2 0 110 4 2 2 0 010-4zm7 0a2 2 0 110 4 2 2 0 010-4zM5 3a2 2 0 110 4 2 2 0 010-4z">
@@ -2488,16 +2546,16 @@
             <!-- 底部版权/链接区域 -->
             <div class="settings-footer">
               <div class="settings-footer-links">
+                <a href="#" id="btn-footer-version">LiteStart 1.8.5</a>| <span data-i18n="presentedBy">由</span> <a href="https://xingyuefox.pages.dev" target="_blank" data-i18n="xingyuefox">星月Fox</a> <span data-i18n="forYou">为您呈现</span>
+              </div>
+              <div class="settings-footer-links">
                 <a href="https://github.com/XingYueFox/Litestart/blob/main/PRIVACY_POLICY.md" data-i18n="cookieNotice">隐私政策</a> · 
                 <a href="https://github.com/XingYueFox/Litestart/blob/main/LICENSE" data-i18n="license">开源协议</a> ·  
                 <a href="https://github.com/XingYueFox/Litestart/graphs/contributors?from=2026%2F5%2F23" data-i18n="contributor">贡献名单</a> · 
                 <a href="https://github.com/XingYueFox/Litestart/issues" data-i18n="helpFeedback">帮助&反馈</a>
                 
               </div>
-              <div class="settings-footer-links">
-                <a href="#" id="btn-footer-version">LiteStart 1.8.3-beta1</a>| <span data-i18n="presentedBy">由</span> <a href="https://xingyuefox.pages.dev" target="_blank" data-i18n="xingyuefox">星月Fox</a> <span data-i18n="forYou">为您呈现</span>
-              </div>
-              <div class="settings-footer-text" style="opacity: 0.8;" data-i18n="disclaimer">
+              <div class="settings-footer-text" data-i18n="disclaimer">
                 请注意，此网页与 Microsoft 无关。
               </div>
             </div>
@@ -2530,7 +2588,7 @@
                   <div class="settings-card">
                     <div class="settings-card-title" id="wallpaper-type-title" data-i18n="localImage">选择图片</div>
                     <div class="wallpaper-preview-box" id="wallpaper-preview-container">
-                      <span id="preview-placeholder-text" style="font-size: 13px; color: var(--settings-text-secondary);" data-i18n="usingDefaultBg">正在使用默认背景</span>
+                      <span style="font-size: 13px; color: var(--settings-text-secondary);" data-i18n="usingDefaultBg">正在使用默认背景</span>
                     </div>
                     <span id="wallpaper-source-label" style="font-size:11px;color:var(--settings-text-secondary);text-align:center;margin-top:6px;display:block;"></span>
                     <input type="file" id="input-wallpaper-file" class="file-input-hidden" accept="image/*,video/*">
@@ -2550,7 +2608,7 @@
                   </div>
 
                   <!-- 第一组：可见性相关（增强元素可见性 + 壁纸遮罩） -->
-                  <div class="settings-card" id="visibility-card">
+                  <div class="settings-card">
                     <div class="setting-row">
                       <div class="setting-label-group" data-i18n="enhancedVisibility">增强元素可见性</div>
                       <div class="switch-container">
@@ -2576,7 +2634,7 @@
                   </div>
 
                   <!-- 第二组：两处模糊（衬底模糊 + 壁纸渐显模糊），都默认开启 -->
-                  <div class="settings-card" id="blur-card">
+                  <div class="settings-card">
                     <!-- 衬底启用模糊：增强元素可见性关闭时整行置灰 -->
                     <div class="setting-row disabled" id="enhanced-blur-row">
                       <div class="setting-label-group">
@@ -2795,7 +2853,7 @@
           <div class="modal-footer">
             <div class="modal-footer-right">
               <button type="button" id="btn-online-cancel" class="btn btn-secondary" data-i18n="cancel">取消</button>
-              <button type="submit" id="btn-online-save" class="btn btn-primary" data-i18n="save">保存</button>
+              <button type="submit" class="btn btn-primary" data-i18n="save">保存</button>
             </div>
           </div>
         </form>
@@ -2804,7 +2862,7 @@
     <!-- ------添加快速链接弹窗------ -->
     <div id="modal" class="modal-overlay">
       <div class="modal-dialog">
-        <div id="modal-title" class="modal-header" data-i18n="editShortcut">编辑快速链接</div>
+        <div class="modal-header" data-i18n="editShortcut">编辑快速链接</div>
         <form id="modal-form" novalidate>
           <div class="form-row">
             <div class="form-group form-group-narrow">
@@ -2833,7 +2891,7 @@
                 <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor">
                   <path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zm0 3a.75.75 0 0 1 .75.75v3.5a.75.75 0 0 1-1.5 0v-3.5A.75.75 0 0 1 8 4zm0 8a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
                 </svg>
-                <span id="text-name-error" data-i18n="errorNameReq">请输入快速链接名称</span>
+                <span data-i18n="errorNameReq">请输入快速链接名称</span>
               </div>
             </div>
           </div>
@@ -2847,7 +2905,7 @@
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor">
                 <path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zm0 3a.75.75 0 0 1 .75.75v3.5a.75.75 0 0 1-1.5 0v-3.5A.75.75 0 0 1 8 4zm0 8a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
               </svg>
-              <span id="text-url-error" data-i18n="errorUrlReq">请输入网址</span>
+              <span data-i18n="errorUrlReq">请输入网址</span>
             </div>
           </div>
 
@@ -2855,7 +2913,7 @@
             <button type="button" id="btn-delete" class="btn btn-danger" data-i18n="delete">删除</button>
             <div class="modal-footer-right">
               <button type="button" id="btn-cancel" class="btn btn-secondary" data-i18n="cancel">取消</button>
-              <button type="submit" id="btn-save" class="btn btn-primary" data-i18n="save">保存</button>
+              <button type="submit" class="btn btn-primary" data-i18n="save">保存</button>
             </div>
           </div>
         </form>
@@ -2887,7 +2945,7 @@
           <div class="form-group" style="margin-bottom: 20px;">
             <label class="form-label" data-i18n="customTitleImage">自定义标题图片</label>
             <div style="display: flex; align-items: center; gap: 16px; flex-wrap: wrap;">
-              <div id="engine-logo-preview" style="min-width: 120px; height: 56px; border-radius: 6px; background-color: var(--settings-thumb-bg); border: 1px solid var(--settings-card-border); display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 4px; box-sizing: border-box;">
+              <div style="min-width: 120px; height: 56px; border-radius: 6px; background-color: var(--settings-thumb-bg); border: 1px solid var(--settings-card-border); display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 4px; box-sizing: border-box;">
                 <span id="engine-logo-empty" style="font-size: 11px; color: var(--settings-text-secondary); text-align: center;" data-i18n="noImageSelected">未选择图片</span>
                 <img id="engine-logo-img" src="" alt="" style="max-height: 100%; max-width: 200px; object-fit: contain; display: none;">
               </div>
@@ -2921,7 +2979,7 @@
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor">
                 <path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zm0 3a.75.75 0 0 1 .75.75v3.5a.75.75 0 0 1-1.5 0v-3.5A.75.75 0 0 1 8 4zm0 8a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
               </svg>
-              <span id="text-engine-url-error" data-i18n="errorEngineUrlFormat">请输入搜索 URL，必须包含 %s</span>
+              <span data-i18n="errorEngineUrlFormat">请输入搜索 URL，必须包含 %s</span>
             </div>
           </div>
 
@@ -2929,7 +2987,7 @@
             <button type="button" id="btn-engine-delete" class="btn btn-danger" data-i18n="delete" style="display: none;">删除</button>
             <div class="modal-footer-right">
               <button type="button" id="btn-engine-cancel" class="btn btn-secondary" data-i18n="cancel">取消</button>
-              <button type="submit" id="btn-engine-save" class="btn btn-primary" data-i18n="save">保存</button>
+              <button type="submit" class="btn btn-primary" data-i18n="save">保存</button>
             </div>
           </div>
         </form>
@@ -2944,7 +3002,7 @@
     <div id="modal-about" class="modal-overlay">
       <div class="modal-dialog">
         <div class="modal-header" data-i18n="aboutTitle">关于 Litestart</div>
-        <p style="margin: 0; opacity: 0.7; font-size: 13px;" data-i18n="litever">版本 1.8.3-beta1 | 更新时间：2026-10-14</p><br>
+        <p style="margin: 0; opacity: 0.7; font-size: 13px;" data-i18n="litever">版本 1.8.5 | 更新时间：2026-10-16</p><br>
         
         <!-- 可用更新提示框 -->
         <div id="update-notice" class="update-notice" style="display: none;">
