@@ -739,7 +739,6 @@ const i18nData = {
     custom: 'Пользовательская',
     editCustomEngine: 'Изменить поисковую систему',
     saveHistory: 'Сохранять историю поиска',
-    layout: 'Макет',
     inspirational: 'Вдохновение',
     focused: 'Фокус',
     appreciate: 'Созерцание',

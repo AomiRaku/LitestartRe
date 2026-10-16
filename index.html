@@ -866,15 +866,10 @@
       --hover-factor: 1.1765;
     }
 
-    /* 拖动时关闭过渡 */
+    /* 拖动时关闭过渡并切换光标 */
     .switch.dragging,
     .switch.dragging .slider {
       transition: none;
-    }
-
-    /* 拖动中的光标 */
-    .switch.dragging,
-    .switch.dragging .slider {
       cursor: grabbing;
     }
 
@@ -2338,7 +2333,7 @@
     <ntp-shell elementtiming="wallpaper">
       <!-- 顶部导航栏 -->
       <div id="header">
-        <div id="header-left">
+        <div>
           <button id="waffle" class="header-button" type="button" aria-label="Litestart~" title="Litestart~">
             <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path d="M12 17a2 2 0 110 4 2 2 0 010-4zm7 0a2 2 0 110 4 2 2 0 010-4zM5 17a2 2 0 110 4 2 2 0 010-4zm7-7a2 2 0 110 4 2 2 0 010-4zm7 0a2 2 0 110 4 2 2 0 010-4zM5 10a2 2 0 110 4 2 2 0 010-4zm7-7a2 2 0 110 4 2 2 0 010-4zm7 0a2 2 0 110 4 2 2 0 010-4zM5 3a2 2 0 110 4 2 2 0 010-4z">
@@ -2607,7 +2602,7 @@
                   <div class="settings-card">
                     <div class="settings-card-title" id="wallpaper-type-title" data-i18n="localImage">选择图片</div>
                     <div class="wallpaper-preview-box" id="wallpaper-preview-container">
-                      <span id="preview-placeholder-text" style="font-size: 13px; color: var(--settings-text-secondary);" data-i18n="usingDefaultBg">正在使用默认背景</span>
+                      <span style="font-size: 13px; color: var(--settings-text-secondary);" data-i18n="usingDefaultBg">正在使用默认背景</span>
                     </div>
                     <span id="wallpaper-source-label" style="font-size:11px;color:var(--settings-text-secondary);text-align:center;margin-top:6px;display:block;"></span>
                     <input type="file" id="input-wallpaper-file" class="file-input-hidden" accept="image/*,video/*">
@@ -2627,7 +2622,7 @@
                   </div>
 
                   <!-- 第一组：可见性相关（增强元素可见性 + 壁纸遮罩） -->
-                  <div class="settings-card" id="visibility-card">
+                  <div class="settings-card">
                     <div class="setting-row">
                       <div class="setting-label-group" data-i18n="enhancedVisibility">增强元素可见性</div>
                       <div class="switch-container">
@@ -2653,7 +2648,7 @@
                   </div>
 
                   <!-- 第二组：两处模糊（衬底模糊 + 壁纸渐显模糊），都默认开启 -->
-                  <div class="settings-card" id="blur-card">
+                  <div class="settings-card">
                     <!-- 衬底启用模糊：增强元素可见性关闭时整行置灰 -->
                     <div class="setting-row disabled" id="enhanced-blur-row">
                       <div class="setting-label-group">
@@ -2872,7 +2867,7 @@
           <div class="modal-footer">
             <div class="modal-footer-right">
               <button type="button" id="btn-online-cancel" class="btn btn-secondary" data-i18n="cancel">取消</button>
-              <button type="submit" id="btn-online-save" class="btn btn-primary" data-i18n="save">保存</button>
+              <button type="submit" class="btn btn-primary" data-i18n="save">保存</button>
             </div>
           </div>
         </form>
@@ -2881,7 +2876,7 @@
     <!-- ------添加快速链接弹窗------ -->
     <div id="modal" class="modal-overlay">
       <div class="modal-dialog">
-        <div id="modal-title" class="modal-header" data-i18n="editShortcut">编辑快速链接</div>
+        <div class="modal-header" data-i18n="editShortcut">编辑快速链接</div>
         <form id="modal-form" novalidate>
           <div class="form-row">
             <div class="form-group form-group-narrow">
@@ -2910,7 +2905,7 @@
                 <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor">
                   <path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zm0 3a.75.75 0 0 1 .75.75v3.5a.75.75 0 0 1-1.5 0v-3.5A.75.75 0 0 1 8 4zm0 8a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
                 </svg>
-                <span id="text-name-error" data-i18n="errorNameReq">请输入快速链接名称</span>
+                <span data-i18n="errorNameReq">请输入快速链接名称</span>
               </div>
             </div>
           </div>
@@ -2924,7 +2919,7 @@
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor">
                 <path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zm0 3a.75.75 0 0 1 .75.75v3.5a.75.75 0 0 1-1.5 0v-3.5A.75.75 0 0 1 8 4zm0 8a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
               </svg>
-              <span id="text-url-error" data-i18n="errorUrlReq">请输入网址</span>
+              <span data-i18n="errorUrlReq">请输入网址</span>
             </div>
           </div>
 
@@ -2932,7 +2927,7 @@
             <button type="button" id="btn-delete" class="btn btn-danger" data-i18n="delete">删除</button>
             <div class="modal-footer-right">
               <button type="button" id="btn-cancel" class="btn btn-secondary" data-i18n="cancel">取消</button>
-              <button type="submit" id="btn-save" class="btn btn-primary" data-i18n="save">保存</button>
+              <button type="submit" class="btn btn-primary" data-i18n="save">保存</button>
             </div>
           </div>
         </form>
@@ -2964,7 +2959,7 @@
           <div class="form-group" style="margin-bottom: 20px;">
             <label class="form-label" data-i18n="customTitleImage">自定义标题图片</label>
             <div style="display: flex; align-items: center; gap: 16px; flex-wrap: wrap;">
-              <div id="engine-logo-preview" style="min-width: 120px; height: 56px; border-radius: 6px; background-color: var(--settings-thumb-bg); border: 1px solid var(--settings-card-border); display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 4px; box-sizing: border-box;">
+              <div style="min-width: 120px; height: 56px; border-radius: 6px; background-color: var(--settings-thumb-bg); border: 1px solid var(--settings-card-border); display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 4px; box-sizing: border-box;">
                 <span id="engine-logo-empty" style="font-size: 11px; color: var(--settings-text-secondary); text-align: center;" data-i18n="noImageSelected">未选择图片</span>
                 <img id="engine-logo-img" src="" alt="" style="max-height: 100%; max-width: 200px; object-fit: contain; display: none;">
               </div>
@@ -2998,7 +2993,7 @@
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor">
                 <path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zm0 3a.75.75 0 0 1 .75.75v3.5a.75.75 0 0 1-1.5 0v-3.5A.75.75 0 0 1 8 4zm0 8a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
               </svg>
-              <span id="text-engine-url-error" data-i18n="errorEngineUrlFormat">请输入搜索 URL，必须包含 %s</span>
+              <span data-i18n="errorEngineUrlFormat">请输入搜索 URL，必须包含 %s</span>
             </div>
           </div>
 
@@ -3006,7 +3001,7 @@
             <button type="button" id="btn-engine-delete" class="btn btn-danger" data-i18n="delete" style="display: none;">删除</button>
             <div class="modal-footer-right">
               <button type="button" id="btn-engine-cancel" class="btn btn-secondary" data-i18n="cancel">取消</button>
-              <button type="submit" id="btn-engine-save" class="btn btn-primary" data-i18n="save">保存</button>
+              <button type="submit" class="btn btn-primary" data-i18n="save">保存</button>
             </div>
           </div>
         </form>
