@@ -44,9 +44,9 @@
       --logo-color: #737373;   /* Bing/系统 Logo 主色 */
 
       /* ===== 强调色 ===== */
-      --accent-foreground-rest: #262320;   /* 强调色（原纯黑 #000000） */
-      --accent-foreground-hover: #3a3733;   /* 第二强调色：需比 rest 更亮，随 rest 一起上调 */
-      --accent-foreground-invert: #f0f0f0;   /* 反色强调色（原纯白 #ffffff） */
+      --accent-foreground-rest: #262320;    /* 强调色 */
+      --accent-foreground-hover: #3a3733;   /* 第二强调色 */
+      --accent-foreground-invert: #f0f0f0;  /* 反色强调色 */
 
       /* ===== 按钮与交互填充 ===== */
       --btn-secondary-bg: #EEEEEE;   /* 次级按钮背景 */
@@ -104,9 +104,9 @@
       --logo-color: #f5f5f5;
 
       /* ===== 强调色 ===== */
-      --accent-foreground-rest: #f0f0f0;   /* 强调色（原纯白 #ffffff） */
-      --accent-foreground-hover: #E0E0E0;   /* 第二强调色（本就比 rest 暗，无需调整） */
-      --accent-foreground-invert: #262320;   /* 反色强调色（原纯黑 #000000） */
+      --accent-foreground-rest: #f0f0f0;    /* 强调色 */
+      --accent-foreground-hover: #E0E0E0;   /* 第二强调色 */
+      --accent-foreground-invert: #262320;  /* 反色强调色 */
 
       /* ===== 按钮与交互填充 ===== */
       --btn-secondary-bg: #3a3a3a;   /* 次级按钮背景（比卡片 #2b2b2b 亮一档，看得出是按钮） */
@@ -158,10 +158,9 @@
       pointer-events: none;
     }
 
-    /* 背景图/视频 —— 默认透明，加载完成后通过 .loaded 触发渐入（0.2s）。
-       「背景渐显模糊」开启时再追加一层"由糊到清"（见下面的 body[data-bg-fade-blur] 规则）。
-       过渡只定义在 .loaded 上：这样只有"加载完成"会播动画，
-       移除 .loaded（换壁纸、关背景）时属性瞬间归位，不会反过来再糊一次。 */
+    /* 背景图/视频 —— 默认透明，加载完成后加 .loaded 渐入（0.2s）；
+       开启「背景渐显模糊」时再叠一层"由糊到清"。
+       过渡只定义在 .loaded 上，移除时不播反向动画。 */
     #bg-video, #bg-image {
       position: absolute;
       top: 0;
@@ -178,8 +177,7 @@
       transition: opacity 0.2s ease-in;
     }
 
-    /* 开启「背景渐显模糊」：在渐入的同时叠加模糊与轻微回缩。
-       放大一点是为了盖住 blur 向边界外糊开的部分，否则四周会出现虚边。 */
+    /* 开启「背景渐显模糊」：渐入时叠加模糊与轻微放大 */
     body[data-bg-fade-blur="true"] #bg-video,
     body[data-bg-fade-blur="true"] #bg-image {
       filter: blur(24px);
@@ -239,7 +237,7 @@
         var(--bg-vignette, radial-gradient(circle at center, rgba(0,0,0,0) 40%, rgba(0,0,0,0.5) 100%));
     }
 
-    /* 仅在开启壁纸(body.bg-enabled)时，才显示壁纸容器和遮罩 */
+    /* 开启壁纸时显示壁纸容器与遮罩 */
     body.bg-enabled #background-container,
     body.bg-enabled #bg-overlay {
       display: block;
@@ -256,10 +254,7 @@
     }
 
     /* ===== 按钮、窗口、搜索框等元素的过渡动画 =====
-   统一使用 0.06s-0.1s 的短时长，配合 ease-out/ease 缓动函数，
-   提供快速而不突兀的交互反馈。
-   transition 涵盖：background-color、border-color、box-shadow、
-   border-radius、opacity、transform 等属性。 */
+       统一 0.06s-0.1s 短时长 + ease-out，快速而不突兀 */
 
     body.bg-enabled[data-enhanced-visibility="true"] .header-button {
       background-color: var(--enhanced-visibility-bg);
@@ -288,14 +283,14 @@
       background-color: var(--enhanced-visibility-bg-hover);
     }
 
-    /* 增强可见性：只给链接名称垫底（与 Logo 同一档底色） */
+    /* 增强可见性：链接名称垫底，与 Logo 同档 */
     body.bg-enabled[data-enhanced-visibility="true"] .quicklink-title {
       background-color: var(--enhanced-visibility-logo-bg);
       border-radius: 4px;
       padding: 3px 5px;
     }
 
-    /* 「启用模糊」：给增强可见性产生的那些衬底加背景模糊 */
+    /* 「启用模糊」：为增强可见性的衬底加背景模糊 */
     body.bg-enabled[data-enhanced-visibility="true"][data-enhanced-blur="true"] .header-button,
     body.bg-enabled[data-enhanced-visibility="true"][data-enhanced-blur="true"] #logo,
     body.bg-enabled[data-enhanced-visibility="true"][data-enhanced-blur="true"] #time-display,
@@ -308,7 +303,7 @@
       box-shadow: 0 0 0 3px var(--enhanced-visibility-bg-hover);
     }
 
-    /* 开启背景时将外层容器背景设为透明，避免遮挡背景壁纸 */
+    /* 开启背景时外层容器透明，露出壁纸 */
     body.bg-enabled ntp-shell {
       background-color: transparent;
     }
@@ -325,7 +320,7 @@
       align-items: center;
       background-color: var(--fill-color);
       overflow: auto;
-      /* 到边界后不再产生弹性/链式滚动，避免"滚一下又弹回来" */
+      /* 抑制边界弹性与链式滚动 */
       overscroll-behavior: none;
       z-index: 2;
     }
@@ -395,7 +390,7 @@
       background-color: var(--neutral-fill-rest);
     }
 
-    /* 开启"增强元素可见性"时，用悬停档的半透明底 */
+    /* 增强可见性：使用悬停档半透明底 */
     body.bg-enabled[data-enhanced-visibility="true"] .header-button.active {
       background-color: var(--enhanced-visibility-bg-hover);
     }
@@ -616,7 +611,7 @@
       width: 100%;
       height: 32px;
       border-radius: 6px;
-      /* 纯平风格：用透明描边保留 1px 几何，避免尺寸与原来不一致 */
+      /* 纯平风格：用透明描边保留 1px 几何 */
       border: 1px solid transparent;
       background-color: var(--btn-secondary-bg);
       color: var(--settings-text-primary);
@@ -681,15 +676,12 @@
       transform: rotate(180deg);
     }
 
-    /* 下拉面板 —— position:fixed 用于脱离父容器 overflow 裁剪
-       - 初始状态：opacity:0, visibility:hidden, transform 上移 4px
-       - .active 状态：opacity:1, visibility:visible, transform 归零
-       - 展开方向由 JS 根据空间动态决定（上/下），通过 translateY 初始方向实现动画 */
+    /* 下拉面板：position:fixed 脱离父容器 overflow 裁剪。
+       展开方向由 JS 按可用空间决定（上/下） */
     .custom-select-dropdown {
       position: fixed;
       background-color: var(--fill-popup-color);
-      /* 纯平风格：去掉描边，靠 box-shadow 与背景色区分层次；
-         保留 1px 透明边框是为了维持尺寸（该元素是 content-box） */
+      /* 纯平风格：无描边，1px 透明边框占位以维持尺寸（content-box） */
       border: 1px solid transparent;
       border-radius: 6px;
       box-shadow: var(--dropdown-shadow);
@@ -737,8 +729,7 @@
       gap: 8px;
     }
 
-    /* 与下拉触发器用同一个 chevron 路径（圆头），旋转 90° 表示"进入子级"；
-       用 mask 而不是背景图，颜色才能跟随 currentColor */
+    /* 与下拉触发器同一 chevron 路径，旋转 90° 表示进入子级；用 mask 以跟随 currentColor */
     .custom-select-option[data-value="preset"]::after {
       content: '';
       width: 12px;
@@ -778,33 +769,25 @@
       align-items: center;
     }
 
-    /* 滑块开关样式（经典款：胶囊轨道 + 圆形手柄左右滑动） */
+    /* 开关：胶囊轨道 + 圆形手柄 */
     .switch {
       position: relative;
       display: inline-block;
       /* 进度值：0 = 关闭，1 = 打开。手柄位移与拖拽都靠它 */
       --p: 0;
-      /* 手柄直径：固定值，开关两种状态一样大。
-         保持未注册（不加 @property）：值就是简单字面量，getComputedStyle 能直接读到，
-         拖拽脚本也就无需再从别的常量推算 */
+      /* 手柄直径（字面量，供脚本读取） */
       --thumb-w: 13px;
-      /* 手柄在两端的位置：关闭态圆左边缘、打开态圆右边缘。
-         分开写是为了能单独调整某一端 —— 合成一个"左右边距"的话，
-         改初始位置会连带把打开态也推离右边缘 */
+      /* 手柄在两端的位置，左右独立可调 */
       --thumb-start: 2px;   /* 关闭态：圆距左边缘 */
       --thumb-end: 2px;     /* 打开态：圆距右边缘（与左端对称） */
-      /* 手柄可移动的行程 = 轨道宽 − 直径 − 左端留白 − 右端留白。
-         用 100% 而不是写死轨道宽度：这个变量只用在 .slider::before 的 left 上，
-         包含块就是铺满控件的 .slider，所以 100% 正好是轨道宽，
-         以后改宽度不必再同步这里 */
+      /* 手柄行程。100% 相对 .slider（铺满控件） */
       --thumb-travel: calc(100% - var(--thumb-w) - var(--thumb-start) - var(--thumb-end));
-      width: 30px;                 /* 再长 2px */
-      /* 高度取 17px：手柄 11px 时 (17 − 11) / 2 = 3px 是整数，
-         上下留白天然对称；若用 16px 则为 2.5px，绘制时会被圆整成 3/2px 而不居中 */
+      width: 30px;
+      /* 17px 使垂直留白为整数 3px */
       height: 17px;                /* 轨道与控件同高 */
       cursor: pointer;
       transition: --p 0.2s ease;
-      /* 兜底：任何元素都不越出控件范围 */
+      /* 兜底：不越出控件范围 */
       overflow: hidden;
     }
 
@@ -814,16 +797,14 @@
       height: 0;
     }
 
-    /* 让 --p 成为可插值的数值；不注册的话自定义属性是离散的，无法过渡 */
+    /* 注册为 <number> 以便过渡 */
     @property --p {
       syntax: '<number>';
       inherits: true;
       initial-value: 0;
     }
 
-    /* 悬停缩放系数。同样要注册成 <number> 才能过渡 ——
-       它就是手柄悬停时那 0.2s 的平滑来源。
-       inherits: false，因为它只作用于手柄伪元素自身，不需要传给任何后代 */
+    /* 悬停缩放系数，注册为 <number> 以便过渡 */
     @property --hover-factor {
       syntax: '<number>';
       inherits: false;
@@ -839,8 +820,7 @@
       right: 0;
       bottom: 0;
       border-radius: 999px;
-      /* 关闭态底色。比 --btn-secondary-bg(#EEEEEE) 提一档到 #e0e0e0，
-         否则与页面背景 #f7f7f7 只差 9 级亮度，胶囊会显得很弱 */
+      /* 关闭态底色 */
       background-color: var(--modal-border);
       cursor: pointer;
       transition: background-color 0.2s ease;
@@ -850,43 +830,24 @@
     .slider::before {
       content: "";
       position: absolute;
-      /* 垂直居中直接用位置算：top = (轨道高 − 直径) / 2。
-         控件高 17px、直径 11px → 正好 3px，全程没有小数，
-         所以不会被绘制阶段的设备像素圆整弄偏。
-         （不能用 top: 50% + translateY(-50%)：50% 是 8.5px，
-          它本身就会被圆整成 9px，transform 再精确也补不回来。）
-         写 100% 而不是 3px，是为了以后改高度或直径时自动跟上。
-         left 由 --p 驱动，与垂直方向互不干扰 */
+      /* 垂直居中。top 为整数 3px，不受亚像素圆整影响 */
       top: calc((100% - var(--thumb-w)) / 2);
       left: calc(var(--thumb-start) + var(--p) * var(--thumb-travel));
       width: var(--thumb-w);
       height: var(--thumb-w);
-      /* 基准缩放：关闭态缩到一半（0.5），打开态略小于满尺寸（0.85）。
-         用 scale 而不是改宽度：缩放以元素中心为原点，圆心不会移动；
-         布局尺寸也不变，所以行程和拖拽换算都不受影响。
-             p=0 → base 0.5  → 6.5px
-             p=1 → base 0.85 → 11.05px
-         再乘 --hover-factor 做悬停变化（见下面的规则）。把系数乘在同一个
-         表达式里，是为了让点击切换时尺寸依然平滑；若用绝对值的 transform
-         覆盖，--p 的过渡会被顶掉而产生跳变。
-         注意打开态的悬停是把尺寸放回满值 13px（系数 1/0.85 ≈ 1.1765） */
+      /* 基准缩放：0.5（关闭）→ 0.85（打开），再乘 --hover-factor */
       --hover-factor: 1;
       transform: scale(calc((0.5 + var(--p) * 0.35) * var(--hover-factor)));
-      /* 过渡的是系数而不是 transform：transform 已被 --p 逐帧驱动，
-         再给它加过渡会造成双重插值；系数一动，上面的 calc() 自然逐帧重算 */
+      /* 过渡悬停系数 */
       transition: --hover-factor 0.2s ease;
       border-radius: 50%;
-      /* 卡片底色（浅色 #ffffff / 深色 #2b2b2b），比原来的强调反色更亮 */
+      /* 卡片底色，浅色 #ffffff / 深色 #2b2b2b */
       background-color: var(--settings-card-bg);
-      /* 伪元素不拦截指针：拖拽事件由铺满控件的 .slider 接收 */
+      /* 不拦截指针：拖拽由 .slider 接收 */
       pointer-events: none;
     }
 
-    /* 悬停时只把轨道底色调深/调亮一点。
-       这里刻意不用 opacity：opacity 作用在祖先上会把整个 .switch 拉进合成层，
-       而轨道同时在跑 background-color 过渡（主线程绘制），
-       层提升时要重新光栅化，两条流水线进度不一致就会闪。
-       只改颜色则全程停留在绘制阶段，没有合成层的建立与销毁。 */
+    /* 悬停时的轨道底色 */
     .switch:hover .slider {
       background-color: var(--settings-card-border);
     }
@@ -895,26 +856,23 @@
       background-color: var(--accent-foreground-hover);
     }
 
-    /* 悬停时手柄尺寸微调：关闭态放大一点，打开态缩小一点。
-       只改系数，transform 的表达式不变，所以与 --p 的过渡互不干扰 */
+    /* 悬停时手柄缩放微调 */
     .switch:hover .slider::before {
       --hover-factor: 1.25;
     }
 
-    /* 打开态专用，特异性更高（:has + :hover），会盖过上面那条。
-       打开态常态是 0.85，悬停要回到满尺寸，所以系数取 1 / 0.85 ≈ 1.1765
-       （0.85 × 1.1765 = 1.000025，直径 13.0003px，误差可忽略） */
+    /* 打开态悬停：把 0.85 放回满尺寸，系数 = 1 / 0.85 */
     .switch:has(input:checked):hover .slider::before {
       --hover-factor: 1.1765;
     }
 
-    /* 拖动手柄时临时关掉过渡：--p 由脚本逐帧写入，若还带 0.2s 过渡会明显滞后 */
+    /* 拖动时关闭过渡 */
     .switch.dragging,
     .switch.dragging .slider {
       transition: none;
     }
 
-    /* 拖动中换成"抓取"光标（.slider 自己写了 pointer，这里特异性更高才盖得住） */
+    /* 拖动中的光标 */
     .switch.dragging,
     .switch.dragging .slider {
       cursor: grabbing;
@@ -953,7 +911,7 @@
       width: calc((100% - 10px) / 3);
       height: calc(100% - 6px);
       border-radius: 3px;                        /* 容器 6px − padding 3px */
-      /* 纯平风格：靠滑块自身的浅色底与凹槽区分，不用投影 */
+      /* 纯平风格：滑块以浅色底与凹槽区分 */
       background-color: var(--settings-card-bg);
       transform: translateX(0);
       transition: transform 0.1s ease;
@@ -1063,7 +1021,7 @@
       width: calc((100% - 10px) / 3);
       height: calc(100% - 6px);
       border-radius: 3px;
-      /* 纯平风格：不用投影 */
+      /* 纯平风格 */
       background-color: var(--settings-card-bg);
       transform: translateX(0);
       transition: transform 0.1s ease, opacity 0.15s ease;
@@ -1112,7 +1070,7 @@
       background-color: rgba(0, 0, 0, 0.04);
     }
 
-    /* 深色主题底色本就暗，比例给大些才看得出 */
+    /* 深色主题下比例更大 */
     :root[data-theme="dark"] .theme-option:hover,
     :root[data-theme="dark"] .preset-card:hover {
       background-color: rgba(0, 0, 0, 0.14);
@@ -1218,8 +1176,8 @@
 
     /* 底部链接样式 */
     .settings-footer {
-      /* 上内边距留 0：上方留白由 .settings-content 的 padding-bottom(12px) 提供，
-         正好与版本行下方的间距(12px)一致；原来是 8px + 12px = 20px */
+      /* 上内边距 0：上方留白由 .settings-content 的 padding-bottom(12px) 提供，
+         与版本行下方间距一致 */
       padding: 0 16px 16px 16px;
       font-size: 11px;
       color: var(--settings-text-secondary);
@@ -1242,11 +1200,8 @@
       text-decoration: underline;
     }
 
-    /* 页脚下面两行（链接行 + 免责声明）统一成次要色并整体调淡。
-       相邻兄弟选择器只命中第二个 .settings-footer-links，也就是链接行，
-       第一行的版本 / 署名行不受影响。
-       链接行的下边距由 8px 收到 4px，让这两行靠紧一些
-       （相邻块级元素的 margin 会折叠，实际间距取两者中的较大值）。 */
+    /* 页脚两行（链接行 + 免责声明）统一成次要色并调淡。
+       相邻兄弟选择器只命中第二个 .settings-footer-links，即链接行 */
     .settings-footer-links + .settings-footer-links {
       color: var(--settings-text-secondary);
       opacity: 0.7;
@@ -1291,7 +1246,7 @@
       object-fit: contain;
     }
 
-    /* 内置引擎的 Logo 各有深浅两套：跟随 <html data-theme>，而不是系统偏好 */
+    /* 内置引擎 Logo 分深浅两套，跟随 <html data-theme> */
     .logo-for-dark {
       display: none;
     }
@@ -1398,10 +1353,8 @@
       box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
     }
 
-    /* 搜索框展开联想下拉词条面板动画
-       - 初始状态：opacity:0, visibility:hidden, transform 上移 4px
-       - .suggestions-open 状态：opacity:1, visibility:visible, transform 归零
-       - visibility 延迟 0.08s 切换，确保过渡完成后再隐藏 */
+    /* 搜索框联想面板：初始隐藏并上移 4px，.suggestions-open 时归位。
+       visibility 延迟 0.08s 切换，保证过渡播完再隐藏 */
     #suggestions-box {
       display: block;
       position: absolute;
@@ -1502,8 +1455,7 @@
       flex-wrap: wrap;             /* 多行模式靠换行实现，每行 9 项 */
       justify-content: center;
       align-items: center;
-      /* 容器比内容高时（"悬挂"布局里它占满 1fr 行），多行行高不能被拉伸，
-         否则行间距会被撑开；这里让多行贴着容器顶部、间距恒为 gap */
+      /* 多行贴容器顶部，间距恒为 gap，行高不被拉伸 */
       align-content: flex-start;
       gap: 10px;
       overflow: visible;
@@ -1532,7 +1484,7 @@
     }
 
     .quicklink-item:hover {
-      /* 用悬停档而不是静止档：原来 0.04/0.06 太淡，看不清落点 */
+      /* 悬停使用较明显的填充档 */
       background-color: var(--neutral-fill-hover);
     }
 
@@ -1585,7 +1537,7 @@
       justify-content: center;
       opacity: 0;
       transition: opacity 0.08s ease-in-out, background-color 0.08s;
-      background-color: transparent;    /* 不再垫圆形底色 */
+      /* 无圆形底色 */
       fill: var(--neutral-foreground-rest);
       z-index: 2;
     }
@@ -1632,9 +1584,7 @@
       border-radius: 4px;
       background-color: transparent;
       color: var(--settings-text-primary);
-      /* 显式取全局字体：本菜单挂在 <body> 下，而全局字体只设在 ntp-shell 上，
-         inherit 拿不到它，会退回浏览器给按钮的默认字体（中文下是微软雅黑）。
-         这里与其它浮层保持一致的写法 */
+      /* 显式取全局字体：本菜单挂在 <body> 下，而全局字体只设在 ntp-shell 上，inherit 拿不到 */
       font-family: var(--font-family);
       font-size: 13px;
       text-align: left;
@@ -1650,8 +1600,7 @@
       display: block;
     }
 
-    /* 铅笔图标的图形占位比另两个更满，视觉上偏大；
-       整体尺寸调大后它仍保留一点收敛，使三项视觉重量一致 */
+    /* 铅笔图标占位更满，尺寸略收敛以平衡视觉重量 */
     .quicklink-menu-item[data-action="edit"] svg {
       transform: scale(0.9);
     }
@@ -1683,10 +1632,10 @@
       grid-row: 4;
     }
 
-    /* 快速链接固定到页面底部（该模式下由脚本强制一行） */
+    /* 快速链接固定到页面底部（脚本强制一行） */
     body[data-quicklink-position="bottom"] ntp-quicklinks {
       position: absolute;
-      grid-row: auto;      /* 脱离网格定位，包含块回到 #inner，bottom 才指向整页底部 */
+      /* 脱离网格定位，包含块回到 #inner，bottom 指向整页底部 */
       left: 20px;
       right: 20px;
       bottom: 20px;
@@ -1858,7 +1807,7 @@
       transition: background-color 0.08s, border-color 0.08s, box-shadow 0.08s;
     }
 
-    /* 占位符弱化一档：默认值是浏览器给的偏深灰，这里改用专门的占位符色再压透明 */
+    /* 占位符：专用色 + 降低不透明度 */
     .input::placeholder {
       color: var(--placeholder-color);
       opacity: 0.75;
@@ -1870,15 +1819,13 @@
     }
 
     .input:focus {
-      /* 聚焦时只换描边颜色（更黑 / 更白），粗细由常规态统一决定。
-         颜色用专用变量，避免抬高特异性而盖过错误态。 */
+      /* 聚焦只换描边色，粗细由常规态决定；用专用变量以免抬高特异性 */
       border-color: var(--input-border-focus);
     }
 
     /* ===== 深色主题下的输入框配色 =====
-       浅色主题是"填充比按钮亮、hover 变暗"，深色主题要镜像过来才有一致的观感：
-       常规填充比按钮(--btn-secondary-bg)更淡（深色下更淡 = 更深）、hover 变亮到按钮色、
-       聚焦（选中）落到原 hover 的那一档。只覆盖输入框，不动其它控件与变量。 */
+       与浅色镜像：常规比按钮更暗、hover 变亮到按钮色、聚焦落到原 hover 档。
+       只覆盖输入框，不动其它控件与变量 */
     :root[data-theme="dark"] .input {
       background-color: #282828;
     }
@@ -1891,7 +1838,7 @@
       background-color: var(--input-bg);
     }
 
-    /* 错误态：整圈描边换成警示色（原来靠底部变色 + 红色下划线，下划线已去掉） */
+    /* 错误态：整圈描边换成警示色 */
     .input-container.error .input {
       border-color: var(--btn-danger-color);
     }
@@ -1966,8 +1913,7 @@
     }
 
     :root[data-theme="dark"] .btn-secondary {
-      /* 不再单独指定底色：与下拉框 / 编辑按钮等共用 --btn-secondary-bg，
-         否则弹窗里的按钮会比设置面板里的深一档 */
+      /* 与下拉框、编辑按钮共用 --btn-secondary-bg */
       padding: 0 20px 1px 20px;
     }
 
@@ -2005,9 +1951,7 @@
       display: none;
     }
 
-    /* 响应式适配
-       注：ntp-quicklinks 的宽度已交由脚本按列数计算，这里不再写死，
-       避免媒体查询档位与「实际放得下的项数」不一致而留下空档。 */
+    /* 响应式适配：ntp-quicklinks 宽度由脚本按列数计算 */
     @media (max-width: 1267px) {
       #search-container { width: 528px; }
     }
@@ -2117,10 +2061,7 @@
       color: var(--settings-text-primary);
     }
 
-    /* 提示内容面板 —— position:fixed 用于脱离父容器
-       - 由 JS 动态定位到 document.body，避免被 overflow:hidden 裁剪
-       - 支持上下两种方向显示（通过 JS 添加/移除 .tooltip-below 类）
-       - 淡入淡出过渡 */
+    /* 提示面板：position:fixed，由 JS 定位到 document.body；支持上下两向 */
     .tooltip-content {
       visibility: hidden;
       opacity: 0;
@@ -2254,7 +2195,7 @@
       line-height: 1.25;
     }
 
-    /* 关闭搜索栏时，隐藏搜索框但保留其在网格中的占位，但同时避免其他元素发生位移（ */
+    /* 关闭搜索栏时隐藏搜索框，保留网格占位且不引起位移 */
     html[data-search-hidden="true"] #search-container {
       visibility: hidden;
       pointer-events: none;

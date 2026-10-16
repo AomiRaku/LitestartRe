@@ -1960,7 +1960,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnOpenLayoutModal = document.getElementById('btn-open-layout-modal');
   const btnCloseLayoutModal = document.getElementById('btn-close-layout-modal');
 
-  // 设置面板内的二级页面（背景 / 布局），取代原来的模态弹窗
+  // 设置面板内的二级页面（背景 / 布局）
   const settingsPageBg = document.getElementById('settings-page-bg');
   const settingsPageLayout = document.getElementById('settings-page-layout');
 
@@ -2659,9 +2659,9 @@ document.addEventListener('DOMContentLoaded', () => {
   setLogo(savedEngine);
   updateEngineEditButton(savedEngine);
   updateForceBingCNRow(savedEngine);
-  // data-layout 同时写在 <html> 和 <body> 上：
-  // <html> 上的值由 early.js 在首帧之前设置（避免悬挂布局下搜索框先出现在页面中部），
-  // 这里必须保持一致，否则切换布局后 <html> 上的旧值会让 CSS 选择器继续命中悬挂布局。
+  // data-layout 同时写在 <html> 和 <body> 上，两处必须一致：
+  // <html> 上的值由 early.js 在首帧前设置（避免悬挂布局下搜索框先出现在页面中部），
+  // 不一致会让 CSS 选择器继续命中旧的布局。
   function setLayoutAttr(value) {
     document.documentElement.setAttribute('data-layout', value);
     document.body.setAttribute('data-layout', value);
@@ -2713,10 +2713,9 @@ document.addEventListener('DOMContentLoaded', () => {
       document.body.removeAttribute('data-enhanced-visibility');
     }
 
-    // 「衬底启用模糊」保留自己的状态：增强可见性开关不再复位它，
-    // 所以关掉增强可见性再打开，模糊还是原来的设置。
-    // 它的效果只作用在"增强可见性产生的衬底"上，因此增强可见性关闭期间不可见——
-    // CSS 选择器同时要求 data-enhanced-visibility="true" 和 data-enhanced-blur="true"。
+    // 「衬底启用模糊」独立于增强可见性开关，后者不会复位它。
+    // 其效果只作用于增强可见性产生的衬底，故后者关闭期间不可见：
+    // CSS 选择器同时要求 data-enhanced-visibility="true" 与 data-enhanced-blur="true"。
     if (enhancedBlur) {
       document.body.setAttribute('data-enhanced-blur', 'true');
     } else {
@@ -2805,7 +2804,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return '';
   }
 
-  // 用当前语言的翻译表设置壁纸类型标题（替代原先写死的中文）
+  // 用当前语言的翻译表设置壁纸类型标题
   function setWallpaperTypeTitle(key) {
     if (!wallpaperTypeTitle) return;
     const d = window._i18nDict || {};
@@ -2958,10 +2957,10 @@ document.addEventListener('DOMContentLoaded', () => {
           bgImage.style.display = 'block';
           bgImage.src = customWallpaperData.url;
           // 图片就绪后渐入。
-          // 用 decode() 取代原来的 load 事件 + complete 判断：
-          //   · decode() 必定异步完成，不会与上面的 remove('loaded') 落在同一帧
-          //   · src 与当前值相同时浏览器不会派发 load，decode() 仍能正常 resolve
-          //   · 也避免 complete / naturalWidth 读到上一张图的状态而走错分支
+          // 用 decode() 而非 load + complete 判断：
+          //   · 必定异步完成，不会与上面的 remove('loaded') 落在同一帧
+          //   · src 未变时浏览器不派发 load，decode() 仍会 resolve
+          //   · 避免 complete / naturalWidth 读到上一张图的状态
           const token = ++wallpaperRenderToken;
           // settled 保证就绪回调与超时回调只生效一次
           let settled = false;
@@ -3526,7 +3525,7 @@ inputOnlineUrl?.addEventListener('input', () => {
   function applyLayout(layoutVal) {
     if (!layoutVal || layoutVal === 'hidden') return;
 
-    // 切换布局时顺手把搜索栏恢复显示
+    // 切换布局时恢复搜索栏显示
     setLayoutAttr(layoutVal);
     Storage.set('ntp_layout', layoutVal);
 
@@ -3545,7 +3544,7 @@ inputOnlineUrl?.addEventListener('input', () => {
     const display = document.querySelector('.custom-select-display[data-for="' + selectId + '"]');
     if (display) display.classList.toggle('disabled', disabled);
     if (!disabled) return;
-    // 顺手收起已展开的面板，避免留下一个点了也没用的浮层
+    // 收起已展开的面板，避免留下无效浮层
     display?.classList.remove('active');
     document.querySelector('.custom-select-dropdown[data-for-select="' + selectId + '"]')?.remove();
   }
@@ -3782,13 +3781,13 @@ inputOnlineUrl?.addEventListener('input', () => {
 
   btnCloseLayoutModal?.addEventListener('click', closeLayoutModal);
 
-  // 背景/布局设置已改为设置面板内的二级页，不再需要遮罩点击关闭
+  // 背景/布局是设置面板内的二级页，不需要遮罩点击关闭
 
 
   // 设置面板切换监听
   selectEngine?.addEventListener('change', (e) => {
     const val = e.target.value;
-    // 切换前的选择（下面马上会写存储，所以要在这之前读）
+    // 切换前的选择。下面马上会写存储，须在此之前读取
     const previousEngine = Storage.get('ntp_engine', 'bing');
     setLogo(val);
     updateEngineEditButton(val);
@@ -3796,7 +3795,7 @@ inputOnlineUrl?.addEventListener('input', () => {
     Storage.set('ntp_engine', val);
     applySearchPlaceholder();
     if (val === 'custom' && (!customEngineConfig.url || customEngineConfig.url === 'https://duckduckgo.com/?q=%s')) {
-      // 自定义配置还没填好，弹窗会拦住；先记住原来的选择，取消时好回退
+      // 配置未填好时弹窗会拦住；先记住当前选择，取消时回退
       engineBeforeCustom = previousEngine === 'custom' ? 'bing' : previousEngine;
       openCustomEngineModal();
     }
@@ -4405,7 +4404,7 @@ function onDrop(e) {
   }
 
   const [draggedItem] = quicklinksList.splice(draggedIndex, 1);
-  // 取走自己后，原本位于它后面的目标整体前移一位
+  // 取走后，其后的目标整体前移一位
   if (draggedIndex < targetIndex) {
     targetIndex -= 1;
   }
@@ -5012,7 +5011,7 @@ searchInput?.addEventListener('input', () => {
 
   // 语言选择与应用初始化
   const savedLang = localStorage.getItem('liteStart_language') || 'auto';
-  // 若存的是已下架的语言（例如曾经的 zh-WY），回落到"跟随设备"
+  // 若存的是已下架的语言（例如 zh-WY），回落到"跟随设备"
   const initialLang = (savedLang === 'auto' || i18nData[savedLang]) ? savedLang : 'auto';
   if (selectLanguage) {
     selectLanguage.value = initialLang;
@@ -5075,9 +5074,8 @@ function initSwitchDrag() {
   // 拖动上下文；未按下时为 null。dragging 为 true 才算真正进入拖动
   let ctx = null;
 
-  // 手柄直径（固定值，开关两种状态一样大）。
-  // --thumb-w 是简单字面量，未注册也能被 getComputedStyle 读到；
-  // 之前读不到是因为它的值是 calc() 表达式，那种情况才会返回原始表达式串。
+  // 手柄直径。--thumb-w 是字面量，未注册也能被 getComputedStyle 读到
+  // （若值是 calc() 表达式，读取会得到原始表达式串而无法解析）。
   const thumbWidthOf = sw =>
     parseFloat(getComputedStyle(sw).getPropertyValue('--thumb-w')) || 11;
 
@@ -5143,7 +5141,7 @@ function initSwitchDrag() {
     const hit = thumbHitRange(sw);
     if (e.clientX < hit.left || e.clientX > hit.right) return;
 
-    // 阻止 label 的默认行为，改为松手时自行决定是否切换
+    // 阻止 label 默认行为，松手时自行决定是否切换
     e.preventDefault();
     // 只记候选，先不改状态、不加类 —— 要等位移超过阈值才真正进入拖动
     ctx = { sw, input, slider, moved: false, dragging: false, startX: e.clientX };
