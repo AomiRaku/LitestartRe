@@ -546,7 +546,7 @@
 
     .settings-card-title {
       font-size: 13px;
-      font-weight: 600;
+      font-weight: 500;
       color: var(--settings-text-primary);
       margin-bottom: 8px;
     }
@@ -632,7 +632,7 @@
     /* 自定义下拉里不可选的项（例如"底部"模式下的"多行"）
        注意不能用 pointer-events: none：那会让点击穿透到下层，反而触发"点击外部" */
     .custom-select-option.disabled {
-      opacity: 0.4;
+      opacity: 0.2;
       cursor: default;
     }
 
@@ -642,18 +642,18 @@
 
     /* 整条下拉不可用时（例如"显示搜索框/显示快速链接"关掉后，该选项已无意义） */
     .custom-select-display.disabled {
-      opacity: 0.5;
+      opacity: 0.3;
       pointer-events: none;
     }
 
     /* 下拉变灰时，紧挨在它上面的标题一起变灰 */
     .settings-card-title:has(+ .custom-select-wrapper .custom-select-display.disabled) {
-      opacity: 0.5;
+      opacity: 0.3;
     }
 
     /* 整行不可用时（例如"悬挂"布局下的"显示 Logo"开关） */
     .setting-row.disabled {
-      opacity: 0.5;
+      opacity: 0.3;
       pointer-events: none;
     }
 
@@ -2299,7 +2299,7 @@
     }
 
     #bg-dependent-settings.disabled {
-      opacity: 0.45;
+      opacity: 0.25;
       filter: grayscale(0.4);
       pointer-events: none;
     }
@@ -2690,7 +2690,17 @@
               </div>
               <div class="settings-content">
                 <div class="settings-card">
-                  <div class="settings-card-title" data-i18n="searchBoxPosition">搜索框位置</div>
+                  <div class="setting-row">
+                    <div class="setting-label-group" data-i18n="showSearchBox">显示搜索框</div>
+                    <div class="switch-container">
+                      <span class="setting-status-text" id="status-search-box" data-i18n="on">打开</span>
+                      <label class="switch">
+                        <input type="checkbox" id="toggle-search-switch" checked>
+                        <span class="slider"></span>
+                      </label>
+                    </div>
+                  </div>
+                  <div class="settings-card-title" style="margin-top: 14px;" data-i18n="searchBoxPosition">搜索框位置</div>
                   <div class="custom-select-wrapper">
                     <select id="select-layout" class="select-box" tabindex="-1" aria-label="搜索框位置">
                       <option value="inspirational" data-i18n="layoutHanging">悬挂</option>
@@ -2701,16 +2711,6 @@
                       <svg class="custom-select-arrow" viewBox="0 0 12 12" fill="none">
                         <path d="M2.22 4.47a.75.75 0 0 1 1.06 0L6 7.19l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L2.22 5.53a.75.75 0 0 1 0-1.06z" fill="currentColor"/>
                       </svg>
-                    </div>
-                  </div>
-                  <div class="setting-row" style="margin-top: 12px;">
-                    <div class="setting-label-group" data-i18n="showSearchBox">显示搜索框</div>
-                    <div class="switch-container">
-                      <span class="setting-status-text" id="status-search-box" data-i18n="on">打开</span>
-                      <label class="switch">
-                        <input type="checkbox" id="toggle-search-switch" checked>
-                        <span class="slider"></span>
-                      </label>
                     </div>
                   </div>
                   <div class="setting-row" style="margin-top: 12px;">
@@ -2726,7 +2726,17 @@
                 </div>
 
                 <div class="settings-card">
-                  <div class="settings-card-title" data-i18n="quicklinkPosition">快速链接位置</div>
+                  <div class="setting-row">
+                    <div class="setting-label-group" data-i18n="showQuicklinks">显示快速链接</div>
+                    <div class="switch-container">
+                      <span class="setting-status-text" id="status-quicklinks" data-i18n="on">打开</span>
+                      <label class="switch">
+                        <input type="checkbox" id="toggle-quicklinks-switch" checked>
+                        <span class="slider"></span>
+                      </label>
+                    </div>
+                  </div>
+                  <div class="settings-card-title" style="margin-top: 14px;" data-i18n="quicklinkPosition">快速链接位置</div>
                   <div class="custom-select-wrapper">
                     <select id="select-quicklink-position" class="select-box" tabindex="-1" aria-label="快速链接位置">
                       <option value="auto" data-i18n="qlPositionDefault">默认</option>
@@ -2739,7 +2749,7 @@
                       </svg>
                     </div>
                   </div>
-                  <div class="settings-card-title" data-i18n="quicklinkStyle" style="margin-top: 14px;">快速链接样式</div>
+                  <div class="settings-card-title" style="margin-top: 14px;" data-i18n="quicklinkStyle">快速链接样式</div>
                   <div class="custom-select-wrapper">
                     <select id="select-quicklinks" class="select-box" tabindex="-1" aria-label="快速链接数量">
                       <option value="1" data-i18n="rows1">一行</option>
@@ -2750,16 +2760,6 @@
                       <svg class="custom-select-arrow" viewBox="0 0 12 12" fill="none">
                         <path d="M2.22 4.47a.75.75 0 0 1 1.06 0L6 7.19l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L2.22 5.53a.75.75 0 0 1 0-1.06z" fill="currentColor"/>
                       </svg>
-                    </div>
-                  </div>
-                  <div class="setting-row" style="margin-top: 12px;">
-                    <div class="setting-label-group" data-i18n="showQuicklinks">显示快速链接</div>
-                    <div class="switch-container">
-                      <span class="setting-status-text" id="status-quicklinks" data-i18n="on">打开</span>
-                      <label class="switch">
-                        <input type="checkbox" id="toggle-quicklinks-switch" checked>
-                        <span class="slider"></span>
-                      </label>
                     </div>
                   </div>
                   <div class="setting-row" style="margin-top: 12px;">
