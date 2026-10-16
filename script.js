@@ -4186,7 +4186,7 @@ inputOnlineUrl?.addEventListener('input', () => {
       <span class="quicklink-title">${safeTitle}</span>
       <button type="button" class="quicklink-edit-btn" title="${sanitizeInput(currentDict().editShortcut || '编辑快速链接')}" data-i18n-title="editShortcut">
         <svg width="14" height="14" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
-          <path d="M3 8a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0zm5 0a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0zm5 0a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0z"/>
+          <path d="M1.5 8a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0zm5 0a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0zm5 0a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0z"/>
         </svg>
       </button>
     `;
