@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="referrer" content="strict-origin">
-    <!-- 必须同步加载：在首帧之前设置主题图标与"隐藏搜索框"状态 -->
+    <!-- 首帧加载渲染设置 -->
     <script src="early.js"></script>
     <title data-i18n="pageTitle">新标签页</title>
     <meta name="description" content="可定制的浏览器类原生起始页-简洁无需多言" />
@@ -75,62 +75,55 @@
 
     /* 暗色主题颜色库（由 <html data-theme> 驱动，见设置里的「主题模式」） */
     :root[data-theme="dark"] {
-      /* ===== 表面／背景层（从页面底色到浮层，由低到高） ===== */
-      --fill-color: #1f1f1f;
-      --fill-popup-color: #2b2b2b;   /* ※ 与 --neutral-layer-floating 同值（浅色/深色均是） */
-      --neutral-layer-floating: #2b2b2b;
-      --modal-bg: #242424;   /* ※ 深色下比卡片更暗一档，与上面几个不同值 */
-      --settings-panel-bg: #242424;   /* ※ 与 --btn-secondary-bg 同值（浅色 #EEEEEE / 深色不同） */
-      --settings-card-bg: #2b2b2b;   /* ※ 与 --neutral-layer-floating 同值（浅色/深色均是） */
-      --settings-card-hover: #353535;
-      --suggestion-bg: #2b2b2b;   /* ※ 与 --neutral-layer-floating 同值（浅色/深色均是） */
-      --suggestion-hover: #3d3d3d;   /* ※ 与 --accent-foreground-invert 同值（仅浅色） */
-      --input-bg: #202020;
-      --settings-thumb-bg: #212121;
+        --fill-color: #1f1f1f;
+        --fill-popup-color: #2b2b2b;
+        --neutral-layer-floating: #2b2b2b;
+        
+        --neutral-foreground-rest: #f5f5f5;
+        --neutral-foreground-secondary: #adadad;
+        --logo-color: #f5f5f5;
+        --placeholder-color: #8f8f8f;
 
-      /* ===== 边框与描边 ===== */
-      --modal-border: #454545;   /* 按钮悬停底色，需比 --btn-secondary-bg 更亮 */
-      --settings-card-border: #3d3d3d;
-      --settings-thumb-border: #3d3d3d;   /* ※ 与 --settings-card-border 同值（浅色/深色均是） */
-      --input-border: #333333;
-      --input-border-focus: #999999;
+        --neutral-fill-rest: rgba(255, 255, 255, 0.06);
+        --neutral-fill-hover: rgba(255, 255, 255, 0.12);
 
-      /* ===== 文字 ===== */
-      --neutral-foreground-rest: #f5f5f5;
-      --neutral-foreground-secondary: #adadad;
-      --settings-text-primary: #e3e3e3;
-      --settings-text-secondary: #9e9e9e;
-      --placeholder-color: #8f8f8f;
-      --logo-color: #f5f5f5;
+        --shadow2: 0 0 2px rgba(0, 0, 0, 0.24), 0 1px 2px rgba(0, 0, 0, 0.28);
+        --shadow16: 0 0 2px rgba(0, 0, 0, 0.24), 0 8px 16px rgba(0, 0, 0, 0.28);
 
-      /* ===== 强调色 ===== */
-      --accent-foreground-rest: #f0f0f0;    /* 强调色 */
-      --accent-foreground-hover: #E0E0E0;   /* 第二强调色 */
-      --accent-foreground-invert: #262320;  /* 反色强调色 */
+        --dropdown-shadow: 0 4px 14px rgba(0, 0, 0, 0.4), 0 1px 4px rgba(0, 0, 0, 0.22);
+        --dropdown-border: #4c4c4c;
 
-      /* ===== 按钮与交互填充 ===== */
-      --btn-secondary-bg: #3a3a3a;   /* 次级按钮背景（比卡片 #2b2b2b 亮一档，看得出是按钮） */
-      --btn-danger-color: #ff6b6b;
-      --btn-danger-hover: #3d1a1a;
-      --neutral-fill-rest: rgba(255, 255, 255, 0.06);
-      --neutral-fill-hover: rgba(255, 255, 255, 0.12);
+        --modal-bg: #242424;
+        --modal-border: #333333;
+        --modal-mask: rgba(0, 0, 0, 0.65);
+        --input-bg: #202020;
+        --btn-danger-color: #ff6b6b;
+        --btn-danger-hover: #3d1a1a;
 
-      /* ===== 建议列表语义色 ===== */
-      --suggestion-history-color: #b182e6;
-      --suggestion-footer-color: #4f8cf6;
+        --accent-foreground-rest: #ffffff;       /* 强调色 */
+        --accent-foreground-hover: #E0E0E0;      /* 第二强调色 */
+        --accent-foreground-invert: #000000;   /* 反色强调色！！！ */
+        --btn-secondary-bg: #2D2D2D;             /* 次级按钮背景 */
 
-      /* ===== 阴影与遮罩 ===== */
-      --shadow2: 0 0 2px rgba(0, 0, 0, 0.24), 0 1px 2px rgba(0, 0, 0, 0.28);
-      --shadow16: 0 0 2px rgba(0, 0, 0, 0.24), 0 8px 16px rgba(0, 0, 0, 0.28);
-      --dropdown-shadow: 0 4px 14px rgba(0, 0, 0, 0.4), 0 1px 4px rgba(0, 0, 0, 0.22);
-      --search-box-hover-shadow: 0 0 2px rgba(0, 0, 0, 0.28), 0 3px 9px rgba(0, 0, 0, 0.38);
-      --modal-mask: rgba(0, 0, 0, 0.78);
+        --settings-panel-bg: #242424;
+        --settings-card-bg: #2b2b2b;
+        --settings-card-border: #3d3d3d;
+        --settings-card-hover: #353535;
+        --settings-text-primary: #e3e3e3;
+        --settings-text-secondary: #9e9e9e;
+        --settings-thumb-bg: #212121;
+        --settings-thumb-border: #3d3d3d;
 
-      /* ===== 背景图上的半透明层 ===== */
-      --enhanced-visibility-bg: rgba(0, 0, 0, 0.45);
-      --enhanced-visibility-bg-hover: rgba(0, 0, 0, 0.65);
-      --enhanced-visibility-logo-bg: rgba(0, 0, 0, 0.6);
-    
+        --enhanced-visibility-bg: rgba(0, 0, 0, 0.45);
+        --enhanced-visibility-bg-hover: rgba(0, 0, 0, 0.65);
+        --enhanced-visibility-logo-bg: rgba(0, 0, 0, 0.6);
+
+        --suggestion-bg: #2b2b2b;
+        --suggestion-hover: #3d3d3d;
+        --suggestion-history-color: #b182e6;
+        --suggestion-footer-color: #4f8cf6;
+
+        --search-box-hover-shadow: 0 0 2px rgba(0, 0, 0, 0.28), 0 3px 9px rgba(0, 0, 0, 0.38);
     }
 
     html {
@@ -177,7 +170,7 @@
       transition: opacity 0.2s ease-in;
     }
 
-    /* 开启「背景渐显模糊」：渐入时叠加模糊与轻微放大 */
+    /* 背景渐显模糊实现 */
     body[data-bg-fade-blur="true"] #bg-video,
     body[data-bg-fade-blur="true"] #bg-image {
       filter: blur(24px);
@@ -192,7 +185,7 @@
       transition: opacity 0.2s ease-in, filter 0.4s ease-out, transform 0.4s ease-out;
     }
 
-    /* 系统开启"减少动态效果"时不做模糊动画，只保留最基础的渐入 */
+    /* 开启"减少动态效果"时不做模糊动画，只保留最基础的渐入 */
     @media (prefers-reduced-motion: reduce) {
       body[data-bg-fade-blur="true"] #bg-video,
       body[data-bg-fade-blur="true"] #bg-image {
@@ -253,8 +246,7 @@
       --logo-color: #f0f0f0;
     }
 
-    /* ===== 按钮、窗口、搜索框等元素的过渡动画 =====
-       统一 0.06s-0.1s 短时长 + ease-out，快速而不突兀 */
+    /* ===== 按钮、窗口、搜索框等元素的过渡动画 ===== */
 
     body.bg-enabled[data-enhanced-visibility="true"] .header-button {
       background-color: var(--enhanced-visibility-bg);
@@ -290,7 +282,7 @@
       padding: 3px 5px;
     }
 
-    /* 「启用模糊」：为增强可见性的衬底加背景模糊 */
+    /* 启用衬底模糊 */
     body.bg-enabled[data-enhanced-visibility="true"][data-enhanced-blur="true"] .header-button,
     body.bg-enabled[data-enhanced-visibility="true"][data-enhanced-blur="true"] #logo,
     body.bg-enabled[data-enhanced-visibility="true"][data-enhanced-blur="true"] #time-display,
@@ -1801,13 +1793,7 @@
       transition: background-color 0.08s, border-color 0.08s, box-shadow 0.08s;
     }
 
-    /* 占位符：专用色 + 降低不透明度 */
-    .input::placeholder {
-      color: var(--placeholder-color);
-      opacity: 0.75;
-    }
-
-    /* 悬停变色(选中时不生效)：:hover 特异性本就更高，不需要 !important */
+    /* 悬停变色(选中时不生效) */
     .input:hover:not(:focus) {
       background-color: var(--input-bg);
     }
@@ -2295,14 +2281,14 @@
       background-color: var(--neutral-fill-hover);
     }
 
-    /* 背景设置二级页：预览框撑满面板宽度，与设置项纵向排布 */
+    /* 背景设置二级页 */
     #settings-page-bg .wallpaper-preview-box {
       width: 100%;
       height: 150px;
       margin-top: 10px;
     }
 
-    /* 依赖背景开启的设置：背景关闭时整体置灰且不可交互 */
+    /* 依赖背景开启的设置 */
     #bg-dependent-settings {
       display: flex;
       flex-direction: column;
@@ -2692,7 +2678,7 @@
               </div>
             </div>
 
-            <!-- ===== 二级页：布局设置（内联在设置面板内，不再弹窗） ===== -->
+            <!-- ===== 二级页：布局设置 ===== -->
             <div id="settings-page-layout" class="settings-page">
               <div class="settings-header">
                 <button class="settings-back-btn" id="btn-close-layout-modal" type="button" title="返回" data-i18n-title="back">
@@ -2846,7 +2832,7 @@
       </div>
     </ntp-shell>
 
-    <!-- 自定义在线壁纸URL弹窗（独立弹窗，从背景设置二级页打开） -->
+    <!-- 自定义在线壁纸URL弹窗 -->
     <div id="modal-online-wallpaper" class="modal-overlay">
       <div class="modal-dialog">
         <div class="modal-header" data-i18n="customOnlineWallpaper">自定义在线壁纸</div>
