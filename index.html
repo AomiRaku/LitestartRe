@@ -11,128 +11,126 @@
     <style>
     /* 配色系统与全局 CSS 变量 */
     :root {
-      /* 布局尺寸与字体 */
-      --header-height: 50px;
+      /* ===== 字体与尺寸 ===== */
       --font-family: 'Segoe UI', Segoe UI Midlevel, Segoe WP, Arial, sans-serif;
+      --header-height: 50px;
 
-      /* 1. 基础页面与背景色 */
-      --fill-color: #f7f7f7;                   /* 页面主背景色 */
-      --fill-popup-color: #ffffff;             /* 下拉菜单/弹窗主背景色 */
-      --neutral-layer-floating: #ffffff;       /* 浮动层背景色 (搜索框/图标) */
-      
-      /* 2. 前景与文字色 */
-      --neutral-foreground-rest: #262626;      /* 主文本颜色 (深灰色) */
-      --neutral-foreground-secondary: #616161; /* 次要文本颜色 */
-      --logo-color: #737373;                   /* Bing/系统 Logo 主色 */
-      --placeholder-color: #9b9b9b;            /* 输入框占位符颜色（淡一些） */
-
-      /* 3. 互动与填充色  */
-      --neutral-fill-rest: rgba(0, 0, 0, 0.04);/* 按钮常规浅灰填充 */
-      --neutral-fill-hover: rgba(0, 0, 0, 0.08);/* 按钮 Hover 填充 */
-
-      /* 4. 强调色 */
-      --accent-foreground-rest: #262320;       /* 强调色（原纯黑 #000000） */
-      --accent-foreground-hover: #3a3733;      /* 第二强调色：需比 rest 更亮，随 rest 一起上调 */
-      --accent-foreground-invert: #f0f0f0;   /* 反色强调色（原纯白 #ffffff） */
-      --btn-secondary-bg: #EEEEEE;             /* 次级按钮背景 */
-      --btn-danger-color: #d13438;             /* 危险/删除操作文字色 */
-      --btn-danger-hover: #fde8e8;             /* 危险按钮 Hover 背景 */
-
-      /* 5. 阴影系统 */
-      --shadow2: 0 0 2px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.14);
-      --shadow16: 0 0 2px rgba(0, 0, 0, 0.12), 0 8px 16px rgba(0, 0, 0, 0.14);
-
-      /* 下拉浮层的阴影与描边（深色主题下单独加强） */
-      --dropdown-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
-
-      /* 6. 模态框与弹窗样式 */
-      --modal-bg: #ffffff;
-      --modal-border: #e0e0e0;
-      --modal-mask: rgba(0, 0, 0, 0.52);
-      --input-bg: #F2F2F2;
-
-      /* 7. 设置面板专用颜色 */
-      --settings-panel-bg: #EEEEEE;
-      --settings-card-bg: #ffffff;
-      --settings-card-border: #d4d4d4;
+      /* ===== 表面／背景层（从页面底色到浮层，由低到高） ===== */
+      --fill-color: #f7f7f7;   /* 页面主背景色 */
+      --fill-popup-color: #ffffff;   /* 下拉菜单/弹窗主背景色；※ 与 --neutral-layer-floating 同值（浅色/深色均是） */
+      --neutral-layer-floating: #ffffff;   /* 浮动层背景色 (搜索框/图标) */
+      --modal-bg: #ffffff;   /* ※ 深色下比卡片更暗一档，与上面几个不同值 */
+      --settings-panel-bg: #EEEEEE;   /* ※ 与 --btn-secondary-bg 同值（浅色 #EEEEEE / 深色不同） */
+      --settings-card-bg: #ffffff;   /* ※ 与 --neutral-layer-floating 同值（浅色/深色均是） */
       --settings-card-hover: #f9f9f9;
-      --settings-text-primary: #1b1b1b;
-      --settings-text-secondary: #707070;
+      --suggestion-bg: #ffffff;   /* ※ 与 --neutral-layer-floating 同值（浅色/深色均是） */
+      --suggestion-hover: #f0f0f0;   /* ※ 与 --accent-foreground-invert 同值（仅浅色） */
+      --input-bg: #F2F2F2;
       --settings-thumb-bg: #d5d9de;
-      --settings-thumb-border: #d4d4d4;
-      /* 输入框描边：比 --modal-border 再淡一档，只用于 .input */
+
+      /* ===== 边框与描边 ===== */
+      --modal-border: #e0e0e0;
+      --settings-card-border: #d4d4d4;
+      --settings-thumb-border: #d4d4d4;   /* ※ 与 --settings-card-border 同值（浅色/深色均是） */
       --input-border: #e8e8e8;
-      /* 聚焦时的描边：比常规明显更黑，让"选中"一眼可辨 */
       --input-border-focus: #808080;
 
-      --enhanced-visibility-bg: rgba(255, 255, 255, 0.45);
-      --enhanced-visibility-bg-hover: rgba(255, 255, 255, 0.65);
-      --enhanced-visibility-logo-bg: rgba(255, 255, 255, 0.6);
+      /* ===== 文字 ===== */
+      --neutral-foreground-rest: #262626;   /* 主文本颜色 (深灰色) */
+      --neutral-foreground-secondary: #616161;   /* 次要文本颜色 */
+      --settings-text-primary: #1b1b1b;
+      --settings-text-secondary: #707070;
+      --placeholder-color: #9b9b9b;   /* 输入框占位符颜色（淡一些） */
+      --logo-color: #737373;   /* Bing/系统 Logo 主色 */
 
-      /* 8. 搜索建议面板颜色 */
-      --suggestion-bg: #ffffff;
-      --suggestion-hover: #f0f0f0;
+      /* ===== 强调色 ===== */
+      --accent-foreground-rest: #262320;   /* 强调色（原纯黑 #000000） */
+      --accent-foreground-hover: #3a3733;   /* 第二强调色：需比 rest 更亮，随 rest 一起上调 */
+      --accent-foreground-invert: #f0f0f0;   /* 反色强调色（原纯白 #ffffff） */
+
+      /* ===== 按钮与交互填充 ===== */
+      --btn-secondary-bg: #EEEEEE;   /* 次级按钮背景 */
+      --btn-danger-color: #d13438;   /* 危险/删除操作文字色 */
+      --btn-danger-hover: #fde8e8;   /* 危险按钮 Hover 背景 */
+      --neutral-fill-rest: rgba(0, 0, 0, 0.04);   /* 按钮常规浅灰填充 */
+      --neutral-fill-hover: rgba(0, 0, 0, 0.08);   /* 按钮 Hover 填充 */
+
+      /* ===== 建议列表语义色 ===== */
       --suggestion-history-color: #5c2d91;
       --suggestion-footer-color: #0078d4;
 
+      /* ===== 阴影与遮罩 ===== */
+      --shadow2: 0 0 2px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.14);
+      --shadow16: 0 0 2px rgba(0, 0, 0, 0.12), 0 8px 16px rgba(0, 0, 0, 0.14);
+      --dropdown-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
       --search-box-hover-shadow: 0 0 2px rgba(0, 0, 0, 0.16), 0 2px 7px rgba(0, 0, 0, 0.22);
+      --modal-mask: rgba(0, 0, 0, 0.52);
+
+      /* ===== 背景图上的半透明层 ===== */
+      --enhanced-visibility-bg: rgba(255, 255, 255, 0.45);
+      --enhanced-visibility-bg-hover: rgba(255, 255, 255, 0.65);
+      --enhanced-visibility-logo-bg: rgba(255, 255, 255, 0.6);
+    
     }
 
     /* 暗色主题颜色库（由 <html data-theme> 驱动，见设置里的「主题模式」） */
     :root[data-theme="dark"] {
-        --fill-color: #1f1f1f;
-        --fill-popup-color: #2b2b2b;
-        --neutral-layer-floating: #2b2b2b;
-        
-        --neutral-foreground-rest: #f5f5f5;
-        --neutral-foreground-secondary: #adadad;
-        --logo-color: #f5f5f5;
-        --placeholder-color: #8f8f8f;
+      /* ===== 表面／背景层（从页面底色到浮层，由低到高） ===== */
+      --fill-color: #1f1f1f;
+      --fill-popup-color: #2b2b2b;   /* ※ 与 --neutral-layer-floating 同值（浅色/深色均是） */
+      --neutral-layer-floating: #2b2b2b;
+      --modal-bg: #242424;   /* ※ 深色下比卡片更暗一档，与上面几个不同值 */
+      --settings-panel-bg: #242424;   /* ※ 与 --btn-secondary-bg 同值（浅色 #EEEEEE / 深色不同） */
+      --settings-card-bg: #2b2b2b;   /* ※ 与 --neutral-layer-floating 同值（浅色/深色均是） */
+      --settings-card-hover: #353535;
+      --suggestion-bg: #2b2b2b;   /* ※ 与 --neutral-layer-floating 同值（浅色/深色均是） */
+      --suggestion-hover: #3d3d3d;   /* ※ 与 --accent-foreground-invert 同值（仅浅色） */
+      --input-bg: #202020;
+      --settings-thumb-bg: #212121;
 
-        --neutral-fill-rest: rgba(255, 255, 255, 0.06);
-        --neutral-fill-hover: rgba(255, 255, 255, 0.12);
+      /* ===== 边框与描边 ===== */
+      --modal-border: #454545;   /* 按钮悬停底色，需比 --btn-secondary-bg 更亮 */
+      --settings-card-border: #3d3d3d;
+      --settings-thumb-border: #3d3d3d;   /* ※ 与 --settings-card-border 同值（浅色/深色均是） */
+      --input-border: #333333;
+      --input-border-focus: #999999;
 
-        --shadow2: 0 0 2px rgba(0, 0, 0, 0.24), 0 1px 2px rgba(0, 0, 0, 0.28);
-        --shadow16: 0 0 2px rgba(0, 0, 0, 0.24), 0 8px 16px rgba(0, 0, 0, 0.28);
+      /* ===== 文字 ===== */
+      --neutral-foreground-rest: #f5f5f5;
+      --neutral-foreground-secondary: #adadad;
+      --settings-text-primary: #e3e3e3;
+      --settings-text-secondary: #9e9e9e;
+      --placeholder-color: #8f8f8f;
+      --logo-color: #f5f5f5;
 
-        /* 深色下黑色阴影几乎不可见，靠"加深的阴影 + 更亮的描边"把浮层托起来（别调太狠，会发脏） */
-        --dropdown-shadow: 0 4px 14px rgba(0, 0, 0, 0.4), 0 1px 4px rgba(0, 0, 0, 0.22);
+      /* ===== 强调色 ===== */
+      --accent-foreground-rest: #f0f0f0;   /* 强调色（原纯白 #ffffff） */
+      --accent-foreground-hover: #E0E0E0;   /* 第二强调色（本就比 rest 暗，无需调整） */
+      --accent-foreground-invert: #262320;   /* 反色强调色（原纯黑 #000000） */
 
-        --modal-bg: #242424;
-        --modal-border: #454545;                 /* 按钮悬停底色，需比 --btn-secondary-bg 更亮 */
-        --modal-mask: rgba(0, 0, 0, 0.78);
-        --input-bg: #202020;
-        --btn-danger-color: #ff6b6b;
-        --btn-danger-hover: #3d1a1a;
+      /* ===== 按钮与交互填充 ===== */
+      --btn-secondary-bg: #3a3a3a;   /* 次级按钮背景（比卡片 #2b2b2b 亮一档，看得出是按钮） */
+      --btn-danger-color: #ff6b6b;
+      --btn-danger-hover: #3d1a1a;
+      --neutral-fill-rest: rgba(255, 255, 255, 0.06);
+      --neutral-fill-hover: rgba(255, 255, 255, 0.12);
 
-        --accent-foreground-rest: #f0f0f0;       /* 强调色（原纯白 #ffffff） */
-        --accent-foreground-hover: #E0E0E0;      /* 第二强调色（本就比 rest 暗，无需调整） */
-        --accent-foreground-invert: #262320;   /* 反色强调色（原纯黑 #000000） */
-        --btn-secondary-bg: #3a3a3a;             /* 次级按钮背景（比卡片 #2b2b2b 亮一档，看得出是按钮） */
+      /* ===== 建议列表语义色 ===== */
+      --suggestion-history-color: #b182e6;
+      --suggestion-footer-color: #4f8cf6;
 
-        --settings-panel-bg: #242424;
-        --settings-card-bg: #2b2b2b;
-        --settings-card-border: #3d3d3d;
-        --settings-card-hover: #353535;
-        --settings-text-primary: #e3e3e3;
-        --settings-text-secondary: #9e9e9e;
-        --settings-thumb-bg: #212121;
-        --settings-thumb-border: #3d3d3d;
-        /* 深色下外框要比填充(#282828)亮，否则看着像内凹阴影；浅色下则相反(外框更深) */
-        --input-border: #333333;
-        /* 聚焦时的描边：比常规明显更白 */
-        --input-border-focus: #999999;
+      /* ===== 阴影与遮罩 ===== */
+      --shadow2: 0 0 2px rgba(0, 0, 0, 0.24), 0 1px 2px rgba(0, 0, 0, 0.28);
+      --shadow16: 0 0 2px rgba(0, 0, 0, 0.24), 0 8px 16px rgba(0, 0, 0, 0.28);
+      --dropdown-shadow: 0 4px 14px rgba(0, 0, 0, 0.4), 0 1px 4px rgba(0, 0, 0, 0.22);
+      --search-box-hover-shadow: 0 0 2px rgba(0, 0, 0, 0.28), 0 3px 9px rgba(0, 0, 0, 0.38);
+      --modal-mask: rgba(0, 0, 0, 0.78);
 
-        --enhanced-visibility-bg: rgba(0, 0, 0, 0.45);
-        --enhanced-visibility-bg-hover: rgba(0, 0, 0, 0.65);
-        --enhanced-visibility-logo-bg: rgba(0, 0, 0, 0.6);
-
-        --suggestion-bg: #2b2b2b;
-        --suggestion-hover: #3d3d3d;
-        --suggestion-history-color: #b182e6;
-        --suggestion-footer-color: #4f8cf6;
-
-        --search-box-hover-shadow: 0 0 2px rgba(0, 0, 0, 0.28), 0 3px 9px rgba(0, 0, 0, 0.38);
+      /* ===== 背景图上的半透明层 ===== */
+      --enhanced-visibility-bg: rgba(0, 0, 0, 0.45);
+      --enhanced-visibility-bg-hover: rgba(0, 0, 0, 0.65);
+      --enhanced-visibility-logo-bg: rgba(0, 0, 0, 0.6);
+    
     }
 
     html {
@@ -780,25 +778,30 @@
       align-items: center;
     }
 
-    /* 滑块开关样式 */
+    /* 滑块开关样式（经典款：胶囊轨道 + 圆形手柄左右滑动） */
     .switch {
       position: relative;
       display: inline-block;
-      /* 进度值驱动一切。下面两个位置/宽度由它算出，
-         所以过渡中任何一帧的间隙都精确等于 2px */
+      /* 进度值：0 = 关闭，1 = 打开。手柄位移与拖拽都靠它 */
       --p: 0;
-      /* 打开态手柄：左边缘 21px、宽 5px → 右边缘正好 26px（贴住控件右边，不被裁） */
-      --thumb-left: calc(var(--p) * 21px);
-      /* 手柄是固定的圆头竖线，宽度不再随状态变化 */
-      --thumb-w: 5px;
-      /* 左半边宽度：右边界 = 手柄左边缘 − 2，可见期间间隙恒为 2px */
-      --lw: max(0px, calc(var(--thumb-left) - 2px));
-      /* 右半边宽度：左边界 = 手柄右边缘 + 2，间隙同样恒为 2px */
-      --rw: max(0px, calc(24px - var(--thumb-left) - var(--thumb-w)));
-      width: 26px;                 /* 再缩短一档，竖线粗细不变 */
-      height: 16px;                /* 高度略降（原 18px） */
-      /* 光标提在这里：两个半边胶囊是伪元素，会继承宿主的光标；
-         否则它们盖在 .slider 之上，鼠标扫到胶囊上就变成默认箭头了 */
+      /* 手柄直径：固定值，开关两种状态一样大。
+         保持未注册（不加 @property）：值就是简单字面量，getComputedStyle 能直接读到，
+         拖拽脚本也就无需再从别的常量推算 */
+      --thumb-w: 13px;
+      /* 手柄在两端的位置：关闭态圆左边缘、打开态圆右边缘。
+         分开写是为了能单独调整某一端 —— 合成一个"左右边距"的话，
+         改初始位置会连带把打开态也推离右边缘 */
+      --thumb-start: 2px;   /* 关闭态：圆距左边缘 */
+      --thumb-end: 2px;     /* 打开态：圆距右边缘（与左端对称） */
+      /* 手柄可移动的行程 = 轨道宽 − 直径 − 左端留白 − 右端留白。
+         用 100% 而不是写死轨道宽度：这个变量只用在 .slider::before 的 left 上，
+         包含块就是铺满控件的 .slider，所以 100% 正好是轨道宽，
+         以后改宽度不必再同步这里 */
+      --thumb-travel: calc(100% - var(--thumb-w) - var(--thumb-start) - var(--thumb-end));
+      width: 30px;                 /* 再长 2px */
+      /* 高度取 17px：手柄 11px 时 (17 − 11) / 2 = 3px 是整数，
+         上下留白天然对称；若用 16px 则为 2.5px，绘制时会被圆整成 3/2px 而不居中 */
+      height: 17px;                /* 轨道与控件同高 */
       cursor: pointer;
       transition: --p 0.2s ease;
       /* 兜底：任何元素都不越出控件范围 */
@@ -811,128 +814,103 @@
       height: 0;
     }
 
-    /* 让自定义属性成为可过渡的 <length>；不注册的话它们是离散的，无法插值 */
-    @property --thumb-left {
-      syntax: '<length>';
-      inherits: true;
-      initial-value: 0px;
-    }
-    @property --thumb-w {
-      syntax: '<length>';
-      inherits: true;
-      initial-value: 5px;
-    }
-    /* 统一进度值：0 = 完全关闭，1 = 完全打开。位置、宽度、渐隐全由它推导 */
+    /* 让 --p 成为可插值的数值；不注册的话自定义属性是离散的，无法过渡 */
     @property --p {
       syntax: '<number>';
       inherits: true;
       initial-value: 0;
     }
 
-    /* ===== 抽象开关：左半边胶囊 + 手柄 + 右半边胶囊 =====
-       三个形状横向排布。手柄左右滑动时，一侧的半边胶囊收窄、另一侧伸展；
-       两半都只让"平直端"移动，大端（半圆）固定不动，所以两端弧度与圆角
-       全程不变 —— 看上去就是"胶囊被缩短 / 伸长"。
-       宽度下限 11px ＝ 大端半径 8 + 平直端圆角 3，低于它圆角会被等比缩小。
-       两张半边各自只圆外侧的角，合起来正好是一个胶囊。 */
+    /* 悬停缩放系数。同样要注册成 <number> 才能过渡 ——
+       它就是手柄悬停时那 0.2s 的平滑来源。
+       inherits: false，因为它只作用于手柄伪元素自身，不需要传给任何后代 */
+    @property --hover-factor {
+      syntax: '<number>';
+      inherits: false;
+      initial-value: 1;
+    }
 
-    /* 点击层：填满控件、完全透明，只负责接收点击（原来由 .slider 承担） */
+
+    /* 轨道：铺满控件、全圆角胶囊，与控件同高 */
     .slider {
       position: absolute;
       top: 0;
       left: 0;
       right: 0;
       bottom: 0;
+      border-radius: 999px;
+      /* 关闭态底色。比 --btn-secondary-bg(#EEEEEE) 提一档到 #e0e0e0，
+         否则与页面背景 #f7f7f7 只差 9 级亮度，胶囊会显得很弱 */
+      background-color: var(--modal-border);
       cursor: pointer;
-    }
-
-    /* 左半边胶囊：左圆右直。左端固定，只缩右端；最小 11px（＝两端半径之和） */
-    .switch::before {
-      content: "";
-      position: absolute;
-      /* 胶囊比控件矮一点（竖线仍是 16px），所以垂直居中而不是撑满 */
-      top: 50%;
-      transform: translateY(-50%);
-      height: 13px;
-      background-color: var(--accent-foreground-rest);
-      /* 斜杠前是水平半径、后是垂直半径。
-         垂直半径固定 8px / 3px（与原来的单值写法一致），所以宽度足够时外观不变；
-         水平半径随宽度收窄，使两端之和始终不超过宽度 ——
-         这样只有横向被压缩，圆端的纵向弧度不会被压扁、不会坍缩成一条线 */
-      border-radius:
-        min(6.5px, var(--lw)) min(3px, max(0px, var(--lw) - 6.5px))
-        min(3px, max(0px, var(--lw) - 6.5px)) min(6.5px, var(--lw))
-        / 6.5px 3px 3px 6.5px;
-      /* 左端固定，只让右端随宽度伸缩 —— 大端不会被推出裁掉。
-         最小 9.5px 是两端半径之和（6.5+3），再小圆角就会被等比缩小 */
-      left: 0;
-      /* 右边界 = 手柄左边缘 − 2，于是间隙恒为 2px。
-         关闭时算出 −2px，被 max() 取 0 → 宽度归零，不残留像素 */
-      width: var(--lw);
-      /* 只在"圆角与圆端相接"（宽度 11px）之后渐隐：
-           p ≥ 0.5        （宽度 ≥ 11px）→ 1，完整显示
-           p 0.375 ~ 0.5  （宽度 7.75 ~ 11px）→ 1 → 0，渐隐
-           p ≤ 0.375      （宽度 ≤ 7.75px）→ 0
-         所以收缩时前段是纯缩短，只在末段淡出。 */
-      opacity: clamp(0, (var(--p) - 0.375) * 8, 1);
-    }
-
-    /* 右半边胶囊：左直右圆。右端固定，只缩左端；最小 11px（＝两端半径之和） */
-    .switch::after {
-      content: "";
-      position: absolute;
-      /* 与左半边一致：比控件矮、垂直居中 */
-      top: 50%;
-      transform: translateY(-50%);
-      height: 13px;
-      /* 右端固定，宽度伸缩 —— 与左半边对称，大端不会被推出裁掉。
-         宽度 = 12px − p×14，恰好使左边界 = 手柄右边缘 + 2，间隙恒为 2px */
-      right: 0;
-      width: var(--rw);
-      background-color: var(--settings-card-border);
-      /* 斜杠前是水平半径、后是垂直半径。
-         垂直半径固定 3px / 8px（与原来的单值写法一致），宽度足够时外观不变；
-         水平半径随宽度收窄，两端之和始终不超过宽度 ——
-         这样只压横向，圆端的纵向弧度不会被压扁、不会坍缩成线 */
-      border-radius:
-        min(3px, max(0px, var(--rw) - 6.5px)) min(6.5px, var(--rw))
-        min(6.5px, var(--rw)) min(3px, max(0px, var(--rw) - 6.5px))
-        / 3px 6.5px 6.5px 3px;
-      /* 与左半边镜像对称的末段渐隐 */
-      opacity: clamp(0, (0.625 - var(--p)) * 8, 1);
       transition: background-color 0.2s ease;
     }
 
-    /* 手柄：一根圆头竖线，只左右移动（颜色随状态切换） */
+    /* 手柄：一个圆，在轨道内左右移动 */
     .slider::before {
       content: "";
       position: absolute;
-      top: 0;
-      left: var(--thumb-left);
+      /* 垂直居中直接用位置算：top = (轨道高 − 直径) / 2。
+         控件高 17px、直径 11px → 正好 3px，全程没有小数，
+         所以不会被绘制阶段的设备像素圆整弄偏。
+         （不能用 top: 50% + translateY(-50%)：50% 是 8.5px，
+          它本身就会被圆整成 9px，transform 再精确也补不回来。）
+         写 100% 而不是 3px，是为了以后改高度或直径时自动跟上。
+         left 由 --p 驱动，与垂直方向互不干扰 */
+      top: calc((100% - var(--thumb-w)) / 2);
+      left: calc(var(--thumb-start) + var(--p) * var(--thumb-travel));
       width: var(--thumb-w);
-      height: 16px;
-      /* 关闭态与两侧胶囊同色；打开态在下面的 :checked 规则里换成强调色 */
-      background-color: var(--settings-card-border);
-      border-radius: 999px;          /* 竖线两端是圆的 */
-      /* 伪元素不拦截指针：拖拽事件统一由铺满控件的 .slider 接收 */
+      height: var(--thumb-w);
+      /* 基准缩放：关闭态缩到一半（0.5），打开态略小于满尺寸（0.85）。
+         用 scale 而不是改宽度：缩放以元素中心为原点，圆心不会移动；
+         布局尺寸也不变，所以行程和拖拽换算都不受影响。
+             p=0 → base 0.5  → 6.5px
+             p=1 → base 0.85 → 11.05px
+         再乘 --hover-factor 做悬停变化（见下面的规则）。把系数乘在同一个
+         表达式里，是为了让点击切换时尺寸依然平滑；若用绝对值的 transform
+         覆盖，--p 的过渡会被顶掉而产生跳变。
+         注意打开态的悬停是把尺寸放回满值 13px（系数 1/0.85 ≈ 1.1765） */
+      --hover-factor: 1;
+      transform: scale(calc((0.5 + var(--p) * 0.35) * var(--hover-factor)));
+      /* 过渡的是系数而不是 transform：transform 已被 --p 逐帧驱动，
+         再给它加过渡会造成双重插值；系数一动，上面的 calc() 自然逐帧重算 */
+      transition: --hover-factor 0.2s ease;
+      border-radius: 50%;
+      /* 卡片底色（浅色 #ffffff / 深色 #2b2b2b），比原来的强调反色更亮 */
+      background-color: var(--settings-card-bg);
+      /* 伪元素不拦截指针：拖拽事件由铺满控件的 .slider 接收 */
       pointer-events: none;
-      /* left / width 由 --thumb-left / --thumb-w 驱动，已在 .switch 上插值，
-         这里不能再加过渡，否则同一个变化会被叠加两次 */
-      transition: background-color 0.2s ease;
     }
 
-    /* 悬停时整个开关一起变淡。
-       用 opacity 而不是 brightness：brightness 按比例缩放通道绝对值，
-       对近黑（浅色打开态）和近白（深色打开态）几乎看不出变化，
-       也无法同时适配"浅色该变亮、深色该变暗"这两个相反方向。
-       opacity 是线性混合，与颜色亮度无关，四种组合都有成比例的可见变化。 */
-    .switch:hover {
-      opacity: 0.7;
+    /* 悬停时只把轨道底色调深/调亮一点。
+       这里刻意不用 opacity：opacity 作用在祖先上会把整个 .switch 拉进合成层，
+       而轨道同时在跑 background-color 过渡（主线程绘制），
+       层提升时要重新光栅化，两条流水线进度不一致就会闪。
+       只改颜色则全程停留在绘制阶段，没有合成层的建立与销毁。 */
+    .switch:hover .slider {
+      background-color: var(--settings-card-border);
+    }
+
+    .switch:has(input:checked):hover .slider {
+      background-color: var(--accent-foreground-hover);
+    }
+
+    /* 悬停时手柄尺寸微调：关闭态放大一点，打开态缩小一点。
+       只改系数，transform 的表达式不变，所以与 --p 的过渡互不干扰 */
+    .switch:hover .slider::before {
+      --hover-factor: 1.25;
+    }
+
+    /* 打开态专用，特异性更高（:has + :hover），会盖过上面那条。
+       打开态常态是 0.85，悬停要回到满尺寸，所以系数取 1 / 0.85 ≈ 1.1765
+       （0.85 × 1.1765 = 1.000025，直径 13.0003px，误差可忽略） */
+    .switch:has(input:checked):hover .slider::before {
+      --hover-factor: 1.1765;
     }
 
     /* 拖动手柄时临时关掉过渡：--p 由脚本逐帧写入，若还带 0.2s 过渡会明显滞后 */
     .switch.dragging,
-    .switch.dragging .slider::before {
+    .switch.dragging .slider {
       transition: none;
     }
 
@@ -944,13 +922,10 @@
 
     /* ===== 打开态 ===== */
     .switch:has(input:checked) {
-      /* 打开：进度推到 1，手柄位置、两半胶囊的露出宽度随之全部到位 */
       --p: 1;
     }
 
-
-    .switch:has(input:checked) .slider::before {
-      /* 位置已由变量驱动，形状固定，这里只把颜色换成强调色 */
+    .switch:has(input:checked) .slider {
       background-color: var(--accent-foreground-rest);
     }
 
@@ -1902,7 +1877,7 @@
 
     /* ===== 深色主题下的输入框配色 =====
        浅色主题是"填充比按钮亮、hover 变暗"，深色主题要镜像过来才有一致的观感：
-       常规填充比按钮(#2D2D2D)更淡（深色下更淡 = 更深）、hover 变亮到按钮色、
+       常规填充比按钮(--btn-secondary-bg)更淡（深色下更淡 = 更深）、hover 变亮到按钮色、
        聚焦（选中）落到原 hover 的那一档。只覆盖输入框，不动其它控件与变量。 */
     :root[data-theme="dark"] .input {
       background-color: #282828;

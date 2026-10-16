@@ -5075,8 +5075,18 @@ function initSwitchDrag() {
   // 拖动上下文；未按下时为 null。dragging 为 true 才算真正进入拖动
   let ctx = null;
 
+  // 手柄直径（固定值，开关两种状态一样大）。
+  // --thumb-w 是简单字面量，未注册也能被 getComputedStyle 读到；
+  // 之前读不到是因为它的值是 calc() 表达式，那种情况才会返回原始表达式串。
   const thumbWidthOf = sw =>
-    parseFloat(getComputedStyle(sw).getPropertyValue('--thumb-w')) || 5;
+    parseFloat(getComputedStyle(sw).getPropertyValue('--thumb-w')) || 11;
+
+  // 手柄在两端的位置，和样式里的 --thumb-start / --thumb-end 同源。
+  // 分开读是因为左右两端可以不同（关闭态向内收、打开态贴边）。
+  const thumbStartOf = sw =>
+    parseFloat(getComputedStyle(sw).getPropertyValue('--thumb-start')) || 0;
+  const thumbEndOf = sw =>
+    parseFloat(getComputedStyle(sw).getPropertyValue('--thumb-end')) || 0;
 
   const scaleOf = (sw, rect) => rect.width / (sw.offsetWidth || rect.width || 1);
 
@@ -5086,13 +5096,16 @@ function initSwitchDrag() {
     return Number.isFinite(v) ? v : 0;
   };
 
+
   // 手柄在视口坐标下的水平范围（带容差）
   const thumbHitRange = sw => {
     const rect = sw.getBoundingClientRect();
     const scale = scaleOf(sw, rect);
     const thumbPx = thumbWidthOf(sw) * scale;
-    const travelPx = Math.max(1, rect.width - thumbPx);
-    const left = rect.left + progressOf(sw) * travelPx;
+    const startPx = thumbStartOf(sw) * scale;
+    const endPx = thumbEndOf(sw) * scale;
+    const travelPx = Math.max(1, rect.width - thumbPx - startPx - endPx);
+    const left = rect.left + startPx + progressOf(sw) * travelPx;
     const tol = HIT_TOLERANCE * scale;
     return { left: left - tol, right: left + thumbPx + tol };
   };
@@ -5101,11 +5114,13 @@ function initSwitchDrag() {
   const progressAt = (sw, clientX) => {
     const rect = sw.getBoundingClientRect();
     // 元素可能被 transform: scale() 缩放过：rect 是视口坐标下的尺寸，
-    // 而 --thumb-w 读到的是原始像素。求出缩放比统一坐标系后再算，避免缩放时偏掉。
+    // 而 --thumb-w / --thumb-start / --thumb-end 读到的是原始像素。求出缩放比统一坐标系后再算。
     const scale = scaleOf(sw, rect);
     const thumbPx = thumbWidthOf(sw) * scale;
-    const travelPx = Math.max(1, rect.width - thumbPx);
-    const p = (clientX - rect.left - thumbPx / 2) / travelPx;
+    const startPx = thumbStartOf(sw) * scale;
+    const endPx = thumbEndOf(sw) * scale;
+    const travelPx = Math.max(1, rect.width - thumbPx - startPx - endPx);
+    const p = (clientX - rect.left - startPx - thumbPx / 2) / travelPx;
     return p < 0 ? 0 : p > 1 ? 1 : p;
   };
 
