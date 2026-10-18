@@ -2544,7 +2544,7 @@
             <!-- 底部版权/链接区域 -->
             <div class="settings-footer">
               <div class="settings-footer-links">
-                <a href="#" id="btn-footer-version">LiteStart 1.8.6</a>| <span data-i18n="presentedBy">由</span> <a href="https://xingyuefox.pages.dev" target="_blank" data-i18n="xingyuefox">星月Fox</a> <span data-i18n="forYou">为您呈现</span>
+                <a href="#" id="btn-footer-version">LiteStart 1.8.7</a>| <span data-i18n="presentedBy">由</span> <a href="https://xingyuefox.pages.dev" target="_blank" data-i18n="xingyuefox">星月Fox</a> <span data-i18n="forYou">为您呈现</span>
               </div>
               <div class="settings-footer-links">
                 <a href="https://github.com/XingYueFox/Litestart/blob/main/PRIVACY_POLICY.md" data-i18n="cookieNotice">隐私政策</a> · 
@@ -2582,30 +2582,36 @@
 
                 <!-- 以下设置依赖背景开启：关闭时整体置灰且不可交互 -->
                 <div id="bg-dependent-settings">
-                  <!-- 自定义背景：预览图与设置项纵向排布 -->
+                  <!-- 壁纸来源：下拉选择，下方按钮随选中项变化 -->
                   <div class="settings-card">
-                    <div class="settings-card-title" id="wallpaper-type-title" data-i18n="localImage">选择图片</div>
+                    <div class="settings-card-title" data-i18n="localImage">选择图片</div>
+                    <div class="custom-select-wrapper">
+                      <select id="select-wallpaper-source" class="select-box" tabindex="-1" aria-label="壁纸来源">
+                        <option value="default" data-i18n="defaultWallpaper">默认</option>
+                        <option value="local" data-i18n="localFile">本地文件</option>
+                        <option value="online" data-i18n="onlineWallpaper">在线壁纸</option>
+                        <option value="bing" data-i18n="bingDaily">必应每日壁纸</option>
+                      </select>
+                      <div class="custom-select-display" data-for="select-wallpaper-source">
+                        <span class="custom-select-text"></span>
+                        <svg class="custom-select-arrow" viewBox="0 0 12 12" fill="none">
+                          <path d="M2.22 4.47a.75.75 0 0 1 1.06 0L6 7.19l2.72-2.72a.75.75 0 0 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L2.22 5.53a.75.75 0 0 1 0-1.06z" fill="currentColor"/>
+                        </svg>
+                      </div>
+                    </div>
                     <div class="wallpaper-preview-box" id="wallpaper-preview-container">
-                      <span style="font-size: 13px; color: var(--settings-text-secondary);" data-i18n="usingDefaultBg">正在使用默认背景</span>
+                      <img src="img/background.webp" alt="默认背景预览" style="width:100%;height:100%;object-fit:cover;">
                     </div>
                     <span id="wallpaper-source-label" style="font-size:11px;color:var(--settings-text-secondary);text-align:center;margin-top:6px;display:block;"></span>
                     <input type="file" id="input-wallpaper-file" class="file-input-hidden" accept="image/*,video/*">
-                    <div style="display: flex; gap: 8px; margin-top: 10px;">
+                    <!-- 「默认 / 本地文件」下出现：选择文件 + 恢复默认 -->
+                    <div id="wallpaper-file-row" style="display: flex; gap: 8px; margin-top: 10px;">
                       <button type="button" class="btn btn-secondary" id="btn-upload-wallpaper" style="flex: 1;" data-i18n="uploadFile">选择文件</button>
                       <button type="button" class="btn btn-secondary" id="btn-remove-wallpaper" style="flex: 1;" data-i18n="restoreDefault">恢复默认</button>
                     </div>
                   </div>
 
-                  <!-- 在线内容 -->
-                  <div class="settings-card">
-                    <div class="settings-card-title" data-i18n="useOnlineContent">使用在线内容</div>
-                    <div style="display: flex; gap: 8px;">
-                      <button type="button" class="btn btn-secondary" id="btn-bing-wallpaper" style="flex: 1;" data-i18n="bingDaily">必应每日壁纸</button>
-                      <button type="button" class="btn btn-secondary" id="btn-custom-url-wallpaper" style="flex: 1;" data-i18n="customUrl">自定义</button>
-                    </div>
-                  </div>
-
-                  <!-- 第一组：可见性相关（增强元素可见性 + 壁纸遮罩） -->
+                  <!-- 第一组：元素可见性（增强元素可见性 + 衬底模糊） -->
                   <div class="settings-card">
                     <div class="setting-row">
                       <div class="setting-label-group" data-i18n="enhancedVisibility">增强元素可见性</div>
@@ -2618,23 +2624,8 @@
                       </div>
                     </div>
 
-                    <!-- 背景边角晕影：控制壁纸上那层暗角/亮角遮罩，默认开启 -->
-                    <div class="setting-row" style="margin-top: 8px;">
-                      <div class="setting-label-group" data-i18n="bgVignette">背景边角晕影</div>
-                      <div class="switch-container">
-                        <span class="setting-status-text" id="status-bg-vignette" data-i18n="on">打开</span>
-                        <label class="switch">
-                          <input type="checkbox" id="toggle-bg-vignette">
-                          <span class="slider"></span>
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- 第二组：两处模糊（衬底模糊 + 壁纸渐显模糊），都默认开启 -->
-                  <div class="settings-card">
                     <!-- 衬底启用模糊：增强元素可见性关闭时整行置灰 -->
-                    <div class="setting-row disabled" id="enhanced-blur-row">
+                    <div class="setting-row disabled" id="enhanced-blur-row" style="margin-top: 8px;">
                       <div class="setting-label-group">
                         <span data-i18n="enhancedBlur">衬底启用模糊</span>
                         <span class="tooltip-icon" tabindex="0">
@@ -2648,6 +2639,21 @@
                         <span class="setting-status-text" id="status-enhanced-blur" data-i18n="on">打开</span>
                         <label class="switch">
                           <input type="checkbox" id="toggle-enhanced-blur">
+                          <span class="slider"></span>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- 第二组：背景效果（边角晕影 + 渐显模糊），都默认开启 -->
+                  <div class="settings-card">
+                    <!-- 背景边角晕影：控制壁纸上那层暗角/亮角遮罩，默认开启 -->
+                    <div class="setting-row">
+                      <div class="setting-label-group" data-i18n="bgVignette">背景边角晕影</div>
+                      <div class="switch-container">
+                        <span class="setting-status-text" id="status-bg-vignette" data-i18n="on">打开</span>
+                        <label class="switch">
+                          <input type="checkbox" id="toggle-bg-vignette">
                           <span class="slider"></span>
                         </label>
                       </div>
@@ -3000,7 +3006,7 @@
     <div id="modal-about" class="modal-overlay">
       <div class="modal-dialog">
         <div class="modal-header" data-i18n="aboutTitle">关于 Litestart</div>
-        <p style="margin: 0; opacity: 0.7; font-size: 13px;" data-i18n="litever">版本 1.8.6 | 更新时间：2026-10-16</p><br>
+        <p style="margin: 0; opacity: 0.7; font-size: 13px;" data-i18n="litever">版本 1.8.7 | 更新时间：2026-10-18</p><br>
         
         <!-- 可用更新提示框 -->
         <div id="update-notice" class="update-notice" style="display: none;">
