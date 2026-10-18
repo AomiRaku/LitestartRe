@@ -49,4 +49,41 @@
   } catch (e) {
     /* 失败时由主脚本补上 */
   }
+
+  // 5) 快速链接行数：提前写到 <html>，让首帧按最终行数占位。
+  //    容器在渲染前是 rows="0"、不占网格行，渲染后撑开会把居中布局的搜索框顶上去。
+  try {
+    var qlRow = JSON.parse(localStorage.getItem('ntp_quicklinks') || '"1"');
+    var qlShow = JSON.parse(localStorage.getItem('ntp_show_quicklinks') || 'null');
+    var qlPos = JSON.parse(localStorage.getItem('ntp_quicklink_position') || '"auto"');
+    var qlList = JSON.parse(localStorage.getItem('ntp_quicklinks_list') || '[]');
+    if (qlShow === null) qlShow = qlRow !== '0';   // 旧数据用 '0' 表示关闭
+    if (qlRow === '0') qlRow = '1';
+    var qlVw = document.documentElement.clientWidth || window.innerWidth || 0;
+    // 严格按布尔判断，避免存储里出现字符串 'false' 时被当作真值
+    var qlEnabled = (qlShow === null) ? (qlRow !== '0') : (qlShow === true || qlShow === 'true');
+    if (qlEnabled && qlPos !== 'bottom' && qlVw > 0) {
+      // 与 script.js 的 QUICKLINK_* 常量保持一致
+      var qlItemW = 80, qlGap = 10, qlSide = 16;
+      var qlMaxCols = qlRow === '2' ? 9 : 15;
+      var qlAvail = Math.min(
+        qlVw - qlSide * 2,
+        qlMaxCols * qlItemW + (qlMaxCols - 1) * qlGap
+      );
+      var qlCols = Math.min(qlMaxCols, Math.max(1, Math.floor((qlAvail + qlGap) / (qlItemW + qlGap))));
+      // 与实际渲染规则一致：单行模式只渲染前 perRow 项，多行模式全部渲染
+      var qlAddBtn = JSON.parse(localStorage.getItem('ntp_show_add_button') || 'null');
+      var qlAddOn = (qlAddBtn === true || qlAddBtn === 'true');
+      var qlCount = Array.isArray(qlList) ? qlList.length : 0;
+      var qlMaxItems = qlRow === '2' ? Infinity : qlCols;
+      var qlShown = Math.min(qlCount, qlMaxItems);
+      var qlHasAdd = qlAddOn && qlCount < qlMaxItems;
+      var qlTiles = qlShown + (qlHasAdd ? 1 : 0);
+      // 无格子时容器只靠 min-height 撑开
+      var qlLines = qlTiles === 0 ? 0 : Math.max(1, Math.min(5, Math.ceil(qlTiles / qlCols)));
+      document.documentElement.setAttribute('data-quicklinks-lines', String(qlLines));
+    }
+  } catch (e) {
+    /* 失败时按未预置处理，由主脚本正常渲染 */
+  }
 })();
