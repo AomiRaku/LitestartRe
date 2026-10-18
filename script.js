@@ -3649,6 +3649,8 @@ inputOnlineUrl?.addEventListener('input', () => {
     if (quicklinksElem) {
       quicklinksElem.setAttribute('rows', showQuicklinks ? effectiveRow : '0');
     }
+    // 首帧占位到此交给真实内容决定高度
+    document.documentElement.removeAttribute('data-quicklinks-lines');
     if (selectQuicklinks) {
       selectQuicklinks.value = effectiveRow;
     }

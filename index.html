@@ -1451,6 +1451,19 @@
       display: none;
     }
 
+    /* 首帧占位：行数由 early.js 预置，渲染完成后该属性被移除 */
+    html[data-quicklinks-lines] ntp-quicklinks[rows="0"] {
+      display: flex;
+      visibility: hidden;
+    }
+
+    html[data-quicklinks-lines="0"] ntp-quicklinks[rows="0"] { height: 60px; }
+    html[data-quicklinks-lines="1"] ntp-quicklinks[rows="0"] { height: 73px; }
+    html[data-quicklinks-lines="2"] ntp-quicklinks[rows="0"] { height: 156px; }
+    html[data-quicklinks-lines="3"] ntp-quicklinks[rows="0"] { height: 239px; }
+    html[data-quicklinks-lines="4"] ntp-quicklinks[rows="0"] { height: 322px; }
+    html[data-quicklinks-lines="5"] ntp-quicklinks[rows="0"] { height: 405px; }
+
     .quicklink-item {
       position: relative;
       display: flex;
@@ -1768,6 +1781,8 @@
       font-weight: 500;
       margin-bottom: 6px;
       color: var(--neutral-foreground-rest);
+      /* 宽度贴合文字，避免整行参与输入框的悬停与点击判定 */
+      align-self: flex-start;
     }
 
     .input-container {
@@ -2843,9 +2858,9 @@
         <div class="modal-header" data-i18n="customOnlineWallpaper">自定义在线壁纸</div>
         <form id="online-wallpaper-form" novalidate>
           <div class="form-group">
-            <label class="form-label" for="input-online-url" data-i18n="imageOrVideoUrl">图片或视频URL</label>
+            <label class="form-label" id="label-input-online-url" data-i18n="imageOrVideoUrl">图片或视频URL</label>
             <div class="input-container" id="container-online-url">
-              <input type="text" id="input-online-url" class="input" placeholder="https://example.com/image.jpg" autocomplete="off" data-i18n-ph="enterUrl">
+              <input aria-labelledby="label-input-online-url" type="text" id="input-online-url" class="input" placeholder="https://example.com/image.jpg" autocomplete="off" data-i18n-ph="enterUrl">
             </div>
             <div class="error-tip" id="tip-online-url">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor">
@@ -2870,9 +2885,9 @@
         <form id="modal-form" novalidate>
           <div class="form-row">
             <div class="form-group form-group-narrow">
-              <label class="form-label" for="select-icon-mode" data-i18n="icon">图标</label>
+              <label class="form-label" id="label-select-icon-mode" data-i18n="icon">图标</label>
               <div class="custom-select-wrapper">
-                <select id="select-icon-mode" class="select-box" tabindex="-1" aria-label="图标">
+                <select aria-labelledby="label-select-icon-mode" id="select-icon-mode" class="select-box" tabindex="-1" aria-label="图标">
                   <option value="auto" data-i18n="iconAuto">自动解析</option>
                   <option value="text" data-i18n="iconFirstChar">首字符</option>
                   <option value="preset" data-i18n="iconPreset">预置</option>
@@ -2887,9 +2902,9 @@
             </div>
 
             <div class="form-group">
-              <label class="form-label" for="input-name" data-i18n="name">名称</label>
+              <label class="form-label" id="label-input-name" data-i18n="name">名称</label>
               <div class="input-container" id="container-name">
-                <input type="text" id="input-name" class="input" placeholder="名称" autocomplete="off" data-i18n-ph="inputNamePh">
+                <input aria-labelledby="label-input-name" type="text" id="input-name" class="input" placeholder="名称" autocomplete="off" data-i18n-ph="inputNamePh">
               </div>
               <div class="error-tip" id="tip-name">
                 <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor">
@@ -2901,9 +2916,9 @@
           </div>
 
           <div class="form-group">
-            <label class="form-label" for="input-url">URL</label>
+            <label class="form-label" id="label-input-url">URL</label>
             <div class="input-container" id="container-url">
-              <input type="text" id="input-url" class="input" placeholder="https://example.com" autocomplete="off">
+              <input aria-labelledby="label-input-url" type="text" id="input-url" class="input" placeholder="https://example.com" autocomplete="off">
             </div>
             <div class="error-tip" id="tip-url">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor">
@@ -2962,9 +2977,9 @@
           </div>
 
           <div class="form-group">
-            <label class="form-label" for="input-engine-name" data-i18n="engineName">搜索引擎名称</label>
+            <label class="form-label" id="label-input-engine-name" data-i18n="engineName">搜索引擎名称</label>
             <div class="input-container" id="container-engine-name">
-              <input type="text" id="input-engine-name" class="input" placeholder="例如: DuckDuckGo" autocomplete="off" data-i18n-ph="engineNamePh">
+              <input aria-labelledby="label-input-engine-name" type="text" id="input-engine-name" class="input" placeholder="例如: DuckDuckGo" autocomplete="off" data-i18n-ph="engineNamePh">
             </div>
             <div class="error-tip" id="tip-engine-name">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor">
@@ -2975,9 +2990,9 @@
           </div>
 
           <div class="form-group">
-            <label class="form-label" for="input-engine-url" data-i18n="engineUrl">搜索 URL (%s 替换搜索关键词)</label>
+            <label class="form-label" id="label-input-engine-url" data-i18n="engineUrl">搜索 URL (%s 替换搜索关键词)</label>
             <div class="input-container" id="container-engine-url">
-              <input type="text" id="input-engine-url" class="input" placeholder="https://duckduckgo.com/?q=%s" autocomplete="off">
+              <input aria-labelledby="label-input-engine-url" type="text" id="input-engine-url" class="input" placeholder="https://duckduckgo.com/?q=%s" autocomplete="off">
             </div>
             <div class="error-tip" id="tip-engine-url">
               <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor">
