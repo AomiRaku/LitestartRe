@@ -138,6 +138,7 @@
       overflow: hidden;
       background-color: var(--fill-color);
       color: var(--neutral-foreground-rest);
+      font-family: var(--font-family);
     }
 
     /* 壁纸背景层容器 */
@@ -319,6 +320,13 @@
     /* 关闭背景时隐藏图像遮罩 */
     body:not(.bg-enabled) ntp-shell {
       background-image: none !important;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font-family: inherit;
     }
 
     button {
@@ -1210,6 +1218,13 @@
       width: 100%;
       height: 100vh;
       z-index: 2;
+      /* 布局由脚本写入后可能与首帧不同，就绪前不显示，避免看到位置跃迁 */
+      opacity: 0;
+      transition: opacity 0.15s ease;
+    }
+
+    html[data-ready] #inner {
+      opacity: 1;
     }
 
     #logo {
@@ -1220,6 +1235,12 @@
       justify-content: center;
       gap: 14px;
       height: 48px;
+    }
+
+    /* 首帧即按最终状态隐藏 Logo：它占网格第 2 行，晚隐藏会让搜索框先偏下再上移 */
+    html[data-logo-hidden] #logo,
+    html[data-search-hidden="true"] #logo {
+      display: none;
     }
 
     #logo-text-path {
@@ -2299,7 +2320,31 @@
     #settings-page-bg .wallpaper-preview-box {
       width: 100%;
       height: 150px;
-      margin-top: 10px;
+      margin-top: 2px;
+    }
+
+    /* 预览图：与提示层叠放，透明度变化做渐入渐出 */
+    .wallpaper-preview-box img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: opacity 0.2s ease;
+    }
+
+    /* 预览框的加载 / 失败提示：覆盖在图片之上 */
+    .wallpaper-preview-status {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--settings-text-secondary);
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      transition: opacity 0.2s ease;
     }
 
     /* 依赖背景开启的设置 */
@@ -2478,11 +2523,8 @@
                     </label>
                   </div>
                 </div>
-              </div>
-
-              <!-- 搜索历史记录开关 -->
-              <div class="settings-card">
-                <div class="setting-row">
+                <!-- 搜索历史记录开关 -->
+                <div class="setting-row" style="margin-top: 8px;">
                   <div class="setting-label-group" data-i18n="saveHistory">保存搜索历史记录</div>
                   <div class="switch-container">
                     <span class="setting-status-text" id="status-history" data-i18n="on">打开</span>
@@ -2559,7 +2601,7 @@
             <!-- 底部版权/链接区域 -->
             <div class="settings-footer">
               <div class="settings-footer-links">
-                <a href="#" id="btn-footer-version">LiteStart 1.8.7</a>| <span data-i18n="presentedBy">由</span> <a href="https://xingyuefox.pages.dev" target="_blank" data-i18n="xingyuefox">星月Fox</a> <span data-i18n="forYou">为您呈现</span>
+                <a href="#" id="btn-footer-version">LiteStart 1.8.8-Beta1</a>| <span data-i18n="presentedBy">由</span> <a href="https://xingyuefox.pages.dev" target="_blank" data-i18n="xingyuefox">星月Fox</a> <span data-i18n="forYou">为您呈现</span>
               </div>
               <div class="settings-footer-links">
                 <a href="https://github.com/XingYueFox/Litestart/blob/main/PRIVACY_POLICY.md" data-i18n="cookieNotice">隐私政策</a> · 
@@ -2597,15 +2639,18 @@
 
                 <!-- 以下设置依赖背景开启：关闭时整体置灰且不可交互 -->
                 <div id="bg-dependent-settings">
-                  <!-- 壁纸来源：下拉选择，下方按钮随选中项变化 -->
+                  <!-- 壁纸来源：先预览，再用下拉选择，下方按钮随选中项变化 -->
                   <div class="settings-card">
-                    <div class="settings-card-title" data-i18n="localImage">选择图片</div>
-                    <div class="custom-select-wrapper">
+                    <div class="settings-card-title" data-i18n="localImage">背景图片</div>
+                    <div class="wallpaper-preview-box" id="wallpaper-preview-container">
+                      <img src="img/background.webp" alt="默认背景预览" style="width:100%;height:100%;object-fit:cover;">
+                    </div>
+                    <div class="custom-select-wrapper" style="margin-top: 10px;">
                       <select id="select-wallpaper-source" class="select-box" tabindex="-1" aria-label="壁纸来源">
                         <option value="default" data-i18n="defaultWallpaper">默认</option>
-                        <option value="local" data-i18n="localFile">本地文件</option>
-                        <option value="online" data-i18n="onlineWallpaper">在线壁纸</option>
                         <option value="bing" data-i18n="bingDaily">必应每日壁纸</option>
+                        <option value="local" data-i18n="localFile">本地文件</option>
+                        <option value="online" data-i18n="onlineWallpaper">自定义在线链接</option>
                       </select>
                       <div class="custom-select-display" data-for="select-wallpaper-source">
                         <span class="custom-select-text"></span>
@@ -2614,15 +2659,11 @@
                         </svg>
                       </div>
                     </div>
-                    <div class="wallpaper-preview-box" id="wallpaper-preview-container">
-                      <img src="img/background.webp" alt="默认背景预览" style="width:100%;height:100%;object-fit:cover;">
-                    </div>
-                    <span id="wallpaper-source-label" style="font-size:11px;color:var(--settings-text-secondary);text-align:center;margin-top:6px;display:block;"></span>
                     <input type="file" id="input-wallpaper-file" class="file-input-hidden" accept="image/*,video/*">
-                    <!-- 「默认 / 本地文件」下出现：选择文件 + 恢复默认 -->
+                    <!-- 「本地文件」显示选择文件；「自定义在线链接」显示编辑链接；恢复默认由下拉选「默认」完成 -->
                     <div id="wallpaper-file-row" style="display: flex; gap: 8px; margin-top: 10px;">
                       <button type="button" class="btn btn-secondary" id="btn-upload-wallpaper" style="flex: 1;" data-i18n="uploadFile">选择文件</button>
-                      <button type="button" class="btn btn-secondary" id="btn-remove-wallpaper" style="flex: 1;" data-i18n="restoreDefault">恢复默认</button>
+                      <button type="button" class="btn btn-secondary" id="btn-edit-online-wallpaper" style="flex: 1; display: none;" data-i18n="editCustomLink">编辑自定义链接</button>
                     </div>
                   </div>
 
@@ -3021,7 +3062,7 @@
     <div id="modal-about" class="modal-overlay">
       <div class="modal-dialog">
         <div class="modal-header" data-i18n="aboutTitle">关于 Litestart</div>
-        <p style="margin: 0; opacity: 0.7; font-size: 13px;" data-i18n="litever">版本 1.8.7 | 更新时间：2026-10-18</p><br>
+        <p style="margin: 0; opacity: 0.7; font-size: 13px;" data-i18n="litever">版本 1.8.8-Beta1 | 更新时间：2026-10-19</p><br>
         
         <!-- 可用更新提示框 -->
         <div id="update-notice" class="update-notice" style="display: none;">

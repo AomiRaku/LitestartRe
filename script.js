@@ -1,4 +1,4 @@
-const APP_VERSION = '1.8.7';      // 发行版本
+const APP_VERSION = '1.8.8-Beta1';      // 发行版本
 const GITHUB_REPO = 'XingYueFox/Litestart';
 
 const logos = {
@@ -66,7 +66,7 @@ const i18nData = {
     download: '下载',
     updateAvailable: '可用更新',
     aboutDesc: '一个简洁、快速的浏览器起始页。',
-    litever: '版本 1.8.7 | 更新时间：2026-10-18',
+    litever: '版本 1.8.8-Beta1 | 更新时间：2026-10-19',
     versionInfo: '版本信息',
     and: '和',
     searchPlaceholder: '今天想用 {name} 搜索什么？',
@@ -80,14 +80,11 @@ const i18nData = {
     searchInput: '搜索输入框',
     clearSearchHistory: '清除搜索历史记录',
     usingDefaultBg: '正在使用默认背景',
-    sourceLocal: '来自本地图片',
-    sourceBingDaily: '来自 Bing 每日壁纸',
-    sourceCustomUrl: '来自自定义链接',
     defaultWallpaper: '默认',
     localFile: '本地文件',
-    onlineWallpaper: '在线壁纸',
+    onlineWallpaper: '自定义在线链接',
     uploadFile: '选择文件',
-    restoreDefault: '恢复默认',
+    editCustomLink: '编辑自定义链接',
     editShortcut: '编辑快速链接',
     name: '名称',
     bingCN: 'Bing',
@@ -151,7 +148,7 @@ const i18nData = {
     useOnlineContent: '使用在线内容',
     bingDaily: '必应每日壁纸',
     uploadedWallpaper: '上传的背景',
-    localImage: '选择图片',
+    localImage: '背景图片',
     baidu: 'Baidu',
     customUrl: '自定义',
     customOnlineWallpaper: '自定义在线壁纸',
@@ -254,7 +251,7 @@ const i18nData = {
     download: '下載',
     updateAvailable: '可用更新',
     aboutDesc: '一個簡潔、快速的瀏覽器起始頁。',
-    litever: '版本 1.8.7 | 更新時間：2026-10-18',
+    litever: '版本 1.8.8-Beta1 | 更新時間：2026-10-19',
     versionInfo: '版本資訊',
     and: '與',
     searchPlaceholder: '今天想用 {name} 搜尋什麼？',
@@ -268,14 +265,11 @@ const i18nData = {
     searchInput: '搜尋輸入框',
     clearSearchHistory: '清除搜尋紀錄',
     usingDefaultBg: '正在使用預設背景',
-    sourceLocal: '來自本機圖片',
-    sourceBingDaily: '來自 Bing 每日桌布',
-    sourceCustomUrl: '來自自訂連結',
     defaultWallpaper: '預設',
     localFile: '本機檔案',
-    onlineWallpaper: '線上桌布',
+    onlineWallpaper: '自訂線上連結',
     uploadFile: '選擇檔案',
-    restoreDefault: '恢復預設',
+    editCustomLink: '編輯自訂連結',
     editShortcut: '編輯快速連結',
     name: '名稱',
     bingCN: 'Bing',
@@ -339,7 +333,7 @@ const i18nData = {
     useOnlineContent: '使用線上內容',
     bingDaily: 'Bing每日桌布',
     uploadedWallpaper: '上傳的背景',
-    localImage: '選擇圖片',
+    localImage: '背景圖片',
     baidu: 'Baidu',
     bing: 'Bing',
     customUrl: '自訂',
@@ -427,7 +421,7 @@ const i18nData = {
     download: 'Download',
     updateAvailable: 'Update available',
     aboutDesc: 'A simple and fast browser start page.',
-    litever: 'Version 1.8.7 | Updated: 2026-10-18',
+    litever: 'Version 1.8.8-Beta1 | Updated: 2026-10-19',
     versionInfo: 'Version Info',
     and: '&',
     searchPlaceholder: 'What do you want to search with {name} today?',
@@ -441,14 +435,11 @@ const i18nData = {
     searchInput: 'Search input',
     clearSearchHistory: 'Clear search history',
     usingDefaultBg: 'Using default background',
-    sourceLocal: 'From local image',
-    sourceBingDaily: 'From Bing Daily Wallpaper',
-    sourceCustomUrl: 'From custom URL',
     defaultWallpaper: 'Default',
     localFile: 'Local file',
-    onlineWallpaper: 'Online wallpaper',
+    onlineWallpaper: 'Custom online link',
     uploadFile: 'Select file',
-    restoreDefault: 'Restore default',
+    editCustomLink: 'Edit custom link',
     editShortcut: 'Edit quick link',
     name: 'Name',
     icon: 'Icon',
@@ -511,7 +502,7 @@ const i18nData = {
     useOnlineContent: 'Use online content',
     bingDaily: 'Bing daily wallpaper',
     uploadedWallpaper: 'Uploaded background',
-    localImage: 'Select image',
+    localImage: 'Background image',
     baidu: 'Baidu',
     bing: 'Bing',
     customUrl: 'Custom',
@@ -601,7 +592,7 @@ const i18nData = {
     download: 'ダウンロード',
     updateAvailable: 'アップデートがあります',
     aboutDesc: 'シンプルで高速なブラウザスタートページです。',
-    litever: 'バージョン 1.8.7 | 更新日: 2026-10-18',
+    litever: 'バージョン 1.8.8-Beta1 | 更新日: 2026-10-19',
     versionInfo: 'バージョン情報',
     and: 'と',
     searchPlaceholder: '今日は {name} で何を検索しますか？',
@@ -615,14 +606,11 @@ const i18nData = {
     searchInput: '検索入力ボックス',
     clearSearchHistory: '検索履歴を消去',
     usingDefaultBg: 'デフォルトの背景を使用中',
-    sourceLocal: 'ローカル画像より',
-    sourceBingDaily: 'Bing 今日の壁紙より',
-    sourceCustomUrl: 'カスタムURLより',
     defaultWallpaper: 'デフォルト',
     localFile: 'ローカルファイル',
-    onlineWallpaper: 'オンライン壁紙',
+    onlineWallpaper: 'カスタムオンラインリンク',
     uploadFile: 'ファイルを選択',
-    restoreDefault: 'デフォルトに戻す',
+    editCustomLink: 'カスタムリンクを編集',
     editShortcut: 'クイックリンクを編集',
     name: '名前',
     icon: 'アイコン',
@@ -685,7 +673,7 @@ const i18nData = {
     useOnlineContent: 'オンラインコンテンツを使用',
     bingDaily: 'Bingの今日の壁紙',
     uploadedWallpaper: 'アップロードした背景',
-    localImage: '画像を選択',
+    localImage: '背景画像',
     baidu: 'Baidu',
     bing: 'Bing',
     customUrl: 'カスタム',
@@ -774,7 +762,7 @@ const i18nData = {
     download: 'Скачать',
     updateAvailable: 'Доступно обновление',
     aboutDesc: 'Простая и быстрая страница запуска браузера.',
-    litever: 'Версия 1.8.7 | Обновлено: 2026-10-18',
+    litever: 'Версия 1.8.8-Beta1 | Обновлено: 2026-10-19',
     versionInfo: 'Информация о версии',
     and: 'и',
     searchPlaceholder: 'Что поищем сегодня через {name}?',
@@ -788,14 +776,11 @@ const i18nData = {
     searchInput: 'Поле поиска',
     clearSearchHistory: 'Очистить историю поиска',
     usingDefaultBg: 'Используется стандартный фон',
-    sourceLocal: 'Из локального изображения',
-    sourceBingDaily: 'Из ежедневных обоев Bing',
-    sourceCustomUrl: 'Из пользовательской ссылки',
     defaultWallpaper: 'По умолчанию',
     localFile: 'Локальный файл',
-    onlineWallpaper: 'Онлайн-обои',
+    onlineWallpaper: 'Своя онлайн-ссылка',
     uploadFile: 'Выбрать файл',
-    restoreDefault: 'Сбросить',
+    editCustomLink: 'Изменить свою ссылку',
     editShortcut: 'Изменить быструю ссылку',
     name: 'Название',
     icon: 'Значок',
@@ -858,7 +843,7 @@ const i18nData = {
     useOnlineContent: 'Использовать онлайн-контент',
     bingDaily: 'Ежедневные обои Bing',
     uploadedWallpaper: 'Загруженный фон',
-    localImage: 'Выбрать изображение',
+    localImage: 'Фоновое изображение',
     baidu: 'Baidu',
     customUrl: 'Пользовательский',
     customOnlineWallpaper: 'Пользовательские онлайн-обои',
@@ -1299,33 +1284,33 @@ const WallpaperDB = {
     return this._initPromise;
   },
 
-  async save(blob) {
+  async save(blob, key) {
     await this.init();
     return new Promise((resolve, reject) => {
       const tx = this._db.transaction('blob', 'readwrite');
-      tx.objectStore('blob').put({ key: 'current', blob });
+      tx.objectStore('blob').put({ key: key || 'current', blob });
       tx.oncomplete = () => resolve();
       tx.onerror = () => reject(tx.error);
     });
   },
 
-  async load() {
+  async load(key) {
     await this.init();
     return new Promise((resolve, reject) => {
       const tx = this._db.transaction('blob', 'readonly');
-      const req = tx.objectStore('blob').get('current');
+      const req = tx.objectStore('blob').get(key || 'current');
       req.onsuccess = () => resolve(req.result ? req.result.blob : null);
       req.onerror = () => reject(req.error);
     });
   },
 
-  async remove() {
+  async remove(key) {
     if (!this._db) {
       try { await this.init(); } catch { return; }
     }
     return new Promise((resolve, reject) => {
       const tx = this._db.transaction('blob', 'readwrite');
-      tx.objectStore('blob').delete('current');
+      tx.objectStore('blob').delete(key || 'current');
       tx.oncomplete = () => resolve();
       tx.onerror = () => reject(tx.error);
     });
@@ -1408,6 +1393,24 @@ async function loadWallpaperData() {
   } catch (e) {
     console.error('壁纸读取失败:', e);
     return meta;
+  }
+}
+
+// 保留的本地壁纸：切到其它来源后仍可原样切回。
+// 与「当前壁纸」分开存放，当前壁纸被替换或清除时不受影响
+const LOCAL_WALLPAPER_KEY = 'local';
+const LOCAL_WALLPAPER_TYPE_KEY = 'ntp_local_wallpaper_type';
+let localWallpaperBlob = null;
+let localWallpaperType = null;
+
+async function loadLocalWallpaperBackup() {
+  try {
+    const blob = await WallpaperDB.load(LOCAL_WALLPAPER_KEY);
+    if (!blob) return;
+    localWallpaperBlob = blob;
+    localWallpaperType = Storage.get(LOCAL_WALLPAPER_TYPE_KEY, 'image');
+  } catch (e) {
+    console.error('本地壁纸读取失败:', e);
   }
 }
 
@@ -1982,6 +1985,62 @@ document.addEventListener('DOMContentLoaded', () => {
   // 切换带 0.2s 过渡：新内容淡入 + 面板高度平滑变化
   const SETTINGS_PAGE_ANIM_MS = 200;
   let settingsPageAnimTimer = null;
+  // 面板内容高度变化（按钮行显示/隐藏等）的进行中动画与兜底定时器
+  let settingsHeightAnim = null;
+  let settingsHeightAnimTimer = null;
+
+  // 面板内容自身高度变化时，按页面切换同样的方式过渡：
+  // 先量旧高度，执行内容变更，再从旧高度过渡到新高度
+  function animateSettingsPanelHeight(mutate) {
+    const panel = popoverSettings;
+    // 面板未显示、页面切换动画进行中、或系统要求减少动态效果时直接应用
+    if (!panel || !panel.offsetHeight || settingsPageAnimTimer ||
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      mutate();
+      return;
+    }
+    // 结束上一次高度动画，避免互相叠加
+    if (settingsHeightAnim) {
+      try { settingsHeightAnim.cancel(); } catch (e) { /* 已结束 */ }
+      settingsHeightAnim = null;
+    }
+    if (settingsHeightAnimTimer) {
+      clearTimeout(settingsHeightAnimTimer);
+      settingsHeightAnimTimer = null;
+    }
+
+    const startHeight = panel.offsetHeight;
+    mutate();
+    // auto 状态下量得的高度已受 max-height 约束
+    const endHeight = panel.getBoundingClientRect().height;
+    if (Math.abs(endHeight - startHeight) < 1) {
+      updateSettingsScrollbar();
+      return;
+    }
+
+    // 显式动画：不依赖样式重算触发的隐式过渡，也不会被其它样式写入打断
+    panel.style.overflowY = 'hidden';
+    const finish = () => {
+      if (settingsHeightAnimTimer) {
+        clearTimeout(settingsHeightAnimTimer);
+        settingsHeightAnimTimer = null;
+      }
+      if (settingsHeightAnim) {
+        try { settingsHeightAnim.cancel(); } catch (e) { /* 已结束 */ }
+        settingsHeightAnim = null;
+      }
+      panel.style.overflowY = '';
+      updateSettingsScrollbar();
+    };
+    settingsHeightAnim = panel.animate(
+      [{ height: startHeight + 'px' }, { height: endHeight + 'px' }],
+      { duration: SETTINGS_PAGE_ANIM_MS, easing: 'ease' }
+    );
+    settingsHeightAnim.onfinish = finish;
+    settingsHeightAnim.oncancel = () => { settingsHeightAnim = null; };
+    // 兜底：动画被打断或未触发 onfinish 时也要恢复滚动
+    settingsHeightAnimTimer = setTimeout(finish, SETTINGS_PAGE_ANIM_MS + 60);
+  }
 
   // 仅切换页面的显示状态（不含动画），供动画与"减少动态效果"两条路径复用
   function applySettingsPageClasses(name) {
@@ -1998,6 +2057,14 @@ document.addEventListener('DOMContentLoaded', () => {
     if (settingsPageAnimTimer) {
       clearTimeout(settingsPageAnimTimer);
       settingsPageAnimTimer = null;
+    }
+    if (settingsHeightAnim) {
+      try { settingsHeightAnim.cancel(); } catch (e) { /* 已结束 */ }
+      settingsHeightAnim = null;
+    }
+    if (settingsHeightAnimTimer) {
+      clearTimeout(settingsHeightAnimTimer);
+      settingsHeightAnimTimer = null;
     }
     popoverSettings.style.transition = '';
     popoverSettings.style.height = '';
@@ -2287,11 +2354,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const toggleBgModalSwitch = document.getElementById('toggle-bg-modal-switch');
   const wallpaperPreviewContainer = document.getElementById('wallpaper-preview-container');
   const btnUploadWallpaper = document.getElementById('btn-upload-wallpaper');
-  const btnRemoveWallpaper = document.getElementById('btn-remove-wallpaper');
+  const btnEditOnlineWallpaper = document.getElementById('btn-edit-online-wallpaper');
   const inputWallpaperFile = document.getElementById('input-wallpaper-file');
   const selectWallpaperSource = document.getElementById('select-wallpaper-source');
   const wallpaperFileRow = document.getElementById('wallpaper-file-row');
-  const wallpaperSourceLabel = document.getElementById('wallpaper-source-label');
   const bgDependentSettings = document.getElementById('bg-dependent-settings');
 
   const bgVideo = document.getElementById('bg-video');
@@ -2717,6 +2783,8 @@ document.addEventListener('DOMContentLoaded', () => {
     applyBgVignette();
     applyBgFadeBlur();
     applyBgDependentEnabled();
+    // 预览不受背景开关影响，始终显示当前选择的壁纸
+    renderWallpaperPreview();
   }
 
   // 根据"增强可见性"设置与背景开关，切换 body 的 data 属性
@@ -2809,16 +2877,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // 根据当前壁纸类型返回对应的翻译 key 名
-  function getWallpaperSourceLabel() {
-    if (!customWallpaperData) return '';
-    if (customWallpaperData.type === 'bing_daily') return 'sourceBingDaily';
-    const url = customWallpaperData.url || '';
-    if (url.startsWith('data:') || url.startsWith('blob:')) return 'sourceLocal';
-    if (url.startsWith('http://') || url.startsWith('https://')) return 'sourceCustomUrl';
-    return '';
-  }
-
   // 当前壁纸对应的下拉选项值
   function getWallpaperSourceValue() {
     if (!customWallpaperData) return 'default';
@@ -2841,28 +2899,105 @@ document.addEventListener('DOMContentLoaded', () => {
     setWallpaperSourceValue(getWallpaperSourceValue());
   }
 
-  // 「选择文件 / 恢复默认」只在默认与本地文件模式下出现；恢复默认仅在已有自定义壁纸时可用
+  // 本地文件显示「选择文件」，自定义在线链接显示「编辑自定义链接」；
+  // 默认与必应没有可操作的按钮
+  // 上一次按钮行的显示形态，用于识别真实变化
+  let lastWallpaperRowMode = null;
+
   function updateWallpaperFileRow() {
     if (!wallpaperFileRow) return;
     const value = selectWallpaperSource?.value || 'default';
-    const showFileRow = (value === 'default' || value === 'local');
-    wallpaperFileRow.style.display = showFileRow ? 'flex' : 'none';
-    if (btnRemoveWallpaper) {
-      btnRemoveWallpaper.style.display = customWallpaperData ? '' : 'none';
+    const showRow = (value === 'local' || value === 'online');
+    const mode = value === 'local' ? 'local' : (value === 'online' ? 'online' : 'none');
+    const applyNow = () => {
+      wallpaperFileRow.style.display = showRow ? 'flex' : 'none';
+      if (btnUploadWallpaper) {
+        btnUploadWallpaper.style.display = value === 'local' ? '' : 'none';
+      }
+      if (btnEditOnlineWallpaper) {
+        btnEditOnlineWallpaper.style.display = value === 'online' ? '' : 'none';
+      }
+    };
+    // 形态没变（含连续调用的第二次）只同步样式，不重启动画
+    if (mode === lastWallpaperRowMode) {
+      applyNow();
+      return;
     }
-  }
-
-  // 用当前语言的翻译表，把来源标签渲染到页面上
-  function translateSourceLabel() {
-    if (!wallpaperSourceLabel) return;
-    const key = getWallpaperSourceLabel();
-    const d = window._i18nDict || {};
-    wallpaperSourceLabel.textContent = key ? (d[key] || '') : '';
+    lastWallpaperRowMode = mode;
+    // 按钮行的显隐会改变面板高度，按页面切换的方式过渡
+    animateSettingsPanelHeight(applyNow);
   }
 
   // 当前已经渲染到页面上的壁纸标识（类型 + 地址）。
   // 用它判断"这次渲染是否只是重复渲染同一张壁纸"，避免重播加载动画。
   let renderedWallpaperKey = null;
+
+  const PREVIEW_FADE_MS = 200;
+
+  // 旧内容先淡出再移除，避免切换时瞬间消失
+  function fadeOutPreviewNode(node) {
+    if (!node || !node.isConnected) return;
+    node.style.opacity = '0';
+    setTimeout(() => node.remove(), PREVIEW_FADE_MS);
+  }
+
+  // 让预览框里的旧图片与旧提示一起淡出
+  function fadeOutPreviewContent() {
+    if (!wallpaperPreviewContainer) return;
+    wallpaperPreviewContainer.querySelectorAll('img, .wallpaper-preview-status').forEach(fadeOutPreviewNode);
+  }
+
+  // 预览框的状态提示（加载中 / 加载失败）
+  function createPreviewStatus(text) {
+    const wrap = document.createElement('div');
+    wrap.className = 'wallpaper-preview-status';
+    wrap.textContent = text;
+    return wrap;
+  }
+
+  // 渲染预览：旧内容淡出，新图片先挂到文档再等就绪（脱离文档的图片不保证触发 load），
+  // 就绪后淡入；就绪前用提示层盖住，避免露出上一张
+  function renderPreview(url, alt) {
+    if (!wallpaperPreviewContainer) return;
+    fadeOutPreviewContent();
+
+    const status = createPreviewStatus('LOADING');
+    status.style.opacity = '0';
+    const img = document.createElement('img');
+    img.alt = alt || '背景预览';
+    img.style.opacity = '0';
+    img.addEventListener('load', () => {
+      img.style.opacity = '1';
+      fadeOutPreviewNode(status);
+    });
+    img.addEventListener('error', () => {
+      img.remove();
+      status.textContent = 'NOT FOUND';
+      status.style.opacity = '1';
+    });
+    wallpaperPreviewContainer.appendChild(img);
+    wallpaperPreviewContainer.appendChild(status);
+    // 强制回流让初始透明度生效，再触发淡入
+    void status.offsetWidth;
+    status.style.opacity = '1';
+    img.src = url;
+  }
+
+  function setPreviewLoading() {
+    if (!wallpaperPreviewContainer) return;
+    fadeOutPreviewContent();
+    const status = createPreviewStatus('LOADING');
+    status.style.opacity = '0';
+    wallpaperPreviewContainer.appendChild(status);
+    void status.offsetWidth;
+    status.style.opacity = '1';
+  }
+
+  // 预览展示当前选择的壁纸，与背景是否启用无关
+  function renderWallpaperPreview() {
+    if (customWallpaperData) renderPreview(customWallpaperData.url, '背景预览');
+    else renderPreview('img/background.webp', '默认背景预览');
+  }
 
   // 根据自定义壁纸数据，渲染视频/图片背景到页面和预览容器
   // 渐入逻辑：先移除 .loaded 让元素透明 → 设置 src → 等就绪 → 加上 .loaded 触发 transition
@@ -2930,22 +3065,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
       syncWallpaperSourceSelect();
-      translateSourceLabel();
-      if (wallpaperPreviewContainer) {
-        const previewImg = document.createElement('img');
-        previewImg.src = 'img/background.webp';
-        previewImg.alt = '默认背景预览';
-        previewImg.style.cssText = 'width:100%;height:100%;object-fit:cover;';
-        wallpaperPreviewContainer.textContent = '';
-        wallpaperPreviewContainer.appendChild(previewImg);
-      }
-      // 预览为静态默认图，无 data-i18n 文案需要即时翻译
       applyLanguage(localStorage.getItem('liteStart_language') || 'auto');
       return;
     }
 
     syncWallpaperSourceSelect();
-    translateSourceLabel();
 
     if (customWallpaperData.type === 'video') {
       if (!alreadyRendered) {
@@ -3018,23 +3142,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
 
-      if (wallpaperPreviewContainer) {
-        const previewImg = document.createElement('img');
-        previewImg.src = customWallpaperData.url;
-        previewImg.alt = '背景预览';
-        previewImg.style.cssText = 'width:100%;height:100%;object-fit:cover;';
-        wallpaperPreviewContainer.textContent = '';
-        wallpaperPreviewContainer.appendChild(previewImg);
-        previewImg.addEventListener('error', () => {
-          const errWrap = document.createElement('div');
-          errWrap.style.cssText = 'width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:var(--settings-text-secondary);';
-          const errLabel = document.createElement('div');
-          errLabel.textContent = 'NOT FOUND';
-          errLabel.style.cssText = 'font-size:14px;font-weight:600;letter-spacing:2px;';
-          errWrap.appendChild(errLabel);
-          previewImg.replaceWith(errWrap);
-        });
-      }
     }
   }
 
@@ -3121,6 +3228,7 @@ document.addEventListener('DOMContentLoaded', () => {
     'ntp_quicklinks',
     'ntp_quicklink_position',
     'ntp_quicklinks_list',
+    'ntp_online_wallpaper_url',
     'ntp_history_enabled',
     'ntp_search_history',
     'ntp_show_time_capsule',
@@ -3318,6 +3426,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // 初始化：异步加载壁纸（可能需要从 IndexedDB 取 Blob），再渲染
   (async () => {
     customWallpaperData = await loadWallpaperData();
+    await loadLocalWallpaperBackup();
     applyBackgroundState();
     ensureBingDailyFresh();
   })();
@@ -3378,13 +3487,40 @@ document.addEventListener('DOMContentLoaded', () => {
     showSettingsPage('main');
   });
 
-  btnUploadWallpaper?.addEventListener('click', () => {
-    inputWallpaperFile?.click();
+  // 正在等待文件选择结果；取消时把下拉退回当前实际来源
+  let localPickPending = false;
+
+  function startLocalFilePick() {
+    if (!inputWallpaperFile) return;
+    localPickPending = true;
+    inputWallpaperFile.click();
+  }
+
+  function cancelLocalFilePick() {
+    if (!localPickPending) return;
+    localPickPending = false;
+    // 壁纸未变，下拉与预览都回到当前实际来源
+    syncWallpaperSourceSelect();
+    renderWallpaperPreview();
+  }
+
+  // 文件选择框关闭后窗口重新获得焦点；此时 change 尚未触发即视为取消
+  window.addEventListener('focus', () => {
+    if (!localPickPending) return;
+    setTimeout(cancelLocalFilePick, 350);
   });
+
+  btnUploadWallpaper?.addEventListener('click', startLocalFilePick);
+  // 较新的浏览器会直接派发 cancel 事件
+  inputWallpaperFile?.addEventListener('cancel', cancelLocalFilePick);
 
   inputWallpaperFile?.addEventListener('change', async (e) => {
     const file = e.target.files[0];
-    if (!file) return;
+    if (!file) {
+      cancelLocalFilePick();
+      return;
+    }
+    localPickPending = false;
 
     const isVideo = file.type.startsWith('video/');
 
@@ -3397,6 +3533,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const ok = await saveWallpaperData({ type: isVideo ? 'video' : 'image', blob });
       if (ok) {
+        // 留存一份，供切到其它来源后切回
+        localWallpaperBlob = blob;
+        localWallpaperType = isVideo ? 'video' : 'image';
+        Storage.set(LOCAL_WALLPAPER_TYPE_KEY, localWallpaperType);
+        WallpaperDB.save(blob, LOCAL_WALLPAPER_KEY).catch(() => {});
         // 释放旧 blob URL，生成新的 blob URL 供当前会话渲染
         revokeBlobUrl(customWallpaperData?.url);
         customWallpaperData = {
@@ -3414,42 +3555,95 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  btnRemoveWallpaper?.addEventListener('click', async () => {
-    revokeBlobUrl(customWallpaperData?.url);
-    customWallpaperData = null;
-    await saveWallpaperData(null);
-    resetBgVignette();
-    applyBackgroundState();
-  });
-
   // 壁纸来源下拉：切换即切换壁纸来源
   selectWallpaperSource?.addEventListener('change', async () => {
     const value = selectWallpaperSource.value;
+    // 新壁纸就绪前先进入加载态，不保留上一张预览
+    setPreviewLoading();
     if (value === 'default') {
-      // 选中默认即清掉当前壁纸；没有自定义壁纸时只切换下方按钮
-      if (customWallpaperData) {
+      // 选中默认即清掉当前壁纸；界面先更新，存储清理随后进行
+      const hadWallpaper = !!customWallpaperData;
+      if (hadWallpaper) {
         revokeBlobUrl(customWallpaperData.url);
         customWallpaperData = null;
-        await saveWallpaperData(null);
-        resetBgVignette();
-        applyBackgroundState();
-        return;
       }
       updateWallpaperFileRow();
+      if (hadWallpaper) {
+        // 先让界面回到默认壁纸，存储清理随后进行
+        resetBgVignette();
+        applyBackgroundState();
+        await saveWallpaperData(null);
+      }
     } else if (value === 'local') {
       updateWallpaperFileRow();
+      if (getWallpaperSourceValue() === 'local') {
+        // 当前已经是本地壁纸，无需处理
+      } else if (localWallpaperBlob) {
+        // 保存过本地壁纸：直接应用，不再要求重新选择
+        await applyLocalWallpaper();
+      } else {
+        startLocalFilePick();
+      }
     } else if (value === 'online') {
       updateWallpaperFileRow();
-      openOnlineModal();
+      // 保存过链接就直接应用，不再要求重新填写
+      const savedUrl = getSavedOnlineUrl();
+      if (savedUrl) {
+        await applyOnlineWallpaperUrl(savedUrl);
+      } else {
+        openOnlineModal();
+      }
     } else if (value === 'bing') {
       updateWallpaperFileRow();
       const ok = await applyBingWallpaper();
-      if (!ok) syncWallpaperSourceSelect();
+      if (!ok) {
+        syncWallpaperSourceSelect();
+        renderWallpaperPreview();
+      }
     }
   });
 
 
   // ===== 在线壁纸功能 =====
+  // 最近一次设置的自定义链接。与当前壁纸分开保存，切换到其它来源后仍可复用
+  const ONLINE_WALLPAPER_KEY = 'ntp_online_wallpaper_url';
+  function getSavedOnlineUrl() {
+    const v = Storage.get(ONLINE_WALLPAPER_KEY, '');
+    return typeof v === 'string' ? v : '';
+  }
+
+  // 应用保留的本地壁纸。blob URL 每次重新生成，避免与已释放的地址冲突
+  // 壁纸切换后的统一收尾：确保背景开启，并刷新渲染与文案
+  function commitWallpaperAsActive() {
+    if (!bgEnabled) {
+      bgEnabled = true;
+      Storage.set('ntp_bg_enabled', true);
+    }
+    resetBgVignette();
+    applyBackgroundState();
+    if (toggleBgSwitch) toggleBgSwitch.checked = true;
+    if (toggleBgModalSwitch) toggleBgModalSwitch.checked = true;
+    applyLanguage(localStorage.getItem('liteStart_language') || 'auto');
+  }
+
+  async function applyLocalWallpaper() {
+    if (!localWallpaperBlob) return;
+    const type = localWallpaperType || 'image';
+    revokeBlobUrl(customWallpaperData?.url);
+    customWallpaperData = { type: type, url: URL.createObjectURL(localWallpaperBlob) };
+    commitWallpaperAsActive();
+    await saveWallpaperData({ type: type, blob: localWallpaperBlob });
+  }
+
+  // 应用一个自定义链接作为壁纸
+  async function applyOnlineWallpaperUrl(url) {
+    const isVideo = /\.(mp4|webm|ogg|mov|avi|mkv)$/i.test(url);
+    revokeBlobUrl(customWallpaperData?.url);
+    customWallpaperData = { type: isVideo ? 'video' : 'image', url: url };
+    commitWallpaperAsActive();
+    await saveWallpaperData(customWallpaperData);
+  }
+
   const modalOnlineWallpaper = document.getElementById('modal-online-wallpaper');
   const onlineWallpaperForm = document.getElementById('online-wallpaper-form');
   const inputOnlineUrl = document.getElementById('input-online-url');
@@ -3503,7 +3697,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const isCustomUrl = customWallpaperData?.type !== 'bing_daily' &&
       (curUrl.startsWith('http://') || curUrl.startsWith('https://'));
     wallpaperSourceBeforeOnline = getWallpaperSourceValue();
-    inputOnlineUrl.value = isCustomUrl ? curUrl : '';
+    inputOnlineUrl.value = isCustomUrl ? curUrl : getSavedOnlineUrl();
     containerOnlineUrl?.classList.remove('error');
     tipOnlineUrl?.classList.remove('active');
     modalOnlineWallpaper?.classList.add('active');
@@ -3518,8 +3712,13 @@ document.addEventListener('DOMContentLoaded', () => {
     if (wallpaperSourceBeforeOnline !== null) {
       wallpaperSourceBeforeOnline = null;
       syncWallpaperSourceSelect();
+      renderWallpaperPreview();
     }
   }
+
+  btnEditOnlineWallpaper?.addEventListener('click', () => {
+    openOnlineModal();
+  });
 
   btnOnlineCancel?.addEventListener('click', closeOnlineModal);
 
@@ -3569,6 +3768,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const isVideo = /\.(mp4|webm|ogg|mov|avi|mkv)$/i.test(url);
   revokeBlobUrl(customWallpaperData?.url);
   customWallpaperData = { type: isVideo ? 'video' : 'image', url: url };
+  Storage.set(ONLINE_WALLPAPER_KEY, url);
   saveWallpaperData(customWallpaperData);
   if (!bgEnabled) {
     bgEnabled = true;
@@ -3690,6 +3890,8 @@ inputOnlineUrl?.addEventListener('input', () => {
     if (logoContainer) {
       logoContainer.style.display = (showLogo && searchVisible) ? '' : 'none';
     }
+    // 首帧预置到此失效，显隐改由内联样式控制
+    document.documentElement.removeAttribute('data-logo-hidden');
   }
 
   // 两种情况下"显示 Logo"开关都没有意义，置灰禁用（但不去改它的开关值）：
@@ -5090,14 +5292,12 @@ searchInput?.addEventListener('input', () => {
       const val = e.target.value;
       localStorage.setItem('liteStart_language', val);
       applyLanguage(val);
-      translateSourceLabel(); // 语言切换后同步翻译来源标签
       renderWallpaper();      // 同步刷新壁纸类型标题（该文本由脚本写入，不随 data-i18n 自动更新）
     });
   }
 
   // 初始化应用全页翻译
   applyLanguage(initialLang);
-  translateSourceLabel(); // 初始化时翻译来源标签
 
   // 初始化自定义下拉组件
   // ===== 搜索框提示与"自定义"选项的引擎名同步 =====

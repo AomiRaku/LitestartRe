@@ -86,4 +86,23 @@
   } catch (e) {
     /* 失败时按未预置处理，由主脚本正常渲染 */
   }
+
+  // 6) Logo 显隐：提前写到 <html>。
+  //    Logo 占据网格第 2 行，隐藏后该行会塌陷，首帧不预置会让居中布局的搜索框先偏下再上移。
+  try {
+    if (JSON.parse(localStorage.getItem('ntp_show_logo') || 'true') === false) {
+      document.documentElement.setAttribute('data-logo-hidden', 'true');
+    }
+  } catch (e) {
+    /* 失败时保持显示，由主脚本修正 */
+  }
+
+
+  // 7) 内容就绪后再显示：主脚本在 DOMContentLoaded 内完成同步初始化，
+  //    在其后打标记，首帧布局差异不会呈现到屏幕上。
+  window.addEventListener('DOMContentLoaded', function () {
+    setTimeout(function () {
+      document.documentElement.setAttribute('data-ready', '1');
+    }, 0);
+  });
 })();
